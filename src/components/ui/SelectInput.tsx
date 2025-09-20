@@ -18,7 +18,7 @@ export default function SelectInput({
       <select
         onChange={onChange}
         {...props}
-        className="p-2 bg-white text-shadow-amber-200 outline-none"
+        className="p-2 bg-white text-shadow-amber-200 outline-hidden"
       >
         {values?.map((value) => (
           <option value={value} key={value} className="text-shadow-amber-200">

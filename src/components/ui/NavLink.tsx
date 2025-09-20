@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useNavSetting } from "src/src/stores/Nav-setting-store/Nav-setting-store";
+import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
+  
 
 type navLinkType = {
   href: string;

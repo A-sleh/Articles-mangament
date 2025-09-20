@@ -3,7 +3,7 @@
 import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { MdClose } from "react-icons/md";
-import AnimateScale from "src/src/lib/Animation/AnimateScale";
+import AnimateScale from "@/lib/Animation/AnimateScale"; 
 
 type openProps = {
   children: React.ReactElement;
@@ -62,7 +62,7 @@ function Window({ children, name, title = null, className = "" }: windowProps) {
   if (name !== openName) return null;
 
   return createPortal(
-    <div className="bg-[#0000004d] fixed top-0 left-0 right-0 bottom-0 h-[100vh] z-[50]">
+    <div className="bg-[#0000004d] fixed top-0 left-0 right-0 bottom-0 h-screen z-50">
       <AnimateScale
         className={`fixed top-[50%] left-[50%] translate-[-50%] p-2 bg-third rounded-md  overflow-auto ${className}`}
       >

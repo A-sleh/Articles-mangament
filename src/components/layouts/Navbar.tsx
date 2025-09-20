@@ -3,8 +3,8 @@
 
 import { IoMdMenu } from "react-icons/io";
 
-import { useAuth } from "src/src/stores/Auth-store/Auth-srore";
-import { useNavSetting } from "src/src/stores/Nav-setting-store/Nav-setting-store";
+import { useAuth } from "@/stores/Auth-store/Auth-srore";
+import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store"; 
 
 export default function Navbar() {
   const user = useAuth((state) => state.user);
@@ -41,7 +41,7 @@ export default function Navbar() {
         </div>
         <button
           onClick={() => handleChangeLang()}
-          className="p-1 px-2 rounded-sm bg-white font-bold cursor-pointer"
+          className="p-1 px-2 rounded-xs bg-white font-bold cursor-pointer"
         >
           {lang}
         </button>

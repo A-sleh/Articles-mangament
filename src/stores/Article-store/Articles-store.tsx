@@ -21,6 +21,7 @@ type articlesActions = {
   createArticle: (body: Article) => void;
   updateArticle: (articleId: number, body: Article) => void;
   updateArticles: (articles: Article[]) => void;
+  getArticleBy: (articleId: number) => Article | null;
 };
 
 type artcilesStore = articlesActions & articlesState;
@@ -66,6 +67,12 @@ function handleUpdateArticle(
   });
 }
 
+function handleGetArticle(id: number, articles: Article[]) {
+  const article = articles.find((article) => article.id === id);
+
+  return article ?? null;
+}
+
 function handleCreateArticle(articles: Article[], newArticle: Article) {
   // Create a uniqe id
   const newArticleId = articles[articles.length - 1].id + 1;
@@ -78,6 +85,8 @@ export const useArticles = create<artcilesStore>()(
       ...intialState,
       updateArticles: (articles: Article[]) =>
         set({ ...get(), articles: articles }),
+      getArticleBy: (articleId: number) =>
+        handleGetArticle(articleId, get().articles),
       deleteArticle: (articleId: number) =>
         set({
           ...get(),

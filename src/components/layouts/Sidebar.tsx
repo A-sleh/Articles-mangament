@@ -11,10 +11,10 @@ import { FaRegChartBar } from "react-icons/fa";
 import { AiOutlineLogout } from "react-icons/ai";
 
 import { useRouter } from "next/navigation";
-import { useNavSetting } from "src/src/stores/Nav-setting-store/Nav-setting-store";
-import { useAuth } from "src/src/stores/Auth-store/Auth-srore";
-import { successToast } from "../custom/toast";
-import { AnimateChildLeftEffect } from "src/src/lib/Animation/AnimateParentLeftEffect";
+import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
+import { useAuth } from "@/stores/Auth-store/Auth-srore"; 
+import { successToast } from "../custom/toast"; 
+import { AnimateChildLeftEffect } from "@/lib/Animation/AnimateParentLeftEffect"; 
 
 export default function Sidebar() {
   const router = useRouter();
@@ -102,7 +102,7 @@ export default function Sidebar() {
       </div>
       <button
         onClick={handleLogoutClicked}
-        className="px-4 py-1 bg-white font-bold cursor-pointer rounded-sm w-fit mx-auto flex items-center gap-2"
+        className="px-4 py-1 bg-white font-bold cursor-pointer rounded-xs w-fit mx-auto flex items-center gap-2"
       >
         <AiOutlineLogout size={25} />
         <p className={`${openSidebar ? "md:block" : "hidden"} `}>Logout</p>

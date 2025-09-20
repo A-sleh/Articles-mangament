@@ -5,14 +5,15 @@ import { Path, useForm, UseFormRegister, SubmitHandler } from "react-hook-form";
 
 import { MdClose } from "react-icons/md";
 
-import CKEdite from "../../../../components/ui/CKEdite";
-import MainInput from "src/src/components/ui/MainInput";
-import ToggleButton from "src/src/components/ui/ToggleButton";
-import Model from "src/src/components/Model/Model";
-import SelectInput from "src/src/components/ui/SelectInput";
+import CKEdite from "@/components/ui/CKEdite";
+import MainInput from "@/components/ui/MainInput";
+import ToggleButton from "@/components/ui/ToggleButton";
+import Model from "@/components/Model/Model";  
+import SelectInput from "@/components/ui/SelectInput"; 
 
-import { Article, useArticles } from "src/src/stores/Article-store/Articles-store";
-import { getFileUrl } from "src/src/utils/helper";
+import { getFileUrl } from "@/utils/helper"; 
+import { Article, useArticles } from "@/stores/Article-store/Articles-store";
+
 
 // Demo data
 const Categories = ["Article", "Post", "Short post"];

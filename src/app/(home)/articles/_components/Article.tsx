@@ -1,15 +1,19 @@
 "use client";
 
+import { useState } from "react";
+import { useArticles } from "@/stores/Article-store/Articles-store";
+import { errorToast, successToast } from "@/components/custom/toast";
+
+import { IArticle } from "../_types";
+
 import { RiDraggable } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FaPencilAlt } from "react-icons/fa";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { IArticle } from "../_types";
-import { useArticles } from "src/src/stores/Article-store/Articles-store";
-import { useState } from "react";
-import { errorToast, successToast } from "src/src/components/custom/toast";
+
+
 
 export default function Article({ article }: { article: IArticle }) {
   const [cursorStyle, setCursorStyle] = useState(false);
@@ -55,7 +59,7 @@ export default function Article({ article }: { article: IArticle }) {
           <span
             className={`${
               published ? "bg-green-400" : "bg-red-400"
-            } text-white p-1 rounded-sm text-sm `}
+            } text-white p-1 rounded-xs text-sm `}
           >
             {published ? "Published" : "Not published"}
           </span>

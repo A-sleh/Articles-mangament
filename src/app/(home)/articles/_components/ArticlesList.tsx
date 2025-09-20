@@ -7,8 +7,9 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import { useArticles } from "src/stores/Article-store/Articles-store";
+
 import Article from "./Article";
+import { useArticles } from "@/stores/Article-store/Articles-store";
 
 export default function ArticlesList() {
   const { articles, updateArticles } = useArticles((state) => state);
