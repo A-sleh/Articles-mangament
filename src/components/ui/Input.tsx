@@ -6,6 +6,7 @@ export type inputType = {
   label: string;
   required?: boolean;
   value?: string;
+  register?: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 

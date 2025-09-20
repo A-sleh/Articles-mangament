@@ -1,14 +1,13 @@
 "use client";
 
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import Input from "@/components/ui/Input";
+import { convertImageToBase64 } from "@/utils/helper";
+import { errorToast, successToast } from "@/components/custom/toast";
+import { User, useAuth } from "@/stores/Auth-store/Auth-srore";
 
-import Input from "../../../components/ui/Input";
-
-import { useAuth, User } from "../../../stores/Auth-store/Auth-srore"
-import { errorToast, successToast } from "../../../components/custom/toast";
-import { convertImageToBase64 } from "../../../utils/helper";
 
 const storeduser = {
   gemail: "abdo@gmail.com",
@@ -47,7 +46,8 @@ export default function Authintication() {
       successToast("Login successfully");
 
     }catch(err) {
-      throw new Error("Some thing went wrong while login")
+
+      throw new Error("Some thing went wrong while login",err)
     }
   };
 

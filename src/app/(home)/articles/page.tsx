@@ -1,12 +1,16 @@
 
 import ArticlesList from "./_components/ArticlesList";
-import NewArticleFrom from "./_components/NewArticleFrom";
+import ArticleForm from "./_components/ArticleForm";
 
 export default function Articles() {
   
   return (
     <section className="p-4">
-      <NewArticleFrom />
+      <ArticleForm method="POST" >
+        <button className="px-4 py-1 rounded-md text-white bg-amber-200 float-end">
+          New article
+        </button>
+      </ArticleForm>
       <ArticlesList />
     </section>
   );

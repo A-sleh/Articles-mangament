@@ -3,12 +3,14 @@ type SelectType = {
   onChange: (e: any) => void;
   values: (string | number)[];
   multiSelect?: string[];
+  register?: any;
 };
 
 export default function SelectInput({
   onChange,
   values,
   label,
+  register,
   multiSelect,
   ...props
 }: SelectType) {
@@ -18,6 +20,7 @@ export default function SelectInput({
       <select
         onChange={onChange}
         {...props}
+        {...register}
         className="p-2 bg-white text-shadow-amber-200 outline-hidden"
       >
         {values?.map((value) => (

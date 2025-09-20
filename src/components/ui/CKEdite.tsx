@@ -14,8 +14,10 @@ const CLOUD_SERVICES_TOKEN_URL =
 
 export default function CKEdite({
   setRichText,
+  initalValue
 }: {
   setRichText: React.Dispatch<SetStateAction<string>>;
+  initalValue: string;
 }) {
   const editorContainerRef = useRef(null);
   const editorRef = useRef(null);
@@ -285,6 +287,7 @@ export default function CKEdite({
                 onChange={(_, e) => {
                   setRichText(e.getData());
                 }}
+                data={initalValue}
               />
             )}
           </div>

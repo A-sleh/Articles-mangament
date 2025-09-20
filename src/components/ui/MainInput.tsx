@@ -1,5 +1,3 @@
-"use client";
-
 import { inputType } from "./Input";
 
 export default function MainInput({
@@ -7,8 +5,10 @@ export default function MainInput({
   type,
   placeHolder,
   required = false,
+  register,
   ...props
 }: inputType) {
+
   return (
     <div className="mb-2 flex flex-col rounded-md w-full">
       <label className="text-left text-white font-bold">{label}</label>
@@ -18,6 +18,7 @@ export default function MainInput({
         placeholder={placeHolder}
         required={required}
         {...props}
+        {...register}
       />
     </div>
   );

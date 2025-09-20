@@ -8,7 +8,7 @@ export type Article = {
   tages?: string[];
   cover?: string;
   published: boolean;
-  scheduled: Date;
+  scheduled: Date | string;
   richText?: any;
 };
 
