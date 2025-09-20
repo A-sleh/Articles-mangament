@@ -13,6 +13,8 @@ export default function ProtectedRoute({
 
   if (!user) {
     router.replace("/login");
+
+    return null;
   } else {
     return children;
   }

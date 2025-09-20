@@ -2,6 +2,14 @@ import "./globals.css";
 
 import { Toaster } from "react-hot-toast";
 
+import localFont from 'next/font/local';
+
+const myCustomFont = localFont({
+  src: '../font/static/ReadexPro-VariableFont_HEXP,wght.ttf', // Path to your font file
+  variable: '--font-NumitioSanas',
+});
+
+
 export default function RootLayout({
   children,
 }: {
@@ -9,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased dark">
+      <body className={`antialiased dark ${myCustomFont.variable} ${myCustomFont.className}`}>
         {children}
         <Toaster position="top-right" />
       </body>
