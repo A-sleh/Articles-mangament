@@ -21,7 +21,7 @@ export default function HomeLayout({
     <ProtectedRoute>
       <div className="flex">
         <Sidebar />
-        <main className="w-full">
+        <main className="w-full overflow-auto h-screen dark:bg-secondary-dark">
           <Navbar />
           {children}
         </main>

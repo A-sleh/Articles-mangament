@@ -7,12 +7,12 @@ export default function ToggleButton({
 }) {
   return (
     <div
-      className={`h-8 rounded-3xl w-15 items-center bg-amber-300 p-1 flex ${
-        value? "justify-end" : "justify-start"
+      className={`h-9 rounded-3xl w-15 cursor-pointer items-center bg-primary dark:bg-secondary-dark dark:border-primary-dark dark:border-2  p-1 flex ${
+        value ? "justify-end" : "justify-start"
       } transition-all cursor-pointer`}
       onClick={onChangeFn}
     >
-      <span className={`rounded-full bg-yellow-200  h-[25px] w-[25px] `}></span>
+      <span className={`rounded-full bg-white  h-[25px] w-[25px] `}></span>
     </div>
   );
 }

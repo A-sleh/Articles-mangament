@@ -273,12 +273,12 @@ export default function CKEdite({
   }, [editorConfig]);
 
   return (
-    <div className="main-container">
+    <div className="main-container w-[90vw]">
       <div
         className="editor-container editor-container_classic-editor"
         ref={editorContainerRef}
       >
-        <div className="editor-container__editor">
+        <div className="editor-container__editor ">
           <div ref={editorRef}>
             {ClassicEditor && editorConfig && (
               <CKEditor

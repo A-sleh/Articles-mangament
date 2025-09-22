@@ -7,7 +7,7 @@ export default function Articles() {
   return (
     <section className="p-4">
       <ArticleForm method="POST" >
-        <button className="px-4 py-1 rounded-md text-white bg-amber-200 float-end">
+        <button className="px-4 py-1 rounded-md text-white bg-primary dark:bg-primary-dark float-end">
           New article
         </button>
       </ArticleForm>

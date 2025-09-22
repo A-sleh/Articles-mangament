@@ -8,6 +8,8 @@
 
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   *,
   ::after,
@@ -22,11 +24,19 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --primary: #1C6EA4;
+  --primary-dark: #1E201E;
+  --secondary-dark: #3C3D37 ; 
+  --secondary: #33A1E0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-primary-dark: var(--primary-dark);
+  --color-secondary-dark: var(--secondary-dark);
 }
 
 @media (prefers-color-scheme: dark) {

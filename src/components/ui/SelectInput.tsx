@@ -21,7 +21,7 @@ export default function SelectInput({
         onChange={onChange}
         {...props}
         {...register}
-        className="p-2 bg-white text-shadow-amber-200 outline-hidden"
+        className="p-2 bg-white text-shadow-amber-200 outline-hidden rounded-md"
       >
         {values?.map((value) => (
           <option value={value} key={value} className="text-shadow-amber-200">
@@ -33,7 +33,7 @@ export default function SelectInput({
       {multiSelect && (
         <div className="flex gap-1 flex-wrap my-1">
           {multiSelect?.map((val) => (
-            <p className="px-2 py-1 rounded-md bg-white text-amber-200" key={val}>
+            <p className="px-2 py-1 rounded-md bg-white text-primary" key={val}>
               {val}
             </p>
           ))}

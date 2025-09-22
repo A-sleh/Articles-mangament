@@ -13,7 +13,7 @@ export default function MainInput({
     <div className="mb-2 flex flex-col rounded-md w-full">
       <label className="text-left text-white font-bold">{label}</label>
       <input
-        className="px-4 py-2 bg-white outline-hidden roudned-md focus:shadow-md"
+        className="px-4 py-2 bg-white outline-hidden roudned-md focus:shadow-md rounded-md"
         type={type}
         placeholder={placeHolder}
         required={required}

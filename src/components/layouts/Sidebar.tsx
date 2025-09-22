@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { useAuth } from "@/stores/Auth-store/Auth-srore";
 import { successToast } from "../custom/toast";
-import { AnimateChildLeftEffect } from "@/lib/Animation/AnimateParentLeftEffect";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -38,7 +37,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`flex flex-col justify-between h-screen bg-amber-200 shadow-xl transition-all text-center  ${sideBarStyle} overflow-hidden md:overflow-visible`}
+      className={`flex flex-col justify-between h-screen dark:bg-primary-dark bg-primary  shadow-xl transition-all text-center  ${sideBarStyle} overflow-hidden md:overflow-visible z-30 md:relative`}
     >
       <div className="flex flex-col gap-3 h-full">
         <div className="flex justify-between items-center">
@@ -62,8 +61,7 @@ export default function Sidebar() {
         <NavLink
           href="/articles"
           title="Articles"
-          className="px-3 py-2 rounded-md text-grady font-normal flex items-center gap-2 hover:bg-white/50 transition-all"
-          activeClassName="bg-white"
+          activeClassName="bg-white dark:text-black"
           Icon={<MdOutlineArticle size={25} />}
         >
           Articles
@@ -72,7 +70,6 @@ export default function Sidebar() {
         <NavLink
           href="/stats"
           title="Stats"
-          className="px-3 py-2 rounded-md text-grady font-normal flex items-center gap-2 hover:bg-white/50 transition-all"
           activeClassName="bg-white "
           Icon={<FaRegChartBar size={25} />}
         >
@@ -82,8 +79,7 @@ export default function Sidebar() {
         <NavLink
           title="Working hours"
           href="/workingHours"
-          className="px-3 py-2 rounded-md text-grady font-normal flex items-center gap-2 hover:bg-white/50 transition-all "
-          activeClassName="bg-white"
+          activeClassName="bg-white "
           Icon={<CiCalendarDate size={25} />}
         >
           WorkingHours
@@ -92,7 +88,6 @@ export default function Sidebar() {
         <NavLink
           title="Setting"
           href="/settings"
-          className="px-3 py-2 rounded-md text-grady font-normal flex items-center gap-2 hover:bg-white/50 transition-all"
           activeClassName="bg-white "
           Icon={<IoSettingsSharp size={25} />}
         >

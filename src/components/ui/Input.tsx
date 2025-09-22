@@ -13,7 +13,7 @@ export type inputType = {
 export default function Input({
   label,
   type,
-  placeHolder,
+  placeHolder,  
   required = false,
   ...props
 }: inputType) {
@@ -21,7 +21,7 @@ export default function Input({
     <div className="mb-2 flex flex-col rounded-md ">
       <label className="">{label}</label>
       <input
-        className="px-4 py-2 bg-white outline-amber-200"
+        className="px-4 py-2 bg-white outline-primary dark:outline-secondary-dark rounded-md"
         type={type}
         placeholder={placeHolder}
         required={required}
