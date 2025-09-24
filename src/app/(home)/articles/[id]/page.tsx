@@ -5,15 +5,17 @@ import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 
-import { FaDownload } from "react-icons/fa6";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
 import { useArticles } from "@/stores/Article-store/Articles-store";
 import { AiOutlineDelete } from "react-icons/ai";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaDownload, FaPencilAlt } from "react-icons/fa";
 
-import ArticleForm from "../_components/ArticleForm";
 import { successToast } from "@/components/custom/toast";
+import DownLoadArticlePdf from "@/components/pdf/Article/DownLoadArticlePdf"
+import ArticleForm from "../_components/ArticleForm";
 import NotFoundMessage from "@/components/ui/NotFoundMessage";
+
+
 
 const ICON_SIZE = 20;
 
@@ -79,7 +81,9 @@ export default function Article({ params }: { params: { id: number } }) {
                   className="text-blue-400 cursor-pointer"
                 />
               </ArticleForm>
-              <FaDownload size={ICON_SIZE} />
+              <DownLoadArticlePdf article={article}>
+                <FaDownload size={ICON_SIZE} className="cursor-pointer" />
+              </DownLoadArticlePdf>
             </div>
           </div>
           <div className="mb-3">

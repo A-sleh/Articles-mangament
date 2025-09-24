@@ -12,9 +12,8 @@ export default function ProtectedRoute({
   const user = useAuth((state) => state.user);
 
   if (!user) {
-    router.replace("/login");
-
-    return null;
+    
+    router.replace("/login"); 
   } else {
     return children;
   }

@@ -10,7 +10,7 @@ import Model from "@/components/Model/Model";
 import SelectInput from "@/components/ui/SelectInput";
 
 import { IArticle, useArticles } from "@/stores/Article-store/Articles-store";
-import { successToast } from "@/components/custom/toast";
+import { errorToast, successToast } from "@/components/custom/toast";
 import { getFileUrl } from "@/utils/helper";
 
 // Demo data
@@ -74,9 +74,15 @@ export default function ArticleForm({
     if (!selectedFiles?.target?.files) return;
 
     const localUrl = selectedFiles.target.value.toString();
-    const url = (await getFileUrl(selectedFiles?.target?.files[0])) ?? "";
+    
+    try {
 
-    setForm((lastForm) => ({ ...lastForm, cover: url, localUrl }));
+      const url = (await getFileUrl(selectedFiles?.target?.files[0])) ?? "";
+       setForm((lastForm) => ({ ...lastForm, cover: url, localUrl }));
+    }catch(err) {
+      errorToast((err as Error).message)
+    }
+
   };
 
   return (

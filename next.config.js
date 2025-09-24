@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+    serverComponentsExternalPackages: ['@react-pdf/renderer']
+}
 
 module.exports = nextConfig

@@ -1,11 +1,11 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 @font-face {
-  font-family: 'Readex Pro';
-  src: url('../font/static/ReadexPro-VariableFont_HEXP,wght.ttf') format('truetype'),
-
+  font-family: "Readex Pro";
+  src: url("../font/static/ReadexPro-VariableFont_HEXP,wght.ttf")
+    format("truetype");
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -18,16 +18,34 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
+
+  .main-container {
+    font-family: var(--ck-content-font-family);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .editor-container_classic-editor .editor-container__editor {
+    min-width: 795px;
+    max-width: 795px;
+  }
+
+
+  .ck-editor__editable_inline {
+    
+    padding-left: 30px !important;
+  }
 }
 
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --primary: #1C6EA4;
-  --primary-dark: #1E201E;
-  --secondary-dark: #3C3D37 ; 
-  --secondary: #33A1E0;
+  --primary: #1c6ea4;
+  --primary-dark: #1e201e;
+  --secondary-dark: #3c3d37;
+  --secondary: #33a1e0;
 }
 
 @theme inline {
@@ -41,23 +59,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --ck-content-font-family: 'Lato';
+    --ck-content-font-family: "Lato";
   }
 }
 
-
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.main-container {
-	font-family: var(--ck-content-font-family);
-	width: fit-content;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.editor-container_classic-editor .editor-container__editor {
-	min-width: 795px;
-	max-width: 795px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }

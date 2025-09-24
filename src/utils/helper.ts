@@ -28,9 +28,10 @@ export async function getFileUrl(file: File): Promise<string | null> {
     if(file.size > maxFileSize) {
       throw new Error("Image size must be less than 2 Mb")
     }
+    const type = file.type.split('/')[1]
 
     const imageBase64 = await convertImageToBase64(file);
-    return `data:image/png;base64,${imageBase64}`;
+    return `data:image/${type};base64,${imageBase64}`;
     
   } catch (err) {
     // Check the file if greater than 2 Mb

@@ -17,6 +17,7 @@
     "array-move": "^4.0.0",
     "ckeditor": "^4.12.1",
     "classname": "^0.0.0",
+    "htmlparser2": "^10.0.0",
     "motion": "^12.23.16",
     "next": "13.5.11",
     "node-html-parser": "^7.0.1",

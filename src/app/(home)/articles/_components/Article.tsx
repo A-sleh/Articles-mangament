@@ -35,7 +35,7 @@ export default function Article({ article }: { article: IArticle }) {
 
   return (
     <SortableItem key={id} >
-      <div className="flex gap-2 dark:text-white items-start bg-white dark:bg-primary-dark  rounded-md p-2 border  touch">
+      <div className="flex gap-2 dark:text-white items-start bg-white dark:bg-primary-dark  rounded-md p-2 border-dashed border-2 border-primary dark:border-white">
         <div className="flex justify-between flex-1">
           <div>
             <h3 className="font-bold ">{title}</h3>
