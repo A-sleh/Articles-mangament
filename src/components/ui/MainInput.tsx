@@ -5,6 +5,7 @@ export default function MainInput({
   type,
   placeHolder,
   required = false,
+  readOnly = false,
   register,
   ...props
 }: inputType) {
@@ -14,6 +15,7 @@ export default function MainInput({
       <label className="text-left text-white font-bold">{label}</label>
       <input
         className="px-4 py-2 bg-white outline-hidden roudned-md focus:shadow-md rounded-md"
+        readOnly={readOnly}
         type={type}
         placeholder={placeHolder}
         required={required}

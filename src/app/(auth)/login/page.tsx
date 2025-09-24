@@ -4,16 +4,11 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { errorToast, successToast } from "@/components/custom/toast";
-import Input from "@/components/ui/Input";
+import { Input } from "@/components/ui/Input";
 import FileInput from "@/components/ui/FileInput";
 
 import { getFileUrl } from "@/utils/helper";
 import { User, useAuth } from "@/stores/Auth-store/Auth-srore";
-
-const storeduser = {
-  gemail: "abdo@gmail.com",
-  password: "12345678",
-};
 
 const intialValue: User = {
   gemail: "",
@@ -28,15 +23,12 @@ export default function Authintication() {
   const [imageUrl, setImageUrl] = useState(""); // This to show the url inside the file input
   const [user, setUser] = useState<User>(intialValue);
 
-  const login = useAuth((state) => state.login);
+  const { login, dbUser } = useAuth((state) => state);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (
-      storeduser.gemail != user.gemail ||
-      storeduser.password != user.password
-    ) {
+    if (dbUser.gemail != user.gemail || dbUser.password != user.password) {
       errorToast("User name or password was wrond please, try again");
       return;
     }
