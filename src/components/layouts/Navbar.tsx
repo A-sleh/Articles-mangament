@@ -4,8 +4,9 @@ import { IoMdMenu } from "react-icons/io";
 
 import { useAuth } from "@/stores/Auth-store/Auth-srore";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
-import ToggleButton from "../ui/ToggleButton";
+
 import LanguageToggleButton from "../ui/LanguageToggleButton";
+import IconToggleTheme from "../ui/IconToggleTheme";
 
 export default function Navbar() {
   const user = useAuth((state) => state.user);
@@ -21,7 +22,7 @@ export default function Navbar() {
         onClick={() => toggleSidebarView()}
       />
       <div className="flex gap-2 items-center justify-between ">
-        <ToggleButton onChangeFn={() => toggleTheme()} value={isDarkMode} />
+        <IconToggleTheme />
         <LanguageToggleButton />
         {user?.image && (
           <img

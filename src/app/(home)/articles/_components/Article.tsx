@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { SortableItem } from "react-easy-sort";
+import { useEffect, useState } from "react";
+import { SortableItem, SortableKnob } from "react-easy-sort";
 
 import { IArticle, useArticles } from "@/stores/Article-store/Articles-store";
 
@@ -33,10 +33,24 @@ export default function Article({ article }: { article: IArticle }) {
     }
   }
 
+  useEffect(() => {
+    const handleMouseUp = () => setCursorStyle(false);
+
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
   return (
     <SortableItem key={id}>
       <div className="flex gap-2 dark:text-white items-start bg-white dark:bg-primary-dark rounded-md p-2 border-dashed border-2 border-primary dark:border-white">
-        <div className="flex justify-between flex-1">
+        <Link
+          href={`/articles/${id}`}
+          title={t("back-to-articles")}
+          className="flex justify-between flex-1"
+        >
           <div>
             <h3 className="font-bold">{title}</h3>
             <span className="px-2 py-1 rounded-md text-sm bg-primary text-white">
@@ -53,7 +67,7 @@ export default function Article({ article }: { article: IArticle }) {
               {published ? t("published") : t("not-published")}
             </span>
           </div>
-        </div>
+        </Link>
         <div className="flex gap-2 flex-col">
           <AiOutlineDelete
             size={20}
@@ -68,20 +82,19 @@ export default function Article({ article }: { article: IArticle }) {
               title={t("edit-article")}
             />
           </ArticleForm>
-
-          <Link href={`/articles/${id}`} title={t("back-to-articles")}>
-            <MdOutlineReadMore size={20} />
-          </Link>
         </div>
-        <RiDraggable
-          size={20}
-          className={`text-gray-400 self-center ${
-            cursorStyle ? "cursor-grabbing" : "cursor-grab"
-          }`}
-          onMouseDown={() => setCursorStyle(true)}
-          onMouseUp={() => setCursorStyle(false)}
-          title="Drag to reorder"
-        />
+        <SortableKnob>
+          <div
+            className={`text-gray-400 self-center ${
+              cursorStyle ? "cursor-grabbing" : "cursor-grab"
+            }`}
+            onMouseDown={() => setCursorStyle(true)}
+            onMouseUp={() => setCursorStyle(false)}
+            title={t("drag-to-reorder") || "Drag to reorder"}
+          >
+            <RiDraggable size={20} />
+          </div>
+        </SortableKnob>
       </div>
     </SortableItem>
   );
