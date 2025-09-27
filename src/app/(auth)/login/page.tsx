@@ -1,63 +1,36 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
 import { errorToast, successToast } from "@/components/custom/toast";
 import { Input } from "@/components/ui/Input";
-import FileInput from "@/components/ui/FileInput";
 
-import { getFileUrl } from "@/utils/helper";
-import { User, useAuth } from "@/stores/Auth-store/Auth-srore";
+import ChangeLink from "../_components/ChangeLink";
+import { ICreadential, useAuth } from "@/stores/Auth-store/Auth-srore";
 
-const intialValue: User = {
+const intialValue: ICreadential = {
   gemail: "",
   password: "",
-  image: null,
 };
 
-export default function Authintication() {
+export default function Login() {
+  const t = useTranslations("login");
   const router = useRouter();
 
-  // Will use it  soon
-  const [imageUrl, setImageUrl] = useState(""); // This to show the url inside the file input
-  const [user, setUser] = useState<User>(intialValue);
-
-  const { login, dbUser } = useAuth((state) => state);
+  const login = useAuth((state) => state.login);
+  const [user, setUser] = useState<ICreadential>(intialValue);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (dbUser.gemail != user.gemail || dbUser.password != user.password) {
-      errorToast("User name or password was wrond please, try again");
-      return;
-    }
-
     try {
       await login(user);
       router.replace("/articles");
-      successToast("Login successfully");
+      successToast(t("login-success"));
     } catch (err) {
-      errorToast((err as Error).message);
-    }
-  };
-
-  const handleFileSelceted = async (
-    selectedFiles: ChangeEvent<HTMLInputElement>
-  ) => {
-    // If there is no file selected
-    if (!selectedFiles?.target?.files) return;
-
-    try {
-      const imageUrl = await getFileUrl(selectedFiles?.target?.files[0]);
-      setImageUrl(selectedFiles?.target?.value); // To display it on file input
-
-      setUser({
-        ...user,
-        image: imageUrl,
-      });
-    } catch (err) {
-      errorToast((err as Error).message);
+      errorToast(t("error-invalid-credentials"));
     }
   };
 
@@ -67,31 +40,30 @@ export default function Authintication() {
       className="p-4 rounded-md bg-white shadow-md min-w-[30vw]"
     >
       <Input
-        label="Email"
-        placeHolder="Enter your email"
+        label={t("email-label")}
+        placeHolder={t("email-placeholder")}
         required={true}
         type="email"
         value={user.gemail}
         onChange={(e) => setUser({ ...user, gemail: e.target.value })}
       />
       <Input
-        label="Password"
-        placeHolder="Enter your password"
+        label={t("password-label")}
+        placeHolder={t("password-placeholder")}
         required={true}
         type="password"
         value={user.password}
         onChange={(e) => setUser({ ...user, password: e.target.value })}
       />
-      <FileInput
-        label="Image"
-        placeHolder="Enter avatar iamge"
-        onChange={handleFileSelceted}
-        value={imageUrl}
-      />
 
       <button className="bg-primary dark:bg-secondary-dark rounded-md text-white px-2 py-1 cursor-pointer w-full transition-all hover:text-black hover:bg-white hover:outline-primary  hover:outline-1">
-        Login
+        {t("login-button")}
       </button>
+      <ChangeLink
+        link="/signup"
+        btn={t("signup-btn")}
+        desctiption={t("dont-have-account")}
+      />
     </form>
   );
 }

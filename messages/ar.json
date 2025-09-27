@@ -1,0 +1,104 @@
+{
+  "articles": {
+    "title": "المقالات",
+    "new-article": "مقال جديد",
+    "no-articles-message": "لا توجد مقالات بعد ...",
+    "article": {
+      "not-found-message": "لا يوجد مقال بهذا المعرف.",
+      "article-deleted": "تم حذف المقال بنجاح.",
+      "delete-error": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      "back-to-articles": "العودة إلى قائمة المقالات",
+      "cover-image-alt": "صورة الغلاف",
+      "published": "تم نشر",
+      "not-published": "غير منشور",
+      "delete-article": "حذف المقال",
+      "edit-article": "تعديل المقال",
+      "download-pdf": "تحميل المقال كملف PDF"
+    },
+    "article-form": {
+      "title": "العنوان",
+      "title-placeholder": "عنوان المقال",
+      "cover-image": "صورة الغلاف",
+      "cover-image-placeholder": "اختر صورة الغلاف",
+      "category": "صنف المقال",
+      "date": "التاريخ",
+      "date-placeholder": "تاريخ المقال",
+      "tags": "العلامات",
+      "published": "تم نشر",
+      "confirm": "تأكيد",
+      "success-add": "تم إضافة المقال بنجاح",
+      "success-update": "تم تحديث المقال بنجاح"
+    }
+  },
+  "settings": {
+    "setting-title": "الإعدادات",
+    "user-information-title": "معلومات المستخدم",
+    "system-title": "النظام",
+    "userAvatar": {
+      "update-image-success": "تم تحديث الصورة بنجاح",
+      "error-setting-user-image": "حدث خطأ أثناء تعيين صورة المستخدم",
+      "image-removed-success": "تم حذف الصورة بنجاح",
+      "upload-image": "رفع الصورة",
+      "remove-image": "حذف الصورة",
+      "user-image-label": "صورة المستخدم",
+      "success-update-userName": "تم تحديث اسم المستخدم بنجاح."
+    },
+    "userInfo": {
+      "email-label": "البريد الإلكتروني",
+      "password-label": "كلمة المرور",
+      "edit": "تعديل",
+      "cancel": "إلغاء",
+      "apply": "تطبيق",
+      "update-success": "تم تحديث معلومات المستخدم بنجاح"
+    },
+    "systemSettings": {
+      "language": "اللغة",
+      "theme": "الوضع الداكن"
+    }
+  },
+  "sidebar": {
+    "title": "متجر المقالات",
+    "articles-linke": "المقالات",
+    "stats-linke": "الإحصائيات",
+    "working-hours-linke": "اوقات الدوام",
+    "setting-linke": "الإعدادات",
+    "logout-btn": "تسجيل الخروج",
+    "logout-success-not": "تم تسجيل الخروج بنجاح",
+    "logout-error-not": "حدث خطأ اثناء عملية تسجيل الخروج"
+  },
+  "login": {
+    "email-label": "البريد الإلكتروني",
+    "email-placeholder": "أدخل بريدك الإلكتروني",
+    "password-label": "كلمة المرور",
+    "password-placeholder": "أدخل كلمة المرور",
+    "image-label": "الصورة",
+    "image-placeholder": "اختر صورة شخصية",
+    "login-button": "تسجيل الدخول",
+    "error-invalid-credentials": "لم يتم العثور على حساب بهذه البيانات",
+    "login-success": "تم تسجيل الدخول بنجاح",
+    "signup-btn": "انشاء حساب",
+    "dont-have-account": "ليس لديك حساب؟"
+  },
+  "signup": {
+    "signup-success": "تم تسجيل الدخول بنجاح!",
+    "first-name-label": "الاسم الأول",
+    "first-name-placeholder": "أدخل اسمك الأول",
+    "last-name-label": "اسم العائلة",
+    "last-name-placeholder": "أدخل اسم العائلة",
+    "email-label": "البريد الإلكتروني",
+    "email-placeholder": "أدخل بريدك الإلكتروني",
+    "image-label": "الصورة",
+    "image-placeholder": "اختر صورة شخصية",
+    "password-label": "كلمة المرور",
+    "password-placeholder": "أدخل كلمة المرور",
+    "login-button": "تسجيل",
+    "login-btn": "تسجيل الدخول",
+    "already-have-account": "هل لديك حساب بالفعل؟"
+  },
+
+  "components": {
+    "FileInput": {
+      "upload-file": "تحميل صورة"
+    }
+  }
+}

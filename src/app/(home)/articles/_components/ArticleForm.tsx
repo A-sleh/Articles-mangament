@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import CKEdite from "@/components/ui/CKEdite";
 import MainInput from "@/components/ui/MainInput";
@@ -13,15 +14,14 @@ import { IArticle, useArticles } from "@/stores/Article-store/Articles-store";
 import { errorToast, successToast } from "@/components/custom/toast";
 import { getFileUrl } from "@/utils/helper";
 
-// Demo data
 const Categories = ["Article", "Post", "Short post"];
-const tages = ["News", "Personal", "releas"];
+const tags = ["News", "Personal", "Release"];
 
-const localIntialForm: IArticle = {
+const localInitialForm: IArticle = {
   id: 0,
   title: "",
   category: "",
-  tages: [],
+  tags: [],
   cover: "",
   published: false,
   scheduled: "",
@@ -30,59 +30,59 @@ const localIntialForm: IArticle = {
 };
 
 export default function ArticleForm({
-  intialForm,
+  initialForm,
   method,
   children,
 }: {
-  intialForm?: IArticle;
+  initialForm?: IArticle;
   method: "POST" | "PUT";
   children: React.ReactElement;
 }) {
-  const [form, setForm] = useState<IArticle>(intialForm ?? localIntialForm);
+  const t = useTranslations('articles.article-form');
+  console.log(initialForm)
+
+  const [form, setForm] = useState<IArticle>(initialForm ?? localInitialForm);
   const { createArticle, updateArticle } = useArticles((state) => state);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (method === "POST") {
-      await createArticle(form);
-      successToast("Article was Added as successfuly");
-      setForm(localIntialForm); // Reset the article form after created
-      return;
+    try {
+      if (method === "POST") {
+        await createArticle(form);
+        successToast(t("success-add"));
+        setForm(localInitialForm);
+        return;
+      }
+      await updateArticle(form.id, form);
+      successToast(t("success-update"));
+    } catch (err) {
+      errorToast((err as Error).message);
     }
-    // For PUT request
-    await updateArticle(form.id, form);
-    successToast("Article was updated as successfuly");
   };
 
-  function handleMultiChooiseSelect(selectedTage: string) {
-    const newTages: string[] =
-      form?.tages?.filter((tage) => tage != selectedTage) || [];
+  function handleMultiChoiceSelect(selectedTag: string) {
+    const newTags: string[] =
+      form?.tags?.filter((tag) => tag !== selectedTag) || [];
 
-    // If the tage doesn't exisit
-    if (newTages?.length === form.tages?.length) {
-      setForm({ ...form, tages: [...newTages, selectedTage] });
+    if (newTags.length === form.tags.length) {
+      setForm({ ...form, tags: [...newTags, selectedTag] });
     } else {
-      setForm({ ...form, tages: newTages });
+      setForm({ ...form, tags: newTags });
     }
   }
 
-  const handleFileSelceted = async (
-    selectedFiles: ChangeEvent<HTMLInputElement>
-  ) => {
-    // If there is no file selected
-    if (!selectedFiles?.target?.files) return;
+  const handleFileSelected = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
 
-    const localUrl = selectedFiles.target.value.toString();
-    
+    const localUrl = e.target.value.toString();
+
     try {
-
-      const url = (await getFileUrl(selectedFiles?.target?.files[0])) ?? "";
-       setForm((lastForm) => ({ ...lastForm, cover: url, localUrl }));
-    }catch(err) {
-      errorToast((err as Error).message)
+      const url = (await getFileUrl(e.target.files[0])) ?? "";
+      setForm((prev) => ({ ...prev, cover: url, localUrl }));
+    } catch (err) {
+      errorToast((err as Error).message);
     }
-
   };
 
   return (
@@ -92,51 +92,54 @@ export default function ArticleForm({
         <form
           style={{ scrollbarWidth: "none" }}
           className="p-4 bg-secondary dark:bg-secondary-dark dark:shadow-md dark:shadow-white/30 rounded-md rounded-tl-none overflow-auto max-h-[90vh] w-[90vw] md:w-full"
-          onSubmit={(e) => onSubmit(e)}
+          onSubmit={onSubmit}
+          dir='rtl'
         >
           <div className="flex flex-col md:flex-row gap-1">
             <MainInput
-              label="Title"
+              label={t("title")}
               type="text"
-              placeHolder="Article title"
-              required={true}
+              placeHolder={t("title-placeholder")}
+              required
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
             />
             <FileInput
-              label="Cover image"
-              placeHolder="select cover image"
-              onChange={(e) => handleFileSelceted(e)}
+              label={t("cover-image")}
+              placeHolder={t("cover-image-placeholder")}
+              onChange={handleFileSelected}
               value={form.localUrl}
             />
           </div>
 
-          <div className="flex flex-col md:flex-row  gap-2">
+          <div className="flex flex-col md:flex-row gap-2">
             <SelectInput
-              label="Category"
+              label={t("category")}
               values={Categories}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
+              value={form.category}
             />
 
             <MainInput
-              label="Date"
-              type="Date"
-              placeHolder="Article date"
-              required={true}
-              value={form?.scheduled.toString() || ""}
+              label={t("date")}
+              type="date"
+              placeHolder={t("date-placeholder")}
+              required
+              value={form.scheduled || ""}
               onChange={(e) => setForm({ ...form, scheduled: e.target.value })}
             />
           </div>
+
           <div className="flex flex-col md:flex-row gap-2">
             <SelectInput
-              label="Tages"
-              onChange={(e: any) => handleMultiChooiseSelect(e.target.value)}
-              values={tages}
-              multiSelect={form.tages}
+              label={t("tags")}
+              onChange={(e) => handleMultiChoiceSelect(e.target.value)}
+              values={tags}
+              multiSelect={form.tags}
             />
             <div className="mb-2">
               <label className="text-left text-white font-bold">
-                Published
+                {t("published")}
               </label>
               <ToggleButton
                 value={form.published}
@@ -146,14 +149,16 @@ export default function ArticleForm({
               />
             </div>
           </div>
+
           <div className="overflow-auto" style={{ scrollbarWidth: "none" }}>
             <CKEdite
               setRichText={(data) => setForm({ ...form, richText: data })}
               initalValue={form.richText}
             />
           </div>
+
           <button className="px-2 py-1 rounded-md bg-white text-primary dark:text-primary-dark mt-2 cursor-pointer">
-            Confirm
+            {t("confirm")}
           </button>
         </form>
       </Model.Window>

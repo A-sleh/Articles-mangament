@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { NextIntlClientProvider } from "next-intl";
 import { Toaster } from "react-hot-toast";
 import localFont from "next/font/local";
 
@@ -20,7 +21,9 @@ export default function RootLayout({
       <body
         className={`antialiased ${myCustomFont.variable} ${myCustomFont.className}`}
       >
-        <SettingProvider>{children}</SettingProvider>
+        <SettingProvider>
+          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        </SettingProvider>
         <Toaster position="top-right" />
       </body>
     </html>

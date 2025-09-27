@@ -19,14 +19,14 @@ export const convertImageToBase64 = (file: File): Promise<string> => {
 
 export async function getFileUrl(file: File): Promise<string | null> {
 
-  const maxFileSize = 2097152; // 1024 * 1024 < == > 2MB
+  const maxFileSize = 1048576; //   < == > 1MB
 
   if(!file) return null
   try {
     
     // Check the file if greater than 2 Mb
     if(file.size > maxFileSize) {
-      throw new Error("Image size must be less than 2 Mb")
+      throw new Error("Image size must be less than 1 Mb")
     }
     const type = file.type.split('/')[1]
 

@@ -1,73 +1,109 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { IUser, useDbUsers } from "../db-users-store/db-users-store";
 
-export type User = {
-  gemail: string;
+// ========== Types ==========
+
+export type ICredential = {
+  email: string;
   password: string;
-  image?: string | null;
 };
 
-export type IDBUser = {
-  gemail?: string ;
-  password?: string ;
+export type IUserAuth = IUser & {
+  userName: string;
 };
 
 export type AuthState = {
-  user: User | null;
-  dbUser: IDBUser;
+  user: IUserAuth | null;
 };
 
 export type AuthActions = {
-  login: (body: User) => void;
+  login: (body: ICredential) => void;
   logout: () => void;
-  updateDbUser: (body: IDBUser) => void;
+  signup: (body: IUser) => void;
   changeImage: (imageUrl: string | null) => void;
+  updateUserName: (userName: string) => void;
+  updateUserCredential: (body: ICredential) => void;
 };
 
 export type AuthStore = AuthState & AuthActions;
 
-export const intialAuthState: AuthState = {
+// ========== Initial State ==========
+
+const initialAuthState: AuthState = {
   user: null,
-  dbUser: {
-    gemail: "abdo@gmail.com",
-    password: "12345678",
-  },
 };
 
-function updateUserImage(
-  newImageUrl: string | null,
-  lastInfo: User | null
-): User | null {
-  if (!lastInfo) return lastInfo;
+// ========== Helpers ==========
+
+function withUserName(user: IUser): IUserAuth {
   return {
-    ...lastInfo,
-    image: newImageUrl,
+    ...user,
+    userName: `${user.firstName} ${user.lastName}`,
   };
 }
 
+function updateUserImage(
+  newImageUrl: string | null,
+  currentUser: IUserAuth | null
+): IUserAuth | null {
+  return currentUser ? { ...currentUser, image: newImageUrl } : null;
+}
+
+// ========== Zustand Store ==========
 
 export const useAuth = create<AuthStore>()(
   persist(
     (set, get) => ({
-      ...intialAuthState,
-      login: (body: User) => set({ user: body }),
+      ...initialAuthState,
+
+      login: (credential) => {
+        const dbUsersStore = useDbUsers.getState();
+        const user = dbUsersStore.userIsExisit(
+          credential.email,
+          credential.password
+        );
+
+        if (!user) {
+          throw new Error("User does not exist.");
+        }
+
+        set({ user: withUserName(user) });
+      },
+
       logout: () => set({ user: null }),
-      updateDbUser: (body: IDBUser) =>
-        set({
-          user: {
-            ...get().user,
-            ...body,
-          },
-          dbUser: body,
-        }),
-      changeImage: (imageUrl: string | null) =>
-        set({
-          ...get(),
-          user: updateUserImage(imageUrl, get().user),
-        }),
+
+      updateUserCredential: (body) => {
+        const dbUsersStore = useDbUsers.getState();
+        const currentUser = get().user;
+
+        if (!currentUser) return;
+
+        dbUsersStore.updateUserCreadential(body, currentUser.id);
+        set({ user: { ...currentUser, ...body } });
+      },
+
+      updateUserName: (newName) =>
+        set((state) =>
+          state.user ? { user: { ...state.user, userName: newName } } : state
+        ),
+
+      signup: (body) => {
+        const dbUsersStore = useDbUsers.getState();
+
+        try {
+          dbUsersStore.addUser(body);
+          set({ user: withUserName(body) });
+        } catch (error: any) {
+          throw new Error(error.message || "Signup failed");
+        }
+      },
+
+      changeImage: (imageUrl) =>
+        set((state) => ({ user: updateUserImage(imageUrl, state.user) })),
     }),
     {
-      name: "Auth",
+      name: "auth",
       storage: createJSONStorage(() => localStorage),
     }
   )

@@ -7,11 +7,11 @@ export default function ConvertLanguageProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { lang, isDarkMod } = useNavSetting((state) => state);
+  const { lang, isDarkMode } = useNavSetting((state) => state);
   return (
     <div
       style={{ direction: lang == "ar" ? "rtl" : "ltr" }}
-      className={isDarkMod ? "dark" : ""}
+      className={isDarkMode ? "dark" : ""}
     >
       {children}
     </div>

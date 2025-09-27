@@ -1,38 +1,64 @@
 import { create } from "zustand";
-import { persist ,createJSONStorage } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-type navSettings = {
-  isDarkMod: boolean;
+// ========== Types ==========
+
+type NavSettings = {
+  isDarkMode: boolean;
   lang: "en" | "ar";
   openSidebar: boolean;
 };
 
-type navSettingsActions = {
-  toggleTheme: (lastState: boolean) => void;
-  changeLang: (lang: "ar" | "en") => void;
-  toggleSidebarViwe: (lastState: boolean) => void;
+type NavSettingsActions = {
+  toggleTheme: () => void;
+  changeLang: (lang: "en" | "ar") => void;
+  toggleSidebarView: () => void;
 };
 
-export type navSettingsStore = navSettings & navSettingsActions;
+export type NavSettingsStore = NavSettings & NavSettingsActions;
 
-const intialNavSettings: navSettings = {
-  isDarkMod: false,
+// ========== Initial State ==========
+
+const initialNavSettings: NavSettings = {
+  isDarkMode: false,
   lang: "ar",
   openSidebar: true,
 };
 
-export const useNavSetting = create<navSettingsStore>()(
+// ========== helpers ========
+async function changeLocaleLangeFromServer(locale: string) {
+  // Call an API route to update the cookie
+  await fetch("/api/set-cookies", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ locale }),
+  });
+}
+
+// ========== Store ==========
+
+export const useNavSetting = create<NavSettingsStore>()(
   persist(
-    (set, get) => ({
-      ...intialNavSettings,
-      toggleSidebarViwe: () =>
-        set({ ...get(), openSidebar: !get().openSidebar }),
-      toggleTheme: () => set({ ...get(), isDarkMod: !get().isDarkMod }),
-      changeLang: (lang: "en" | "ar") => set({ ...get(), lang: lang }),
-    }),
+    (set, get) => {
+      return {
+        ...initialNavSettings,
+
+        toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
+
+        toggleSidebarView: () =>
+          set((state) => ({ openSidebar: !state.openSidebar })),
+
+        changeLang: async (lang) => {
+          await changeLocaleLangeFromServer(lang);
+          set({ lang });
+        },
+      };
+    },
     {
       name: "nav-settings",
-      storage: createJSONStorage(() => localStorage) 
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

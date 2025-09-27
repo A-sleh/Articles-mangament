@@ -1,23 +1,25 @@
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
+
+// ========== Types ==========
 
 export interface IArticle {
   id: number;
   title: string;
   category: string;
-  tages: string[];
+  tags: string[]; 
   cover: string;
   published: boolean;
   scheduled: Date | string;
   richText: any;
-  localUrl: string; 
-};
+  localUrl: string;
+}
 
-type articlesState = {
+type ArticlesState = {
   articles: IArticle[];
 };
 
-type articlesActions = {
+type ArticlesActions = {
   deleteArticle: (articleId: number) => void;
   createArticle: (body: IArticle) => void;
   updateArticle: (articleId: number, body: IArticle) => void;
@@ -25,59 +27,58 @@ type articlesActions = {
   getArticleBy: (articleId: number) => IArticle | null;
 };
 
-type artcilesStore = articlesActions & articlesState;
+type ArticlesStore = ArticlesState & ArticlesActions;
 
+// ========== Helper Functions ==========
 
-function handleDeleteArticle(articles: IArticle[], articleId: number) {
-  return articles.filter((article) => article.id != articleId);
-}
+const handleDeleteArticle = (articles: IArticle[], id: number): IArticle[] =>
+  articles.filter((article) => article.id != id);
 
-function handleUpdateArticle(
+const handleUpdateArticle = (
   articles: IArticle[],
-  articleId: number,
+  id: number,
+  updated: IArticle
+): IArticle[] =>
+  articles.map((article) => (article.id == id ? updated : article));
+
+const handleGetArticle = (
+  id: number,
+  articles: IArticle[]
+): IArticle | null => articles.find((article) => article.id == id) ?? null;
+
+const handleCreateArticle = (
+  articles: IArticle[],
   newArticle: IArticle
-) {
-  return articles.map((article) => {
-    if (article.id === articleId) return newArticle;
-    return article;
-  });
-}
+): IArticle[] => {
+  const newId = (articles[articles.length - 1]?.id || 0) + 1;
+  return [...articles, { ...newArticle, id: newId }];
+};
 
-function handleGetArticle(id: number, articles: IArticle[]) : IArticle | null {
-  
-  const article = articles.find((article) => article.id == id);
-  return article ?? null;
-}
+// ========== Zustand Store ==========
 
-function handleCreateArticle(articles: IArticle[], newArticle: IArticle) {
-  // Create a uniqe id
-  const newArticleId = (articles[articles.length - 1]?.id || 0) + 1;
-  return [...articles, { ...newArticle, id: newArticleId }];
-}
-
-export const useArticles = create<artcilesStore>()(
+export const useArticles = create<ArticlesStore>()(
   persist(
     (set, get) => ({
       articles: [],
-      updateArticles: (articles: IArticle[]) =>
-        set({ ...get(), articles: articles }),
-      getArticleBy: (articleId: number): IArticle | null =>
-        handleGetArticle(articleId, get().articles),
-      deleteArticle: (articleId: number) =>
-        set({
-          ...get(),
-          articles: handleDeleteArticle(get().articles, articleId),
-        }),
-      createArticle: (body: IArticle) =>
-        set({
-          ...get(),
-          articles: handleCreateArticle(get().articles, body),
-        }),
-      updateArticle: (articleId: number, body: IArticle) =>
-        set({
-          ...get(),
-          articles: handleUpdateArticle(get().articles, articleId, body),
-        }),
+
+      updateArticles: (articles) => set({ articles }),
+
+      getArticleBy: (id) => handleGetArticle(id, get().articles),
+
+      deleteArticle: (id) =>
+        set((state) => ({
+          articles: handleDeleteArticle(state.articles, id),
+        })),
+
+      createArticle: (article) =>
+        set((state) => ({
+          articles: handleCreateArticle(state.articles, article),
+        })),
+
+      updateArticle: (id, updatedArticle) =>
+        set((state) => ({
+          articles: handleUpdateArticle(state.articles, id, updatedArticle),
+        })),
     }),
     {
       name: "articles",

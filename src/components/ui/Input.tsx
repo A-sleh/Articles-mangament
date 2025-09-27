@@ -27,8 +27,8 @@ export const Input = React.forwardRef<HTMLInputElement, inputType>(
     },
     ref
   ) => (
-    <div className="mb-2 flex flex-col rounded-md ">
-      <label className="">{label}</label>
+    <div className="mb-2 flex flex-col rounded-md shadow-sm ">
+      <label className="mb-1">{label}</label>
       <input
         className={`px-4 py-2 bg-white ${
           readOnly ? "border-2 border-primary dark:border-primary-dark" : ""

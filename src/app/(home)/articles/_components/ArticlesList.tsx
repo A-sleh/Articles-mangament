@@ -8,20 +8,23 @@ import SortableList from "react-easy-sort";
 import NotFoundMessage from "@/components/ui/NotFoundMessage";
 import ArticleForm from "./ArticleForm";
 
+import { useTranslations } from "next-intl";
+
 export default function ArticlesList() {
+  const t = useTranslations('articles');
   const { articles, updateArticles } = useArticles((state) => state);
 
   // For sortable items
   const onSortEnd = (oldIndex: number, newIndex: number) => {
-    const newStortedArticles = arrayMoveImmutable(articles, oldIndex, newIndex);
-    updateArticles(newStortedArticles);
+    const newSortedArticles = arrayMoveImmutable(articles, oldIndex, newIndex);
+    updateArticles(newSortedArticles);
   };
 
   return (
     <section className="p-1 w-full space-y-2">
       <ArticleForm method="POST">
         <button className="px-4 py-1 rounded-md text-white bg-primary dark:bg-primary-dark cursor-pointer">
-          New article
+          {t("new-article")}
         </button>
       </ArticleForm>
       <SortableList
@@ -29,8 +32,8 @@ export default function ArticlesList() {
         className="list space-y-2"
         draggedItemClassName="dragged"
       >
-        {articles?.length == 0 ? (
-          <NotFoundMessage message="There are no articles yet ..." />
+        {articles?.length === 0 ? (
+          <NotFoundMessage message={t("no-articles-message")} />
         ) : (
           articles?.map((article) => (
             <Article article={article} key={article.id} />

@@ -104,7 +104,7 @@ export const ArticlePdf = ({ article }: { article: IArticle }) => {
           <View style={styles.container}>
             <Image src={article.cover.trim()} style={styles.image} />
             <View style={styles.tages}>
-              {article.tages.map((tage) => (
+              {article?.tags?.map((tage) => (
                 <Text style={styles.tage}>{tage}</Text>
               ))}
             </View>
