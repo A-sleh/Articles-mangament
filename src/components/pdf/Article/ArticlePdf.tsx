@@ -109,7 +109,6 @@ export const ArticlePdf = ({ article }: { article: IArticle }) => {
               ))}
             </View>
           </View>
-
           {HtmlToPdf({ html: article.richText })}
         </View>
       </Page>

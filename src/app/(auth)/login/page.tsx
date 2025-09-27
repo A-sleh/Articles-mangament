@@ -8,9 +8,9 @@ import { errorToast, successToast } from "@/components/custom/toast";
 import { Input } from "@/components/ui/Input";
 
 import ChangeLink from "../_components/ChangeLink";
-import { ICreadential, useAuth } from "@/stores/Auth-store/Auth-srore";
+import { ICredential, useAuth } from "@/stores/Auth-store/Auth-srore";
 
-const intialValue: ICreadential = {
+const intialValue: ICredential = {
   gemail: "",
   password: "",
 };
@@ -20,7 +20,7 @@ export default function Login() {
   const router = useRouter();
 
   const login = useAuth((state) => state.login);
-  const [user, setUser] = useState<ICreadential>(intialValue);
+  const [user, setUser] = useState<ICredential>(intialValue);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,6 +30,7 @@ export default function Login() {
       router.replace("/articles");
       successToast(t("login-success"));
     } catch (err) {
+      console.log(err)
       errorToast(t("error-invalid-credentials"));
     }
   };

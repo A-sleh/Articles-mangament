@@ -19,7 +19,7 @@ export type dbUserState = {
 export type dbUserActions = {
   userIsExisit: (gemail: string, password: string) => IUser | null;
   updateUserCreadential: (body: ICredential, userId: number) => void;
-  addUser: (body: IUser) => void;
+  addUser: (body: IUser) => IUser;
 };
 
 export type DbUserStore = dbUserState & dbUserActions;
@@ -36,6 +36,7 @@ function checkExisitingUser(
   password: string,
   dbUsers: IUser[]
 ) {
+  console.log(gemail,password,dbUsers)
   return (
     dbUsers.find(
       (user) => user.gemail === gemail && user.password === password
@@ -95,6 +96,8 @@ export const useDbUsers = create<DbUserStore>()(
         set((state) => ({
           dbUsers: [...state.dbUsers, newUser],
         }));
+
+        return newUser
       },
     }),
     {

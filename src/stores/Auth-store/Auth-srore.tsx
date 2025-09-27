@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { IUser, useDbUsers } from "../db-users-store/db-users-store";
+import { useWorkingHours } from "../Working-hours-store/WorkingHoursStore";
 
 // ========== Types ==========
 
 export type ICredential = {
-  email: string;
+  gemail: string;
   password: string;
 };
 
@@ -59,15 +60,21 @@ export const useAuth = create<AuthStore>()(
 
       login: (credential) => {
         const dbUsersStore = useDbUsers.getState();
+        const dbWorkingHoursStore = useWorkingHours.getState()
+        console.log(credential)
+
         const user = dbUsersStore.userIsExisit(
-          credential.email,
+          credential.gemail,
           credential.password
         );
+
+        console.log(user)
 
         if (!user) {
           throw new Error("User does not exist.");
         }
-
+        // Intialize user working hours
+        dbWorkingHoursStore.intialUserWorkingHours(user.id)
         set({ user: withUserName(user) });
       },
 
@@ -90,9 +97,12 @@ export const useAuth = create<AuthStore>()(
 
       signup: (body) => {
         const dbUsersStore = useDbUsers.getState();
+        const dbWorkingHoursStore = useWorkingHours.getState()
 
         try {
-          dbUsersStore.addUser(body);
+          const user = dbUsersStore.addUser(body);
+
+          dbWorkingHoursStore.intialUserWorkingHours(user.id)
           set({ user: withUserName(body) });
         } catch (error: any) {
           throw new Error(error.message || "Signup failed");
