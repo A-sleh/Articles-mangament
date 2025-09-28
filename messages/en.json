@@ -102,5 +102,26 @@
     "FileInput": {
       "upload-file": "Upload file"
     }
+  },
+  "working-hours": {
+    "title": "workingHours",
+    "day": "Day",
+    "work-time-title": "Working times",
+    "pick-time": "Pick a time",
+    "add": "Add",
+    "cancel": "Cancel",
+    "add-new-range-noti": "New time range added successfully",
+    "add-new-range-noti-error": "Time range conflict detected",
+    "start-time": "Start Time",
+    "end-time": "End Time",
+    "days": {
+      "sun": "Sunday",
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sat": "Saturday"
+    }
   }
 }

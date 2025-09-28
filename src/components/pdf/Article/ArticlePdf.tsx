@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
 
 // Create Document Component
 export const ArticlePdf = ({ article }: { article: IArticle }) => {
-  alert(article.cover)
   return (
     <Document>
       <Page size="A4" style={styles.page}>

@@ -100,5 +100,26 @@
     "FileInput": {
       "upload-file": "تحميل صورة"
     }
+  },
+  "working-hours": {
+    "title": "أوقات العمل",
+    "day": "اليوم",
+    "work-time-title": "أوقات الدوام",
+    "pick-time": "اختر وقتاً",
+    "add": "إضافة",
+    "add-new-range-noti-success": "تمت إضافة فترة زمنية جديدة بنجاح",
+    "add-new-range-noti-error": "Time range conflict detected",
+    "start-time": "وقت البداية",
+    "end-time": "وقت النهاية",
+    "cancel": "إلغاء",
+    "days": {
+      "sun": "الأحد",
+      "mon": "الاثنين",
+      "tue": "الثلاثاء",
+      "wed": "الأربعاء",
+      "thu": "الخميس",
+      "fri": "الجمعة",
+      "sat": "السبت"
+    }
   }
 }

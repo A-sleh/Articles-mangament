@@ -1,18 +1,24 @@
+import { isTimeRangeValid } from "@/utils/helper";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-type Range = {
-  id: number;
-  start: string;
-  end: string;
+export type Times = {
+  hours: string;
+  minutes: string;
 };
 
-type WorkingHours = {
+export type Range = {
+  id: number;
+  start: Times;
+  end: Times;
+};
+
+export type WorkingHours = {
   isActive: boolean;
   ranges: Range[];
 };
 
-type IUserWorkingHours = {
+export type IUserWorkingHours = {
   userId: number;
   days: {
     sun: WorkingHours;
@@ -28,18 +34,14 @@ type workingHoursStates = {
   usersWorkingHours: IUserWorkingHours[];
 };
 
-type DayKey = keyof IUserWorkingHours["days"];
+export type DayKey = keyof IUserWorkingHours["days"];
 
-type newRangePayload = {
-  startTime: string;
-  endTime: string;
-  rangeId?: number;
+export type newRangePayload = Range & {
   day: DayKey;
 };
 
-type deletePayload = {
+type deletePayload = Range & {
   day: DayKey;
-  rangeId: number;
 };
 
 type workingHoursActions = {
@@ -48,7 +50,7 @@ type workingHoursActions = {
   updateRange: (userId: number, body: newRangePayload) => void;
   deleteRangeTime: (userId: number, body: deletePayload) => void;
   changeDayStatus: (userId: number, day: DayKey) => void;
-  getUserWorkingHours: (userId: number) => IUserWorkingHours | undefined; // can be undefined
+  getUserWorkingHours: (userId: number) => IUserWorkingHours; // can be undefined
 };
 
 type workingHoursStore = workingHoursStates & workingHoursActions;
@@ -64,6 +66,15 @@ const intialState: IUserWorkingHours = {
     wed: { isActive: false, ranges: [] },
   },
 };
+
+function validTimes(ranges: Range[], addedRange: newRangePayload): boolean {
+  const isValid = ranges.reduce((acc, range) => {
+    return (acc += Number(isTimeRangeValid(range, addedRange)));
+  }, 0);
+  console.log(ranges, addedRange);
+
+  return isValid == 0;
+}
 
 export function handleIntialUserWorkingHours(
   userId: number,
@@ -85,6 +96,9 @@ export function handleAddNewRange(
   user: IUserWorkingHours,
   body: newRangePayload
 ): IUserWorkingHours {
+  const ranges = user.days[body.day].ranges;
+  const rangeId = (user.days[body.day].ranges[ranges.length - 1]?.id || 0) + 1;
+
   return {
     ...user,
     days: {
@@ -92,10 +106,7 @@ export function handleAddNewRange(
       [body.day]: {
         ...user.days[body.day],
         isActive: true,
-        ranges: [
-          ...user.days[body.day].ranges,
-          { id: body.rangeId , start: body.startTime, end: body.endTime },
-        ],
+        ranges: [...user.days[body.day].ranges, { ...body, id: rangeId }],
       },
     },
   };
@@ -113,9 +124,7 @@ export function handleUpdateRange(
       [body.day]: {
         ...user.days[body.day],
         ranges: user.days[body.day].ranges.map((r) =>
-          r.id === body.rangeId
-            ? { ...r, start: body.startTime, end: body.endTime }
-            : r
+          r.id === body.id ? { ...r, ...body } : r
         ),
       },
     },
@@ -133,7 +142,7 @@ export function handleDeleteRange(
       ...user.days,
       [body.day]: {
         ...user.days[body.day],
-        ranges: user.days[body.day].ranges.filter((r) => r.id !== body.rangeId),
+        ranges: user.days[body.day].ranges.filter((r) => r.id !== body.id),
       },
     },
   };
@@ -150,7 +159,7 @@ export function handleToggleActivateUserDay(
       ...user.days,
       [day]: {
         ...user.days[day],
-        isActive: !user.days[day].isActive ,
+        isActive: !user.days[day].isActive,
       },
     },
   };
@@ -169,37 +178,49 @@ export const useWorkingHours = create<workingHoursStore>()(
           ),
         })),
 
-      addNewRange: (userId, body) =>
-        set((state) => ({
-          usersWorkingHours: state.usersWorkingHours.map((user) =>
-            user.userId === userId ? handleAddNewRange(user, body) : user
-          ),
-        })),
+      addNewRange: (userId, body) => {
+        const rangesOfPassedDay =
+          get().usersWorkingHours.find((user) => user.userId == userId)?.days[
+            body.day
+          ].ranges || [];
+        if (!validTimes(rangesOfPassedDay, body)) {
+          throw new Error("The time overlap with other range");
+        } else
+          set((state) => ({
+            usersWorkingHours: state.usersWorkingHours.map((user) =>
+              user.userId == userId ? handleAddNewRange(user, body) : user
+            ),
+          }));
+      },
 
       updateRange: (userId, body) =>
         set((state) => ({
           usersWorkingHours: state.usersWorkingHours.map((user) =>
-            user.userId === userId ? handleUpdateRange(user, body) : user
+            user.userId == userId ? handleUpdateRange(user, body) : user
           ),
         })),
 
       deleteRangeTime: (userId, body) =>
         set((state) => ({
           usersWorkingHours: state.usersWorkingHours.map((user) =>
-            user.userId === userId ? handleDeleteRange(user, body) : user
+            user.userId == userId ? handleDeleteRange(user, body) : user
           ),
         })),
+
       changeDayStatus: (userId, day) =>
         set((state) => ({
           usersWorkingHours: state.usersWorkingHours.map((user) =>
-            user.userId === userId
+            user.userId == userId
               ? handleToggleActivateUserDay(user, day)
               : user
           ),
         })),
 
-      getUserWorkingHours: (userId) =>
-        get().usersWorkingHours.find((u) => u.userId === userId),
+      getUserWorkingHours: (userId): IUserWorkingHours =>
+        get().usersWorkingHours.find((u) => u.userId === userId) || {
+          ...intialState,
+          userId,
+        },
     }),
     {
       name: "working-hours",

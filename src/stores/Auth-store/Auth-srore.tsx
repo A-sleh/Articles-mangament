@@ -100,10 +100,10 @@ export const useAuth = create<AuthStore>()(
         const dbWorkingHoursStore = useWorkingHours.getState()
 
         try {
-          const user = dbUsersStore.addUser(body);
-
-          dbWorkingHoursStore.intialUserWorkingHours(user.id)
-          set({ user: withUserName(body) });
+          const dbUser = dbUsersStore.addUser(body);
+          console.log(dbUser)
+          dbWorkingHoursStore.intialUserWorkingHours(dbUser.id)
+          set({ user: withUserName({...body,id: dbUser.id}) });
         } catch (error: any) {
           throw new Error(error.message || "Signup failed");
         }

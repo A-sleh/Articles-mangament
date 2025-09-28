@@ -1,79 +1,73 @@
 "use client";
 
-import { cloneElement, createContext, useContext, useState } from "react";
+import { cloneElement, createContext, useContext, useEffect, useState, ReactNode, ReactElement } from "react";
 import { createPortal } from "react-dom";
 import { MdClose } from "react-icons/md";
 import AnimateScale from "@/lib/Animation/AnimateScale";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 
-type openProps = {
-  children: React.ReactElement;
+type OpenProps = {
+  children: ReactElement;
   opens: string;
 };
 
-type windowProps = {
-  children: React.ReactNode;
+type WindowProps = {
+  children: ReactNode;
   name: string;
-  title?: string | null;
   className?: string;
 };
 
-type modelContextType = {
+type ModalContextType = {
   openName: string;
   open: (name: string) => void;
   close: () => void;
 };
 
-const ModelContext = createContext<modelContextType>({} as modelContextType);
+const ModalContext = createContext<ModalContextType>({} as ModalContextType);
 
-function Model({ children }: { children: React.ReactNode }) {
+function Modal({ children, outCloseAction }: { children: ReactNode; outCloseAction?: boolean }) {
   const [openName, setOpenName] = useState<string>("");
 
-  const close = () => {
-    setOpenName("");
-  };
+  const close = () => setOpenName("");
   const open = setOpenName;
 
+  useEffect(() => {
+    if (outCloseAction) close();
+  }, [outCloseAction]);
+
   return (
-    <ModelContext.Provider value={{ open, close, openName }}>
+    <ModalContext.Provider value={{ open, close, openName }}>
       {children}
-    </ModelContext.Provider>
+    </ModalContext.Provider>
   );
 }
 
-function Open({ children, opens: openWindowName }: openProps) {
-  const { open } = useContext(ModelContext);
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  return cloneElement(children, { onClick: () => open(openWindowName) });
+function Open({ children, opens }: OpenProps) {
+  const { open } = useContext(ModalContext);
+  return cloneElement(children, { onClick: () => open(opens) });
 }
 
-function Close({ children }: { children: React.ReactNode }) {
-  const { close } = useContext(ModelContext);
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  return cloneElement(children, { onClick: () => close() });
+function Close({ children }: { children: ReactNode }) {
+  const { close } = useContext(ModalContext);
+  return cloneElement(children as ReactElement, { onClick: close });
 }
 
-function Window({ children, name, title = null, className = "" }: windowProps) {
-  const isDarkMode = useNavSetting((state) => state.isDarkMod);
-  const { openName, close } = useContext(ModelContext);
+function Window({ children, name, className = "" }: WindowProps) {
+  const { isDarkMode, lang } = useNavSetting((state) => state);
+  const { openName, close } = useContext(ModalContext);
 
   if (name !== openName) return null;
 
   return createPortal(
     <div
-      className={`bg-[#0000004d] fixed top-0 left-0 right-0 bottom-0 h-screen z-50 ${
-        isDarkMode ? "dark" : ""
-      }`}
+      dir={lang === "ar" ? "rtl" : "ltr"}
+      className={`bg-[#0000004d] fixed inset-0 h-screen z-40 overflow-hidden ${isDarkMode ? "dark" : ""}`}
     >
       <AnimateScale
-        className={`fixed top-[50%] left-[50%] translate-[-50%] p-2 bg-third rounded-bl-md rounded-br-md  overflow-auto ${className}`}
+        className={`fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-2 bg-white rounded-md overflow-auto w-[90%] md:w-fit ${className}`}
       >
-        <button className="flex justify-between items-center w-fit bg-white p-1 rounded-tl-md rounded-tr-md cursor-pointer">
-          <MdClose size={24} className=" cursor-pointer" onClick={close} />
+        <button className="flex justify-end w-full p-1 cursor-pointer" onClick={close}>
+          <MdClose size={24} />
         </button>
         {children}
       </AnimateScale>
@@ -82,8 +76,8 @@ function Window({ children, name, title = null, className = "" }: windowProps) {
   );
 }
 
-Model.Open = Open;
-Model.Close = Close;
-Model.Window = Window;
+Modal.Open = Open;
+Modal.Close = Close;
+Modal.Window = Window;
 
-export default Model;
+export default Modal;
