@@ -1,19 +1,31 @@
 "use client";
 
-import NavLink from "../ui/NavLink";
-
-import { MdClose, MdOutlineArticle } from "react-icons/md";
-import { GrArticle } from "react-icons/gr";
-import { IoSettingsSharp } from "react-icons/io5";
-import { CiCalendarDate } from "react-icons/ci";
-import { FaRegChartBar } from "react-icons/fa";
-import { AiOutlineLogout } from "react-icons/ai";
-
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { motion } from "motion/react";
+import { useTranslations } from "next-intl";
+import {
+  LayoutDashboard,
+  FileText,
+  Calendar,
+  Settings,
+  BarChart,
+  LogOut,
+  X,
+} from "lucide-react";
+
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { useAuth } from "@/stores/Auth-store/Auth-srore";
 import { successToast } from "../custom/toast";
-import { useTranslations } from "next-intl";
+import { Button } from "../ui/button"; // shadcn button
+import { cn } from "@/lib/utils";
+
+const navItems = [
+  { href: "/articles", labelKey: "articles-linke", Icon: FileText },
+  { href: "/stats", labelKey: "stats-linke", Icon: BarChart },
+  { href: "/workingHours", labelKey: "working-hours-linke", Icon: Calendar },
+  { href: "/settings", labelKey: "setting-linke", Icon: Settings },
+];
 
 export default function Sidebar() {
   const router = useRouter();
@@ -21,10 +33,6 @@ export default function Sidebar() {
 
   const logout = useAuth((state) => state.logout);
   const { openSidebar, toggleSidebarView } = useNavSetting();
-
-  const sideBarStyle = openSidebar
-    ? "fixed p-4 w-full md:w-fit md:relative"
-    : "w-0 md:p-2 md:w-fit";
 
   async function handleLogoutClicked() {
     try {
@@ -37,69 +45,70 @@ export default function Sidebar() {
   }
 
   return (
-    <aside
-      className={`flex flex-col justify-between h-screen dark:bg-primary-dark bg-primary shadow-xl transition-all text-center ${sideBarStyle} overflow-hidden md:overflow-visible z-30 md:relative`}
+    <motion.aside
+      animate={{ width: openSidebar ? 240 : 72 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className={cn(
+        "fixed md:relative z-40 flex flex-col justify-between h-screen",
+        "bg-primary dark:bg-primary-dark text-white shadow-xl",
+        "overflow-hidden"
+      )}
     >
-      <div className="flex flex-col gap-3 h-full">
-        <div className="flex justify-between items-center">
-          <div className="text-white flex items-center gap-2 p-2 border border-white rounded-md w-fit md:mx-auto">
-            <GrArticle size={30} />
-            <h2 className={`${openSidebar ? "md:block" : "hidden"} text-lg whitespace-nowrap`}>
+      {/* Header */}
+      <div className="flex items-center justify-between p-4">
+        <div className="flex items-center gap-2">
+          <LayoutDashboard size={28} />
+          {openSidebar && (
+            <h2 className="text-lg font-semibold whitespace-nowrap">
               {t("title")}
             </h2>
-          </div>
-          <MdClose
-            size={25}
-            onClick={toggleSidebarView}
-            className="text-white cursor-pointer md:hidden"
-          />
+          )}
         </div>
-
-        <NavLink
-          href="/articles"
-          title={t("articles-linke")}
-          activeClassName="bg-white dark:text-black"
-          Icon={<MdOutlineArticle size={25}  />}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleSidebarView}
+          className="text-white md:hidden"
         >
-          {t("articles-linke")}
-        </NavLink>
-
-        <NavLink
-          href="/stats"
-          title={t("stats-linke")}
-          activeClassName="bg-white"
-          Icon={<FaRegChartBar size={25}   />}
-        >
-          {t("stats-linke")}
-        </NavLink>
-
-        <NavLink
-          href="/workingHours"
-          title={t("working-hours-linke")}
-          activeClassName="bg-white"
-          Icon={<CiCalendarDate size={25}  />}
-        >
-          {t("working-hours-linke")}
-        </NavLink>
-
-        <NavLink
-          href="/settings"
-          title={t("setting-linke")}
-          activeClassName="bg-white"
-          Icon={<IoSettingsSharp size={25} />}
-        >
-          {t("setting-linke")}
-        </NavLink>
+          <X size={20} />
+        </Button>
       </div>
 
-      <button
-        onClick={handleLogoutClicked}
-        title={t("logout-btn-linke")}
-        className="px-4 py-1 bg-white font-normal cursor-pointer rounded-xs w-fit mx-auto flex items-center gap-2 hover:bg-white/50 transition-all text-nowrap"
-      >
-        <AiOutlineLogout size={25} />
-        <p className={`${openSidebar ? "md:block" : "hidden"}`}>{t("logout-btn")}</p>
-      </button>
-    </aside>
+      {/* Nav Links */}
+      <nav className="flex flex-col gap-2 flex-1 px-2">
+        {navItems.map(({ href, labelKey, Icon }) => (
+          <Link key={href} href={href}>
+            <Button
+              variant="ghost"
+              className={cn(
+                "w-full flex items-center gap-3 px-3 py-2 text-base rounded-xl transition",
+                "hover:bg-white/20 text-white justify-start",
+                !openSidebar && "justify-center"
+              )}
+            >
+              <Icon size={22} />
+              {openSidebar && (
+                <span className="whitespace-nowrap">{t(labelKey)}</span>
+              )}
+            </Button>
+          </Link>
+        ))}
+      </nav>
+
+      {/* Logout */}
+      <div className="p-4">
+        <Button
+          onClick={handleLogoutClicked}
+          variant="secondary"
+          className={cn(
+            "w-full flex items-center gap-3 rounded-xl justify-start",
+            !openSidebar && "justify-center"
+          )}
+        >
+          <LogOut size={22} />
+          {openSidebar && <span>{t("logout-btn")}</span>}
+        </Button>
+      </div>
+    </motion.aside>
   );
 }
