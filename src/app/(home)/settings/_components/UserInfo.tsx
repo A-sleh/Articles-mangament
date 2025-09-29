@@ -2,7 +2,7 @@
 
 
 import { FormEvent, useRef, useState } from "react";
-import { ICreadential, IDBUser, useAuth } from "@/stores/Auth-store/Auth-srore";
+import { ICredential, IUserAuth, useAuth } from "@/stores/Auth-store/Auth-srore";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store"
 import { Input } from "@/components/ui/Input";
 
@@ -13,22 +13,22 @@ import { useTranslations } from "next-intl";
 
 export default function UserInfo() {
   const t = useTranslations("settings.userInfo");
-  const { user, updateUserCreadential } = useAuth((state) => state);
+  const { user, updateUserCredential } = useAuth((state) => state);
   const lang = useNavSetting(state => state.lang)
 
-  const initialValues: ICreadential = {
+  const initialValues: ICredential = {
     gemail: user?.gemail || "",
     password: user?.password || "",
   };
 
   const [update, setUpdate] = useState(false);
-  const [form, setForm] = useState<IDBUser>(initialValues);
+  const [form, setForm] = useState<ICredential>(initialValues);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await updateUserCreadential(form);
+      await updateUserCredential(form);
       successToast(t("update-success"));
       setUpdate(false);
     } catch (err) {

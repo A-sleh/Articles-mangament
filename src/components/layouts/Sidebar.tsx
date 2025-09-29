@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
@@ -13,11 +13,12 @@ import {
   LogOut,
   X,
 } from "lucide-react";
+import { Button } from "../ui/Button"; // shadcn button
+import NavLink from "../ui/NavLink";
 
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { useAuth } from "@/stores/Auth-store/Auth-srore";
 import { successToast } from "../custom/toast";
-import { Button } from "../ui/button"; // shadcn button
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -44,71 +45,101 @@ export default function Sidebar() {
     }
   }
 
+  // detect md breakpoint (Tailwind default: 768px)
+  const [isMd, setIsMd] = useState(
+    typeof window !== "undefined" ? window.innerWidth >= 768 : true
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onChange = (e: MediaQueryListEvent | MediaQueryList) =>
+      setIsMd(("matches" in e ? e.matches : mq.matches) ?? false);
+
+    // set initial value
+    onChange(mq);
+    // add listener (support both addEventListener and deprecated addListener)
+    if (mq.addEventListener) mq.addEventListener("change", onChange);
+    else mq.addListener(onChange);
+
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", onChange);
+      else mq.removeListener(onChange);
+    };
+  }, []);
+
+  // animate differently depending on screen size:
+  // - md+: animate width (72 <-> 240) and keep x = 0
+  // - <md: animate slide in/out with x and fixed width when open
+  const animateProps = isMd
+    ? { width: openSidebar ? 240 : 72, x: 0 }
+    : { x: openSidebar ? 0 : "-100%", width: 240 };
+
   return (
-    <motion.aside
-      animate={{ width: openSidebar ? 240 : 72 }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      className={cn(
-        "fixed md:relative z-40 flex flex-col justify-between h-screen",
-        "bg-primary dark:bg-primary-dark text-white shadow-xl",
-        "overflow-hidden"
-      )}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between p-4">
-        <div className="flex items-center gap-2">
-          <LayoutDashboard size={28} />
-          {openSidebar && (
-            <h2 className="text-lg font-semibold whitespace-nowrap">
-              {t("title")}
-            </h2>
-          )}
-        </div>
-        <Button
-          variant="ghost"
-          size="icon"
+    <>
+      {/* Mobile backdrop */}
+      {!isMd && openSidebar && (
+        <div
+          className="fixed inset-0 bg-black/40 z-30 md:hidden"
           onClick={toggleSidebarView}
-          className="text-white md:hidden"
-        >
-          <X size={20} />
-        </Button>
-      </div>
+          aria-hidden
+        />
+      )}
 
-      {/* Nav Links */}
-      <nav className="flex flex-col gap-2 flex-1 px-2">
-        {navItems.map(({ href, labelKey, Icon }) => (
-          <Link key={href} href={href}>
-            <Button
-              variant="ghost"
-              className={cn(
-                "w-full flex items-center gap-3 px-3 py-2 text-base rounded-xl transition",
-                "hover:bg-white/20 text-white justify-start",
-                !openSidebar && "justify-center"
-              )}
-            >
-              <Icon size={22} />
-              {openSidebar && (
-                <span className="whitespace-nowrap">{t(labelKey)}</span>
-              )}
-            </Button>
-          </Link>
-        ))}
-      </nav>
+      <motion.aside
+        initial={false}
+        animate={animateProps}
+        transition={{ duration: 0.28, ease: "easeInOut" }}
+        className={cn(
+          // fixed on small screens so it slides over content, relative on md so it participates in layout
+          "fixed top-0 left-0 z-40 flex flex-col justify-between h-screen",
+          "bg-primary dark:bg-primary-dark text-white shadow-xl",
+          "overflow-hidden md:relative"
+        )}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center gap-2">
+            <LayoutDashboard size={28} />
+            {openSidebar && (
+              <h2 className="text-lg font-semibold whitespace-nowrap">
+                {t("title")}
+              </h2>
+            )}
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebarView}
+            className="text-white md:hidden"
+          >
+            <X size={20} />
+          </Button>
+        </div>
 
-      {/* Logout */}
-      <div className="p-4">
-        <Button
-          onClick={handleLogoutClicked}
-          variant="secondary"
-          className={cn(
-            "w-full flex items-center gap-3 rounded-xl justify-start",
-            !openSidebar && "justify-center"
-          )}
-        >
-          <LogOut size={22} />
-          {openSidebar && <span>{t("logout-btn")}</span>}
-        </Button>
-      </div>
-    </motion.aside>
+        {/* Nav Links */}
+        <nav className="flex flex-col gap-2 flex-1 px-2">
+          {navItems.map(({ href, labelKey, Icon }) => (
+            <NavLink key={href} href={href} title={t(labelKey)} Icon={<Icon size={22} />}>
+              {t(labelKey)}
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Logout */}
+        <div className="p-4">
+          <Button
+            onClick={handleLogoutClicked}
+            variant="secondary"
+            className={cn(
+              "w-full flex items-center gap-3 rounded-xl justify-start bg-white dark:text-black",
+              !openSidebar && "justify-center"
+            )}
+          >
+            <LogOut size={22} />
+            {openSidebar && <span>{t("logout-btn")}</span>}
+          </Button>
+        </div>
+      </motion.aside>
+    </>
   );
 }

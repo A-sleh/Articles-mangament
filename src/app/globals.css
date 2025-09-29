@@ -45,10 +45,10 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --primary: oklch(0.205 0 0);
+  --primary: #1c6ea4;
   --primary-dark: #1e201e;
   --secondary-dark: #3c3d37;
-  --secondary: oklch(0.97 0 0);
+  --secondary: #33a1e0;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

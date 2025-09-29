@@ -1,6 +1,8 @@
 "use client";
 
 import { IoMdMenu } from "react-icons/io";
+import { Button } from "@/components/ui/Button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { useAuth } from "@/stores/Auth-store/Auth-srore";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
@@ -10,27 +12,37 @@ import IconToggleTheme from "../ui/IconToggleTheme";
 
 export default function Navbar() {
   const user = useAuth((state) => state.user);
-  const { isDarkMode, lang, toggleTheme, toggleSidebarView } = useNavSetting(
-    (state) => state
-  );
+  const { toggleSidebarView ,lang } = useNavSetting((state) => state);
 
   return (
-    <nav className="p-2 bg-secondary dark:bg-primary-dark w-full dark:shadow-md dark:shadow-white/20  flex justify-between items-center z-10 sticky top-0">
-      <IoMdMenu
-        size={30}
-        className="cursor-pointer text-white"
-        onClick={() => toggleSidebarView()}
-      />
-      <div className="flex gap-2 items-center justify-between ">
-        <IconToggleTheme />
-        <LanguageToggleButton />
-        {user?.image && (
-          <img
-            src={user?.image}
-            alt="user-avatar"
-            className="w-10 h-10 bg-black rounded-full"
-          />
-        )}
+    <nav className="w-full bg-secondary dark:bg-primary-dark shadow-md">
+      <div className="flex items-center justify-between px-4 py-2">
+        {/* Sidebar Toggle */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleSidebarView}
+          className="text-white hover:bg-white/10"
+        >
+          <IoMdMenu size={30} />
+        </Button>
+
+        {/* Right side controls */}
+        <div className="flex items-center gap-3">
+          <IconToggleTheme />
+          <LanguageToggleButton className={`bg-transparent text-white font-normal ${lang == 'ar' ? 'border-l' : 'border-r' }  rounded-none border-white uppercase`}/>
+
+          {user?.image ? (
+            <Avatar>
+              <AvatarImage src={user.image} alt="user-avatar" />
+              <AvatarFallback>{user?.userName ?? "U"}</AvatarFallback>
+            </Avatar>
+          ) : (
+            <Avatar>
+              <AvatarFallback>U</AvatarFallback>
+            </Avatar>
+          )}
+        </div>
       </div>
     </nav>
   );
