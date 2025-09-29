@@ -55,7 +55,11 @@
     },
     "systemSettings": {
       "language": "Language",
-      "theme": "Theme"
+      "language-desc": "Choose your preferred language for the app.",
+      "language-toggle": "Toggle language",
+      "theme": "Theme",
+      "theme-desc": "Switch between light and dark mode.",
+      "theme-toggle": "Toggle theme"
     }
   },
 

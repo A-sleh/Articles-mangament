@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 export type inputType = {
   type: string;
   placeHolder?: string;
   label: string;
   required?: boolean;
-  value?: string;
+  value?: string | number;
   register?: any;
   readOnly?: boolean;
   className?: string;
@@ -19,6 +20,7 @@ export const Input = React.forwardRef<HTMLInputElement, inputType>(
     {
       label,
       type,
+      value,
       placeHolder,
       required = false,
       readOnly = false,
@@ -26,20 +28,49 @@ export const Input = React.forwardRef<HTMLInputElement, inputType>(
       ...props
     },
     ref
-  ) => (
-    <div className="mb-2 flex flex-col rounded-md shadow-sm ">
-      <label className="mb-1">{label}</label>
-      <input
-        className={`px-4 py-2 bg-white ${
-          readOnly ? "border-2 border-primary dark:border-primary-dark" : ""
-        } outline-primary dark:outline-secondary-dark rounded-md ${className}`}
-        readOnly={readOnly}
-        type={type}
-        placeholder={placeHolder}
-        required={required}
-        ref={ref}
-        {...props}
-      />
-    </div>
-  )
+  ) => {
+    const [showPassword, setShowPassword] = useState(false);
+    const isPassword = type === "password";
+
+    return (
+      <div className="flex flex-col gap-1 w-full relative">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          {label}
+        </label>
+        <div className="relative">
+          <input
+            className={`w-full px-4 py-2 pr-10 rounded-lg border bg-white dark:bg-primary-dark placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition ${
+              readOnly
+                ? "border-primary dark:border-white font-medium bg-gray-50 dark:bg-primary-dark"
+                : ""
+            } ${className}`}
+            readOnly={readOnly}
+            type={isPassword ? (!showPassword ? "password" : "text") : type }
+            placeholder={placeHolder}
+            required={required}
+            value={value}
+            ref={ref}
+            {...props}
+          />
+
+          {isPassword && (
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+              tabIndex={-1}
+            >
+              {showPassword ? (
+                <IoEyeOffOutline size={20} />
+              ) : (
+                <IoEyeOutline size={20} />
+              )}
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
 );
+
+Input.displayName = "Input";

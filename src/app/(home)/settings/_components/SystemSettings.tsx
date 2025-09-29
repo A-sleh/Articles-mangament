@@ -15,16 +15,28 @@ const SystemSettings: FC = () => {
   const { toggleTheme, isDarkMode } = useNavSetting((state) => state);
 
   return (
-    <div className="flex flex-col gap-4 ">
-      <SettingLayout icon={<IoLanguageOutline size={22} />} title={t("language")}>
-        <LanguageToggleButton className="bg-blue-500 dark:bg-blue-600 text-white px-3 py-1 rounded-full shadow-sm hover:shadow-md transition" />
+    <div className="flex flex-col gap-6 w-full">
+      <SettingLayout
+        icon={<IoLanguageOutline size={22} />}
+        title={t("language")}
+        description={t("language-desc")}
+      >
+        <LanguageToggleButton
+          aria-label={t("language-toggle")}
+          className="bg-primary dark:bg-primary/80 text-white px-4 py-1.5 rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-all min-w-[100px] text-center"
+        />
       </SettingLayout>
 
-      <SettingLayout icon={<VscColorMode size={22} />} title={t("theme")}>
+      <SettingLayout
+        icon={<VscColorMode size={22} />}
+        title={t("theme")}
+        description={t("theme-desc")}
+      >
         <ToggleButton
+          aria-label={t("theme-toggle")}
           onChangeFn={toggleTheme}
           value={isDarkMode}
-          className="transition-transform duration-300"
+          className="transition-transform duration-300 hover:scale-105 focus:ring-2 focus:ring-primary rounded-full"
         />
       </SettingLayout>
     </div>

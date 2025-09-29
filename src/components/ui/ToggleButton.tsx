@@ -5,7 +5,7 @@ export default function ToggleButton({
 }: {
   value: boolean;
   onChangeFn: () => void;
-  className: string;
+  className?: string;
 }) {
   return (
     <div

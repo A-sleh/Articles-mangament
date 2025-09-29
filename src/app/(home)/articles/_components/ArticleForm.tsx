@@ -125,7 +125,7 @@ export default function ArticleForm({
               type="date"
               placeHolder={t("date-placeholder")}
               required
-              value={form.scheduled || ""}
+              value={form?.scheduled || ""}
               onChange={(e) => setForm({ ...form, scheduled: e.target.value })}
             />
           </div>

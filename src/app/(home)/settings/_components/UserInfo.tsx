@@ -1,12 +1,11 @@
 "use client";
 
-
 import { FormEvent, useRef, useState } from "react";
-import { ICredential, IUserAuth, useAuth } from "@/stores/Auth-store/Auth-srore";
-import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store"
+import { ICredential, useAuth } from "@/stores/Auth-store/Auth-srore";
+import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { Input } from "@/components/ui/Input";
 
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { IoMdSettings, IoMdCloseCircleOutline } from "react-icons/io";
 import { errorToast, successToast } from "@/components/custom/toast";
 import { useTranslations } from "next-intl";
@@ -14,7 +13,7 @@ import { useTranslations } from "next-intl";
 export default function UserInfo() {
   const t = useTranslations("settings.userInfo");
   const { user, updateUserCredential } = useAuth((state) => state);
-  const lang = useNavSetting(state => state.lang)
+  const lang = useNavSetting((state) => state.lang);
 
   const initialValues: ICredential = {
     gemail: user?.gemail || "",
@@ -39,12 +38,14 @@ export default function UserInfo() {
   return (
     <form
       onSubmit={onSubmit}
-      className="flex flex-col gap-2 w-full dark:text-white relative"
+      className="relative flex flex-col gap-4 w-full p-5 bg-white dark:bg-primary-dark rounded-2xl shadow-sm hover:shadow-md transition-all dark:text-white border border-gray-100 dark:border-gray-700"
     >
       {update ? (
         <IoMdCloseCircleOutline
-          size={20}
-          className={`text-red-600 dark:text-white cursor-pointer absolute ${lang == 'ar' ? 'left-1' :"right-1"} -top-2`}
+          size={22}
+          className={`text-red-500 dark:text-red-400 cursor-pointer absolute ${
+            lang === "ar" ? "left-3" : "right-3"
+          } top-3 hover:scale-110 transition`}
           onClick={() => {
             setUpdate(false);
             setForm(initialValues);
@@ -53,8 +54,10 @@ export default function UserInfo() {
         />
       ) : (
         <IoMdSettings
-          size={20}
-          className={`text-primary dark:text-white cursor-pointer absolute ${lang == 'ar' ? 'left-1' :"right-1"} -top-2`}
+          size={22}
+          className={`text-primary dark:text-white cursor-pointer absolute ${
+            lang === "ar" ? "left-3" : "right-3"
+          } top-3 hover:rotate-90 transition`}
           onClick={() => {
             setUpdate(true);
             inputRef.current?.focus();
@@ -66,23 +69,34 @@ export default function UserInfo() {
       <Input
         readOnly={!update}
         value={form.gemail}
+        required={true}
         onChange={(e) => setForm({ ...form, gemail: e.target.value })}
         label={t("email-label")}
         type="email"
-        className="dark:bg-transparent"
+        placeHolder="you@example.com"
+        className="dark:bg-primary-dark"
         ref={inputRef}
       />
 
       <Input
         readOnly={!update}
         value={form.password}
+        required={true}
         onChange={(e) => setForm({ ...form, password: e.target.value })}
         label={t("password-label")}
         type="password"
-        className="dark:bg-transparent"
+        placeHolder="••••••••"
+        className="dark:bg-primary-dark"
       />
 
-      {update && <Button title={t("apply")} />}
+      {update && (
+        <Button
+          variant="secondary"
+          className="mt-2 bg-primary text-white dark:text-primary-dark px-4 py-2 hover:text-white rounded-lg shadow hover:shadow-md hover:scale-[1.02] transition-all"
+        >
+          {t("apply")}
+        </Button>
+      )}
     </form>
   );
 }

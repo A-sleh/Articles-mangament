@@ -1,6 +1,7 @@
 type SelectType = {
   label: string;
   onChange: (e: any) => void;
+  value?: string | number;
   values: (string | number)[];
   multiSelect?: string[];
   register?: any;
@@ -10,6 +11,7 @@ export default function SelectInput({
   onChange,
   values,
   label,
+  value,
   register,
   multiSelect,
   ...props
@@ -19,6 +21,7 @@ export default function SelectInput({
       <label className="text-white">{label}</label>
       <select
         onChange={onChange}
+        value={value}
         {...props}
         {...register}
         className="p-2 bg-white text-shadow-amber-200 outline-hidden rounded-md"

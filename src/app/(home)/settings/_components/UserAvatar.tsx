@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ChangeEvent, useRef, useState, FormEvent } from "react";
+import { useRef, useState, useEffect, ChangeEvent, FormEvent, KeyboardEvent } from "react";
 
 import { useAuth } from "@/stores/Auth-store/Auth-srore";
 
@@ -19,10 +19,17 @@ export default function UserAvatar() {
   const t = useTranslations("settings.userAvatar");
 
   const imageRef = useRef<HTMLInputElement | null>(null);
-  const [update, setUpdate] = useState(false);
+  const nameRef = useRef<HTMLInputElement | null>(null);
+
   const { user, changeImage, updateUserName } = useAuth((state) => state);
-  const [userName, setUserName] = useState(user?.userName);
-  const nameRef = useRef<null | HTMLInputElement>(null);
+  const [userName, setUserName] = useState(user?.userName || "");
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (isEditing) {
+      nameRef.current?.focus();
+    }
+  }, [isEditing]);
 
   const handleChangeImage = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -42,13 +49,27 @@ export default function UserAvatar() {
     }
   };
 
-  const handleChangeName = async (e: FormEvent<HTMLFormElement>) =>{
-    e.preventDefault()
+  const handleSaveName = (e?: FormEvent) => {
+    if (e) e.preventDefault();
+    if (!userName.trim()) return;
 
-    updateUserName(userName || '')
-    setUpdate(false)
-    successToast(t('success-update-userName'))
-  }
+    updateUserName(userName.trim());
+    successToast(t("success-update-userName"));
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setUserName(user?.userName || "");
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSaveName();
+    } else if (e.key === "Escape") {
+      handleCancelEdit();
+    }
+  };
 
   const handleRemoveImage = () => {
     if (!user?.image) return;
@@ -57,38 +78,17 @@ export default function UserAvatar() {
   };
 
   return (
-    <div className="flex flex-col gap-1 items-center dark:text-white relative">
-      {update ? (
-          
-            <IoIosClose
-              size={25}
-              className="text-red-600 cursor-pointer absolute top-0 right-0"
-              onClick={() => {
-                setUpdate(false);
-                setUserName(user?.userName);
-              }}
-            />
-          
-        ) : (
-          <FaPenToSquare
-            size={15}
-            className="text-primary cursor-pointer absolute top-0 right-0"
-            onClick={() => {
-              setUpdate(true);
-              nameRef.current?.focus();
-            }}
-          />
-        )}
+    <div className="flex flex-col gap-3 items-center text-center dark:text-white relative">
+      {/* Avatar with hover controls */}
       <div className="relative w-32 h-32 rounded-full overflow-hidden group">
         <Image
-          src={user?.image || ""}
+          src={user?.image || "/default-avatar.png"}
           width={128}
           height={128}
           alt={t("user-image-label")}
           className="w-full h-full bg-black dark:bg-primary-dark object-cover"
         />
-        <div className="absolute inset-0 bg-black/30 opacity-0 transition-opacity group-hover:opacity-100" />
-        <div className="absolute bg-white/30 px-2 py-1 rounded-lg top-1/2 left-1/2 flex gap-2 -translate-x-1/2 -translate-y-3 opacity-0 transition-all group-hover:-translate-y-1/2 group-hover:opacity-100">
+        <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center gap-3">
           <input
             type="file"
             hidden
@@ -96,39 +96,42 @@ export default function UserAvatar() {
             onChange={handleChangeImage}
             accept="image/*"
           />
-          <FaFileUpload
-            size={20}
-            className="text-primary cursor-pointer"
-            onClick={() => imageRef.current?.click()}
-            title={t("upload-image")}
-          />
-          <MdOutlineDeleteOutline
-            size={20}
-            className="text-red-600 cursor-pointer"
-            onClick={handleRemoveImage}
-            title={t("remove-image")}
-          />
+          <button onClick={() => imageRef.current?.click()} title={t("upload-image")}>
+            <FaFileUpload size={22} className="text-white hover:text-primary transition" />
+          </button>
+          <button onClick={handleRemoveImage} title={t("remove-image")}>
+            <MdOutlineDeleteOutline size={22} className="text-red-500 hover:text-red-600 transition" />
+          </button>
         </div>
       </div>
-      <form onSubmit={(e) => handleChangeName(e)} className="flex justify-between items-center">
-        {update &&
-            <button>
-              <FaCheck
-                size={15}
-                className="text-green-600 cursor-pointer"
-              />
+
+      {/* Editable Username */}
+      <div className="flex items-center gap-2">
+        {isEditing ? (
+          <form onSubmit={handleSaveName} className="flex items-center gap-2">
+            <input
+              ref={nameRef}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="rounded-sm p-1 bg-white dark:bg-primary-dark text-sm outline-none focus:ring-2 focus:ring-primary"
+            />
+            <button type="submit" title={t("save-name")}>
+              <FaCheck size={16} className="text-green-600 hover:text-green-700" />
             </button>
-          
-        }
-        <input
-          type="text"
-          readOnly={!update}
-          ref={nameRef}
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          className={`my-2 py-1 text-center outline-none border-none ${!update ? '': "rounded-sm shadow-sm"}`}
-        />
-      </form>
+            <button type="button" onClick={handleCancelEdit} title={t("cancel-edit")}>
+              <IoIosClose size={25} className="text-red-600 hover:text-red-700" />
+            </button>
+          </form>
+        ) : (
+          <>
+            <span className="font-medium text-lg">{userName}</span>
+            <button onClick={() => setIsEditing(true)} >
+              <FaPenToSquare size={16} className="text-primary hover:text-primary/80" />
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
