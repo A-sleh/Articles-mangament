@@ -7,7 +7,8 @@ type TimeDropdownProps = {
   onToggle: () => void;
   onSelect: (value: string) => void;
   selectedRef: React.RefObject<HTMLLIElement>;
-};
+  className?: string;
+}; 
 
 export default function TimeDropdown({
   values,
@@ -16,6 +17,7 @@ export default function TimeDropdown({
   onToggle,
   onSelect,
   selectedRef,
+  className
 }: TimeDropdownProps) {
   const ulRef = useRef<HTMLUListElement>(null);
 
@@ -41,7 +43,7 @@ export default function TimeDropdown({
           e.stopPropagation();
           onToggle();
         }}
-        className="cursor-pointer border rounded px-3 py-1 bg-white"
+        className={`cursor-pointer border rounded p-3 bg-white dark:bg-transparent ${className}`}
       >
         {selected || "--"}
       </div>
@@ -55,10 +57,10 @@ export default function TimeDropdown({
             <li
               key={value}
               ref={value === selected ? selectedRef : null}
-              className={`px-3 py-1 cursor-pointer ${
+              className={`p-2 cursor-pointer ${
                 value === selected
-                  ? "bg-primary text-white"
-                  : "hover:bg-primary hover:text-white"
+                  ? "bg-primary text-white dark:bg-primary-dark"
+                  : "hover:bg-secondary-dark hover:text-white dark:bg-primary-dark"
               }`}
               onClick={(e) => {
                 e.stopPropagation();

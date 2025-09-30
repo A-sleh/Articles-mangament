@@ -112,9 +112,13 @@
     "pick-time": "اختر وقتاً",
     "add": "إضافة",
     "add-new-range-noti-success": "تمت إضافة فترة زمنية جديدة بنجاح",
-    "add-new-range-noti-error": "Time range conflict detected",
+    "add-new-range-noti-error": "تم اكتشاف تعارض في النطاق الزمني",
+    "start-before-end-error": "يجب أن يكون وقت البدء قبل وقت الانتهاء",
+    "delelte-range-success-not": "تم حذف الفترة الزمنية بنجاح",
+    "fill-all-fields-error": "يرجى ملء جميع الحقول",
     "start-time": "وقت البداية",
     "end-time": "وقت النهاية",
+    "confirm-delete-message": "هل أنت متأكد, يمكنك التراجع عن عملية الحذف بالنقر على زر الإلغاء",
     "cancel": "إلغاء",
     "days": {
       "sun": "الأحد",
@@ -125,5 +129,12 @@
       "fri": "الجمعة",
       "sat": "السبت"
     }
+  },
+  "model": {
+    "cancel": "إلغاء",
+    "apply": "تطبيق",
+    "unsaved-message": "لديك تغييرات غير محفوظة. هل تريد تطبيقها أم إلغاءها؟",
+    "success-update-working-times": "تم تطبيق التعديلات بنجاح",
+    "success-copy-ranges": "تم نسخ الفترة زمنيه بنجاح مع تجاهل الأيام التي حدث فيها تعارض"
   }
 }

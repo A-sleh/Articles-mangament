@@ -1,5 +1,5 @@
 import React from "react";
-import { Range } from "../stores/Working-hours-store/WorkingHoursStore";
+import { Range, Times } from "../stores/Working-hours-store/WorkingHoursStore";
 
 export const convertImageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -54,16 +54,25 @@ export function delayChangeState(
   setTimeout(() => setFc(false), 500);
 }
 
+export function timeToMinutes(time: Times) {
+  return Number(time.hours) * 60 + Number(time.minutes);
+}
+
 export function isTimeRangeValid(
   firstRange: Range,
   secondRange: Range
 ): boolean {
-  const frStart = Number(firstRange.start.hours) * 60 + Number(firstRange.start.minutes);
-  const frEnd = Number(firstRange.end.hours) * 60 + Number(firstRange.end.minutes);
+  const startA = timeToMinutes(firstRange.start);
+  const endA = timeToMinutes(firstRange.end);
+  const startB = timeToMinutes(secondRange.start);
+  const endB = timeToMinutes(secondRange.end);
 
-  const srStart = Number(secondRange.start.hours) * 60 + Number(secondRange.start.minutes);
-  const srEnd = Number(secondRange.end.hours) * 60 + Number(secondRange.end.minutes);
+  // Overlap occurs if startA < endB AND startB < endA
+  return endA <= startB || startA >= endB;
+}
 
-  // Check if ranges overlap or touch
-  return frStart <= srEnd && srStart <= frEnd;
+export function validTimeOrder(startTime: Times, endTimes: Times) {
+  const start = timeToMinutes(startTime);
+  const end = timeToMinutes(endTimes);
+  return end < start;
 }

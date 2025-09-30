@@ -54,7 +54,7 @@ function Close({ children }: { children: ReactNode }) {
 
 function Window({ children, name, className = "" }: WindowProps) {
   const { isDarkMode, lang } = useNavSetting((state) => state);
-  const { openName, close } = useContext(ModalContext);
+  const { openName } = useContext(ModalContext);
 
   if (name !== openName) return null;
 
@@ -64,11 +64,10 @@ function Window({ children, name, className = "" }: WindowProps) {
       className={`bg-[#0000004d] fixed inset-0 h-screen z-40 overflow-hidden ${isDarkMode ? "dark" : ""}`}
     >
       <AnimateScale
-        className={`fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-2 bg-white rounded-md overflow-auto w-[90%] md:w-fit ${className}`}
+        className={`fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-2  overflow-auto w-[90%] md:w-fit ${className}`} 
+        style={{scrollbarWidth: 'none'}}
       >
-        <button className="flex justify-end w-full p-1 cursor-pointer" onClick={close}>
-          <MdClose size={24} />
-        </button>
+        
         {children}
       </AnimateScale>
     </div>,

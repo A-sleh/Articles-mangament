@@ -2,29 +2,23 @@
 
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
+import { MdOutlineArrowForwardIos } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 
 import {
   DayKey,
   Times,
   useWorkingHours,
 } from "@/stores/Working-hours-store/WorkingHoursStore";
-
-import Model from "@/components/Model/Model";
-import { MdOutlineArrowForwardIos } from "react-icons/md";
-import {
-  delayChangeState,
-  genterateTimes,
-  isTimeRangeValid,
-} from "@/utils/helper";
 import { useAuth } from "@/stores/Auth-store/Auth-srore";
-import TimesInput from "./TimesInput";
-import { errorToast, successToast } from "@/components/custom/toast";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 
-const initialTime: Times = {
-  hours: "",
-  minutes: "",
-};
+import Model from "@/components/Model/Model";
+import TimesInput from "./TimesInput";
+import { errorToast, successToast } from "@/components/custom/toast";
+import { delayChangeState, timeToMinutes, validTimeOrder } from "@/utils/helper";
+
+const initialTime: Times = { hours: "", minutes: "" };
 
 export default function AddNewTimeForm({
   children,
@@ -35,14 +29,40 @@ export default function AddNewTimeForm({
 }) {
   const t = useTranslations("working-hours");
   const user = useAuth((state) => state.user);
-  const lang = useNavSetting(state => state.lang)
+  const lang = useNavSetting((state) => state.lang);
+
   const { addNewRange } = useWorkingHours((state) => state);
+
   const [startTime, setStartTime] = useState<Times>(initialTime);
   const [endTimes, setEndTimes] = useState<Times>(initialTime);
   const [closeModel, setCloseModel] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  function areEmptyFileds(startTime: Times, endTimes: Times) {
+    return (
+      !startTime.hours ||
+      !endTimes.hours ||
+      !startTime.minutes ||
+      !endTimes.minutes
+    );
+  }
 
   async function handleOnSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setLoading(true);
+
+    // If there is a filed was empty
+    if (areEmptyFileds(startTime, endTimes)) {
+      errorToast(t("fill-all-fields-error"));
+      setLoading(false);
+      return;
+    }
+
+    if (validTimeOrder(startTime,endTimes)) {
+      errorToast(t("start-before-end-error"));
+      setLoading(false);
+      return;
+    }
 
     try {
       await addNewRange(user?.id || 0, {
@@ -55,47 +75,68 @@ export default function AddNewTimeForm({
       delayChangeState(setCloseModel);
     } catch (err) {
       errorToast(t("add-new-range-noti-error"));
+    } finally {
+      setLoading(false);
     }
   }
 
+  // Reset times whenever modal closes
   useEffect(() => {
-    // Reset the times when close the model
-    return () => {
+    if (closeModel) {
       setStartTime(initialTime);
       setEndTimes(initialTime);
-    };
-  }, []);
+    }
+  }, [closeModel]);
 
   return (
     <Model outCloseAction={closeModel}>
       <Model.Open opens="new-range-time">{children}</Model.Open>
+
       <Model.Window name="new-range-time">
-        <div className="flex flex-col items-center  rounded-md bg-white text-primary w-full  md:min-w-[30vw] overflow-hidden ">
-          <h3 className="mb-4 text-lg font-semibold">{t("pick-time")}</h3>
+        <div className="flex flex-col items-center rounded-2xl bg-white dark:bg-primary-dark text-primary dark:text-gray-100 w-full md:min-w-[28vw] p-6 shadow-lg">
+          <Model.Close>
+            <button className="flex justify-end w-full p-1 cursor-pointer ">
+              <MdClose size={24} />
+            </button>
+          </Model.Close>
+          <h3 className="mb-6 text-xl font-semibold text-primary-dark dark:text-gray-100">
+            {t("pick-time")}
+          </h3>
+
           <form
             onSubmit={handleOnSubmit}
-            className="relative flex flex-col w-full items-center bg-white p-2 gap-6 overflow-hidden"
-            style={{ scrollbarWidth: "none" }}
+            className="flex flex-col w-full gap-6"
           >
-            <div className="flex gap-2 items-end" >
+            {/* Time Inputs */}
+            <div className="flex items-end justify-center gap-4">
               <TimesInput
                 times={startTime}
                 setTimes={setStartTime}
+                className="px-3 py-1"
                 label={t("start-time")}
               />
-              <MdOutlineArrowForwardIos size={20} className={`text-primary my-2 ${lang == 'ar'? 'rotate-180': ''} `} />
+              <MdOutlineArrowForwardIos
+                size={18}
+                className={`text-primary transition-transform mb-2 ${
+                  lang === "ar" ? "rotate-180" : ""
+                }`}
+              />
               <TimesInput
                 times={endTimes}
+                className="px-3 py-1"
                 setTimes={setEndTimes}
                 label={t("end-time")}
               />
             </div>
-            <div className="flex gap-1 self-end">
+
+            {/* Actions */}
+            <div className="flex justify-start">
               <button
                 type="submit"
-                className="ml-2 px-4 py-1 bg-primary text-white rounded cursor-pointer"
+                disabled={loading}
+                className="px-6 py-2 bg-primary  text-white dark:text-primary-dark rounded-lg shadow-md hover:bg-primary/90 focus:ring-2 focus:ring-primary/50 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {t("add")}
+                {loading ? "..." : t("add")}
               </button>
             </div>
           </form>

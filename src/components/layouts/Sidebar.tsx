@@ -131,7 +131,7 @@ export default function Sidebar() {
             onClick={handleLogoutClicked}
             variant="secondary"
             className={cn(
-              "w-full flex items-center gap-3 rounded-xl justify-start bg-white dark:text-black",
+              "w-full flex items-center gap-3 rounded-sm justify-start bg-white dark:text-black",
               !openSidebar && "justify-center"
             )}
           >

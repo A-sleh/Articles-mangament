@@ -50,10 +50,11 @@ type workingHoursActions = {
   updateRange: (userId: number, body: newRangePayload) => void;
   deleteRangeTime: (userId: number, body: deletePayload) => void;
   changeDayStatus: (userId: number, day: DayKey) => void;
+  replaceUserWorkingHours: (userId: number, body: IUserWorkingHours) => void;
   getUserWorkingHours: (userId: number) => IUserWorkingHours; // can be undefined
 };
 
-type workingHoursStore = workingHoursStates & workingHoursActions;
+export type workingHoursStore = workingHoursStates & workingHoursActions;
 
 const intialState: IUserWorkingHours = {
   userId: 0,
@@ -68,12 +69,7 @@ const intialState: IUserWorkingHours = {
 };
 
 function validTimes(ranges: Range[], addedRange: newRangePayload): boolean {
-  const isValid = ranges.reduce((acc, range) => {
-    return (acc += Number(isTimeRangeValid(range, addedRange)));
-  }, 0);
-  console.log(ranges, addedRange);
-
-  return isValid == 0;
+  return ranges.some((range) => !isTimeRangeValid(range, addedRange));
 }
 
 export function handleIntialUserWorkingHours(
@@ -179,18 +175,21 @@ export const useWorkingHours = create<workingHoursStore>()(
         })),
 
       addNewRange: (userId, body) => {
-        const rangesOfPassedDay =
-          get().usersWorkingHours.find((user) => user.userId == userId)?.days[
-            body.day
-          ].ranges || [];
-        if (!validTimes(rangesOfPassedDay, body)) {
-          throw new Error("The time overlap with other range");
-        } else
-          set((state) => ({
-            usersWorkingHours: state.usersWorkingHours.map((user) =>
-              user.userId == userId ? handleAddNewRange(user, body) : user
-            ),
-          }));
+        const user = get().usersWorkingHours.find((u) => u.userId === userId);
+        if (!user) throw new Error("User not found");
+
+        const existingRanges = user.days[body.day].ranges;
+
+        if (validTimes(existingRanges, body)) {
+          throw new Error("The new time range overlaps with existing ranges.");
+        }
+
+        // Add the new range
+        set((state) => ({
+          usersWorkingHours: state.usersWorkingHours.map((user) =>
+            user.userId === userId ? handleAddNewRange(user, body) : user
+          ),
+        }));
       },
 
       updateRange: (userId, body) =>
@@ -199,7 +198,12 @@ export const useWorkingHours = create<workingHoursStore>()(
             user.userId == userId ? handleUpdateRange(user, body) : user
           ),
         })),
-
+      replaceUserWorkingHours: (userId, body) =>
+        set((state) => ({
+          usersWorkingHours: state.usersWorkingHours.map((user) =>
+            user.userId == userId ? body : user
+          ),
+        })),
       deleteRangeTime: (userId, body) =>
         set((state) => ({
           usersWorkingHours: state.usersWorkingHours.map((user) =>

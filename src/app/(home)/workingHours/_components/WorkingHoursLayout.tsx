@@ -1,36 +1,29 @@
 "use client";
 
-import { useAuth } from "@/stores/Auth-store/Auth-srore";
-import {
-  DayKey,
-  useWorkingHours,
-} from "@/stores/Working-hours-store/WorkingHoursStore";
-import RowWorkTime from "./RowWorkTime";
 import React from "react";
 import { useTranslations } from "next-intl";
 
+import WorkingTimesProvider from "@/context/workingHours/WorkingTimesProvider";
+import WorkinHoursList from "./WorkinHoursList";
+
 export default function WorkingHoursLayout() {
-
-  const user = useAuth((state) => state.user);
-  const { getUserWorkingHours } = useWorkingHours((state) => state);
-  const t = useTranslations('working-hours')
-
-  const userWorkingHours = getUserWorkingHours(user?.id || 0);
-
+  const t = useTranslations("working-hours");
+  console.log("here");
   return (
-    <div>
-
-      <header className="flex p-1 bg-primary text-white rounded-sm gap-2">
-        <span className="px-4 rounded-sm py-1 bg-white text-primary">{t('day')}</span>
-        <span className="px-4 rounded-sm py-1">{t('work-time-title')}</span>
+    <div className="flex flex-col gap-4 w-full">
+      {/* Header */}
+      <header className="flex bg-primary dark:bg-primary-dark text-white rounded-md overflow-hidden border border-primary">
+        <span className=" px-8 py-2 bg-white text-primary dark:text-primary-dark font-semibold">
+          {t("day")}
+        </span>
+        <span className="flex-2 px-4 py-2 font-semibold">
+          {t("work-time-title")}
+        </span>
       </header>
-
-      <section className="flex flex-col space-y-2 mt-2">
-        {Object.keys(userWorkingHours.days).map((key) => {
-          const dayKey: DayKey = key as DayKey;
-          return <RowWorkTime workTime={userWorkingHours.days[dayKey]} dayKey={dayKey} />;
-        })}
-      </section>
+      {/* Work Hours Rows */}
+      <WorkingTimesProvider>
+        <WorkinHoursList />
+      </WorkingTimesProvider>
     </div>
   );
 }

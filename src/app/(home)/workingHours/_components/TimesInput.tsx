@@ -9,9 +9,11 @@ export default function TimesInput({
   times,
   setTimes,
   label = "",
+  className = ''
 }: {
   times: Times;
   label?: string;
+  className?: string;
   setTimes: React.Dispatch<React.SetStateAction<Times>>;
 }) {
   const [openList, setOpenList] = useState<"hours" | "minutes" | null>(null);
@@ -46,7 +48,7 @@ export default function TimesInput({
   return (
     <div >
       {label && <h3 className="text-primary">{label}</h3>}
-      <div className="flex gap-2 items-center" dir={'ltr'}>
+      <div className="flex gap-2 items-center" >
         <TimeDropdown
           values={hours}
           selected={times.hours}
@@ -54,6 +56,7 @@ export default function TimesInput({
           onToggle={() => setOpenList(openList === "hours" ? null : "hours")}
           onSelect={(value) => setTimes((prev) => ({ ...prev, hours: value }))}
           selectedRef={selectedHoursRef}
+          className={className}
         />
 
         <span>:</span>
@@ -69,6 +72,7 @@ export default function TimesInput({
             setTimes((prev) => ({ ...prev, minutes: value }))
           }
           selectedRef={selectedMinutesRef}
+          className={className}
         />
       </div>
     </div>

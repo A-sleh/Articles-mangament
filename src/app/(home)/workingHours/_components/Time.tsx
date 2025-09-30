@@ -1,79 +1,84 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useAuth } from "@/stores/Auth-store/Auth-srore";
 import {
   newRangePayload,
-  Times,
   useWorkingHours,
 } from "@/stores/Working-hours-store/WorkingHoursStore";
 
 import { AiOutlineDelete } from "react-icons/ai";
-import { FaCheck, FaPencilAlt } from "react-icons/fa";
-import { MdOutlineArrowForwardIos } from "react-icons/md";
-import TimesInput from "./TimesInput";
-import { IoIosClose } from "react-icons/io";
+import { MdContentCopy, MdOutlineArrowForwardIos } from "react-icons/md";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
+import MiniTimeInput from "./MiniTimeInput";
+import { useTimesHours } from "@/context/workingHours/WorkingTimesProvider";
+import ConfirmModal from "@/components/Model/ConfirmModel";
+import { useTranslations } from "next-intl";
+import { successToast } from "@/components/custom/toast";
 
-export default function Time({ range }: { range: newRangePayload }) {
-  const [updateTime, setUpdateTime] = useState(false);
-  const [startTime, setStartTime] = useState<Times>(range.start);
-  const [endTimes, setEndTimes] = useState<Times>(range.end);
+export default function Time({
+  range,
+  isDiabled,
+}: {
+  range: newRangePayload;
+  isDiabled: boolean;
+}) {
+  const t = useTranslations("working-hours");
   const user = useAuth((state) => state.user);
-   const lang = useNavSetting(state => state.lang)
+  const lang = useNavSetting((state) => state.lang);
 
+  const { handleDoublicatRange } = useTimesHours();
   const { deleteRangeTime } = useWorkingHours((state) => state);
-  const onsubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-    if (!updateTime) return;
+  // Prevent actions when disabled
+  const handleDoublicat = () => !isDiabled && handleDoublicatRange(range);
+  const handleDelelteRange = () => {
+    deleteRangeTime(user?.id || 0, range);
+    successToast(t("delelte-range-success-not"));
   };
 
   return (
-    <form
-      onSubmit={(e) => onsubmit(e)}
-      className={`px-2  rounded-sm flex gap-1 items-center ${
-        updateTime ? "border-0" : "border-r-1 border-l-1 border-primary"
-      }  transition-all`}
+    <div
+      className={`flex items-center gap-0.5 rounded-sm bg-white dark:bg-primary-dark p-1 transition-all `}
     >
-      <div className="flex gap-1 items-center">
-        {!updateTime ? (
-          <span className="p-1">{`${startTime.hours}:${startTime.minutes}`}</span>
-        ) : (
-          <TimesInput setTimes={setStartTime} times={startTime} />
-        )}
-        <MdOutlineArrowForwardIos size={13} className={`text-primary my-2 ${lang == 'ar'? 'rotate-180': ''} `} />
-        {!updateTime ? (
-          <span className="p-1">{`${endTimes.hours}:${endTimes.minutes}`}</span>
-        ) : (
-          <TimesInput setTimes={setEndTimes} times={endTimes} />
-        )}
+      {/* Time Display / Inputs */}
+      <div className="flex items-center text-sm text-gray-800 dark:text-gray-200 ">
+        <MiniTimeInput
+          range={range}
+          timeType="start"
+          className="p-[5px] text-sm border "
+        />
+        <MdOutlineArrowForwardIos
+          size={10}
+          className={`text-primary ${lang === "ar" ? "rotate-180" : ""}`}
+        />
+        <MiniTimeInput
+          range={range}
+          timeType="end"
+          className="p-[5px] text-sm border"
+        />
       </div>
-      <div className="flex gap-1 items-center">
-        {!updateTime ? (
-          <>
-            <FaPencilAlt
-              size={12}
-              className="text-blue-400 cursor-pointer"
-              onClick={() => setUpdateTime(true)}
-            />
-            <AiOutlineDelete
-              size={12}
-              className="text-red-400 cursor-pointer"
-              onClick={() => deleteRangeTime(user?.id || 0, range)}
-            />
-          </>
-        ) : (
-          <>
-            <FaCheck size={12} className="text-green-600 cursor-pointer" />
-            <IoIosClose
-              size={22}
-              className="text-red-600 cursor-pointer"
-              onClick={() => setUpdateTime(false)}
-            />
-          </>
-        )}
-      </div>
-    </form>
+
+      {/* Action Icons */}
+      <MdContentCopy
+        size={16}
+        onClick={handleDoublicat}
+        className="text-gray cursor-pointer hover:scale-110 transition dark:text-white"
+        title="Delete"
+      />
+      <ConfirmModal
+        ModalKey="delete-range"
+        handleApply={handleDelelteRange}
+        message={t("confirm-delete-message")}
+      >
+        <button disabled={isDiabled}>
+          <AiOutlineDelete
+            size={16}
+            className="text-red-500 cursor-pointer hover:scale-110 transition"
+            title="Delete"
+          />
+        </button>
+      </ConfirmModal>
+    </div>
   );
 }
