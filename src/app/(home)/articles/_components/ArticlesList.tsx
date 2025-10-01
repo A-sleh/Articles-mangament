@@ -12,8 +12,8 @@ import { useTranslations } from "next-intl";
 
 export default function ArticlesList() {
   const t = useTranslations('articles');
-  const { articles, updateArticles } = useArticles((state) => state);
-
+  const { getAllArticles, updateArticles } = useArticles((state) => state);
+  const articles = getAllArticles()
   // For sortable items
   const onSortEnd = (oldIndex: number, newIndex: number) => {
     const newSortedArticles = arrayMoveImmutable(articles, oldIndex, newIndex);

@@ -3,7 +3,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
 
-import CKEdite from "@/components/ui/CKEdite";
+import CKEdite  from "@/components/ui/CKEdite";
 import MainInput from "@/components/ui/MainInput";
 import FileInput from "@/components/ui/FileInput";
 import ToggleButton from "@/components/ui/ToggleButton";
@@ -13,6 +13,7 @@ import SelectInput from "@/components/ui/SelectInput";
 import { IArticle, useArticles } from "@/stores/Article-store/Articles-store";
 import { errorToast, successToast } from "@/components/custom/toast";
 import { getFileUrl } from "@/utils/helper";
+import { MdClose } from "react-icons/md";
 
 const Categories = ["Article", "Post", "Short post"];
 const tags = ["News", "Personal", "Release"];
@@ -38,8 +39,8 @@ export default function ArticleForm({
   method: "POST" | "PUT";
   children: React.ReactElement;
 }) {
-  const t = useTranslations('articles.article-form');
-  console.log(initialForm)
+  const t = useTranslations("articles.article-form");
+  console.log(initialForm);
 
   const [form, setForm] = useState<IArticle>(initialForm ?? localInitialForm);
   const { createArticle, updateArticle } = useArticles((state) => state);
@@ -90,12 +91,16 @@ export default function ArticleForm({
       <Model.Open opens="new-article">{children}</Model.Open>
       <Model.Window name="new-article">
         <form
-          style={{ scrollbarWidth: "none" }}
-          className="p-4 bg-secondary dark:bg-secondary-dark dark:shadow-md dark:shadow-white/30 rounded-md rounded-tl-none overflow-auto max-h-[90vh] w-[90vw] md:w-full"
+          className="p-3 bg-white dark:bg-gray-900 shadow-xl rounded-lg max-h-[90vh] w-[90vw] md:w-full overflow-y-auto no-scrollbar transition-all duration-300"
           onSubmit={onSubmit}
-          dir='rtl'
         >
-          <div className="flex flex-col md:flex-row gap-1">
+          <Model.Close>
+            <button className="flex justify-end w-full p-1 cursor-pointer ">
+              <MdClose size={24} />
+            </button>
+          </Model.Close>
+          {/* Title and Image */}
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
             <MainInput
               label={t("title")}
               type="text"
@@ -104,6 +109,7 @@ export default function ArticleForm({
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
             />
+
             <FileInput
               label={t("cover-image")}
               placeHolder={t("cover-image-placeholder")}
@@ -112,7 +118,8 @@ export default function ArticleForm({
             />
           </div>
 
-          <div className="flex flex-col md:flex-row gap-2">
+          {/* Category & Date */}
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
             <SelectInput
               label={t("category")}
               values={Categories}
@@ -130,15 +137,17 @@ export default function ArticleForm({
             />
           </div>
 
-          <div className="flex flex-col md:flex-row gap-2">
+          {/* Tags and Published */}
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
             <SelectInput
               label={t("tags")}
               onChange={(e) => handleMultiChoiceSelect(e.target.value)}
               values={tags}
               multiSelect={form.tags}
             />
-            <div className="mb-2">
-              <label className="text-left text-white font-bold">
+
+            <div className="flex flex-col gap-2 justify-end">
+              <label className="text-sm font-medium text-gray-800 dark:text-gray-200">
                 {t("published")}
               </label>
               <ToggleButton
@@ -150,14 +159,21 @@ export default function ArticleForm({
             </div>
           </div>
 
-          <div className="overflow-auto" style={{ scrollbarWidth: "none" }}>
-            <CKEdite
-              setRichText={(data) => setForm({ ...form, richText: data })}
-              initalValue={form.richText}
-            />
+          {/* Rich Text Editor */}
+          <div className="mb-6 border border-gray-300 dark:border-gray-600 rounded-lg p-2 bg-gray-50 dark:bg-gray-800">
+            <div className="overflow-auto" style={{ scrollbarWidth: "none" }}>
+              <CKEdite
+                setRichText={(data) => setForm({ ...form, richText: data })}
+                initalValue={form.richText}
+              />
+            </div>
           </div>
 
-          <button className="px-2 py-1 rounded-md bg-white text-primary dark:text-primary-dark mt-2 cursor-pointer">
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full md:w-auto px-6 py-2 rounded-md bg-primary text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
+          >
             {t("confirm")}
           </button>
         </form>

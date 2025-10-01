@@ -18,18 +18,21 @@
     },
 
     "article-form": {
+      "article-form": "Article form",
       "title": "Title",
-      "title-placeholder": "Article title",
-      "cover-image": "Cover image",
-      "cover-image-placeholder": "Select cover image",
+      "title-placeholder": "Enter the article title",
+      "cover-image": "Cover Image",
+      "cover-image-placeholder": "Upload a cover image",
+      "cover-preview-alt": "Cover image preview",
       "category": "Category",
-      "date": "Date",
-      "date-placeholder": "Article date",
+      "date": "Publish Date",
+      "date-placeholder": "Select the publish date",
       "tags": "Tags",
       "published": "Published",
       "confirm": "Confirm",
-      "success-add": "Article was added successfully",
-      "success-update": "Article was updated successfully"
+      "loading": "Loading...",
+      "success-add": "Article added successfully!",
+      "success-update": "Article updated successfully!"
     }
   },
   "settings": {

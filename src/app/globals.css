@@ -1,10 +1,15 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
-/* @import "tw-animate-css";  */
 
+/* @import "tw-animate-css";  */
 
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
+@media print {
+  body {
+    margin: 0 !important;
+  }
+}
 
 @font-face {
   font-family: "Readex Pro";
@@ -23,6 +28,7 @@
     border-color: var(--color-gray-200, currentcolor);
   }
 
+
   .main-container {
     font-family: var(--ck-content-font-family);
     width: fit-content;
@@ -30,18 +36,17 @@
     margin-right: auto;
   }
 
-  .editor-container_classic-editor .editor-container__editor {
+  .editor-container_inline-editor .editor-container__editor {
     min-width: 795px;
     max-width: 795px;
   }
-
   .ck-editor__editable_inline {
-
     padding-left: 30px !important;
   }
 }
 
 :root {
+  --ck-content-font-family: "Lato";
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;

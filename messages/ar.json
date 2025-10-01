@@ -16,18 +16,21 @@
       "download-pdf": "تحميل المقال كملف PDF"
     },
     "article-form": {
+      "article-form": "نموذج المقال",
       "title": "العنوان",
-      "title-placeholder": "عنوان المقال",
+      "title-placeholder": "أدخل عنوان المقال",
       "cover-image": "صورة الغلاف",
-      "cover-image-placeholder": "اختر صورة الغلاف",
-      "category": "صنف المقال",
-      "date": "التاريخ",
-      "date-placeholder": "تاريخ المقال",
+      "cover-image-placeholder": "قم بتحميل صورة الغلاف",
+      "cover-preview-alt": "معاينة صورة الغلاف",
+      "category": "التصنيف",
+      "date": "تاريخ النشر",
+      "date-placeholder": "اختر تاريخ النشر",
       "tags": "العلامات",
-      "published": "تم نشر",
+      "published": "منشور",
       "confirm": "تأكيد",
-      "success-add": "تم إضافة المقال بنجاح",
-      "success-update": "تم تحديث المقال بنجاح"
+      "loading": "جارٍ التحميل...",
+      "success-add": "تم إضافة المقال بنجاح!",
+      "success-update": "تم تحديث المقال بنجاح!"
     }
   },
   "settings": {

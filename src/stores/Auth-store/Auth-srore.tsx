@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { IUser, useDbUsers } from "../db-users-store/db-users-store";
 import { useWorkingHours } from "../Working-hours-store/WorkingHoursStore";
+import { useArticles } from "../Article-store/Articles-store";
 
 // ========== Types ==========
 
@@ -51,6 +52,16 @@ function updateUserImage(
   return currentUser ? { ...currentUser, image: newImageUrl } : null;
 }
 
+function intializeUserDB(userId: number) {
+  const dbWorkingHoursStore = useWorkingHours.getState();
+  const dbArticles = useArticles.getState();
+  alert(userId)
+
+  // Intialize user working hours and article
+  dbWorkingHoursStore.intialUserWorkingHours(userId);
+  dbArticles.setCurrentUser(userId);
+}
+
 // ========== Zustand Store ==========
 
 export const useAuth = create<AuthStore>()(
@@ -60,21 +71,17 @@ export const useAuth = create<AuthStore>()(
 
       login: (credential) => {
         const dbUsersStore = useDbUsers.getState();
-        const dbWorkingHoursStore = useWorkingHours.getState()
-        console.log(credential)
 
         const user = dbUsersStore.userIsExisit(
           credential.gemail,
           credential.password
         );
 
-        console.log(user)
-
         if (!user) {
           throw new Error("User does not exist.");
         }
-        // Intialize user working hours
-        dbWorkingHoursStore.intialUserWorkingHours(user.id)
+
+        intializeUserDB(user.id);
         set({ user: withUserName(user) });
       },
 
@@ -97,13 +104,13 @@ export const useAuth = create<AuthStore>()(
 
       signup: (body) => {
         const dbUsersStore = useDbUsers.getState();
-        const dbWorkingHoursStore = useWorkingHours.getState()
 
         try {
           const dbUser = dbUsersStore.addUser(body);
-          console.log(dbUser)
-          dbWorkingHoursStore.intialUserWorkingHours(dbUser.id)
-          set({ user: withUserName({...body,id: dbUser.id}) });
+          
+          intializeUserDB(dbUser.id);
+
+          set({ user: withUserName({ ...body, id: dbUser.id }) });
         } catch (error: any) {
           throw new Error(error.message || "Signup failed");
         }
