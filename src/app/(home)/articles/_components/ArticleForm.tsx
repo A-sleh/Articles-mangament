@@ -18,7 +18,7 @@ import { MdClose } from "react-icons/md";
 const Categories = ["Article", "Post", "Short post"];
 const tags = ["News", "Personal", "Release"];
 
-const localInitialForm: IArticle = {
+const localInitialForm: Omit<IArticle,'views'> = {
   id: 0,
   title: "",
   category: "",
@@ -41,7 +41,7 @@ export default function ArticleForm({
 }) {
   const t = useTranslations("articles.article-form");
 
-  const [form, setForm] = useState<IArticle>(initialForm ?? localInitialForm);
+  const [form, setForm] = useState<Omit<IArticle,'views'>>(initialForm ?? localInitialForm);
   const { createArticle, updateArticle } = useArticles((state) => state);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {

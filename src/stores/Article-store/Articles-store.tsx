@@ -25,8 +25,8 @@ type ArticlesActions = {
   setCurrentUser: (userId: string | number) => void;
   getAllArticles: () => IArticle[] ;
   deleteArticle: (articleId: number) => void;
-  createArticle: (body: Omit<IArticle, "id">) => void;
-  updateArticle: (articleId: number, body: IArticle) => void;
+  createArticle: (body: Omit<IArticle, "id" | 'views'>) => void;
+  updateArticle: (articleId: number, body:  Omit<IArticle, 'views'>) => void;
   updateArticles: (articles: IArticle[]) => void;
   getArticleBy: (articleId: number) => IArticle | null;
 };
