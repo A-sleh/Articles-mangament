@@ -44,7 +44,7 @@ export default function Article({ params }: { params: { id: number } }) {
   return (
     <section className="p-4">
       <header className="flex justify-between p-2 bg-primary dark:bg-primary-dark rounded-md mb-2 text-white">
-        <span>{new Date(scheduled).toDateString()}</span>
+        <span>{new Date(scheduled || '').toDateString()}</span>
         <Link href="/articles" aria-label={t("back-to-articles")}>
           <IoChevronBackCircleOutline size={25} />
         </Link>

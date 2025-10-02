@@ -95,7 +95,7 @@ export const ArticlePdf = ({ article }: { article: IArticle }) => {
             </View>
           </View>
           <Text style={styles.dateContainer}>
-            {new Date(article.scheduled).toDateString()}
+            {new Date(article.scheduled || '').toDateString()}
           </Text>
         </View>
 

@@ -64,7 +64,7 @@ export default function Article({ article }: { article: IArticle }) {
             )}
           </div>
           <div>
-            <p className="text-sm my-1">{new Date(scheduled).toDateString()}</p>
+            <p className="text-sm my-1">{new Date(scheduled || '').toDateString()}</p>
             <span
               className={`${
                 published ? "bg-green-400" : "bg-red-400"

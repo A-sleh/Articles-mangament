@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Stats() {
   const t = await getTranslations("stats");
   return (
-    <div>
+    <div className="p-4">
       <Header title={t('title')} />
       <ArticlesStatistcs />
     </div>

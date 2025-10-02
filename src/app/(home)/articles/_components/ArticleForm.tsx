@@ -19,16 +19,17 @@ import { MdClose } from "react-icons/md";
 const Categories = ["Article", "Post", "Short post"];
 const tags = ["News", "Personal", "Release"];
 
-const localInitialForm: Omit<IArticle, "views"> = {
+const localInitialForm: IArticle = {
   id: 0,
   title: "",
   category: "",
   tags: [],
   cover: "",
   published: false,
-  scheduled: "",
+  scheduled: null,
   richText: "",
   localUrl: "",
+  views: 0
 };
 
 export default function ArticleForm({
@@ -42,7 +43,7 @@ export default function ArticleForm({
 }) {
   const t = useTranslations("articles.article-form");
 
-  const [form, setForm] = useState<Omit<IArticle, "views">>(
+  const [form, setForm] = useState<IArticle>(
     initialForm ?? localInitialForm
   );
   const { createArticle, updateArticle } = useArticles((state) => state);

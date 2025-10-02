@@ -17,18 +17,18 @@ export default function ArticlesStatistcs() {
   const articles = useArticles((state) => state.getAllArticles());
 
   // Make the intial date based on min and max article date
-  const dates = articles.map((a) => new Date(a.scheduled));
+  const dates = articles.map((a) => new Date(a.scheduled|| ''));
   const minDate = new Date(Math.min(...dates.map((d) => d.getTime())));
   const maxDate = new Date(Math.max(...dates.map((d) => d.getTime())));
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(minDate);
+  const [endDate, setEndDate] = useState(maxDate);
 
   const filterdArticles = articles.filter(
     (artcle) =>
-      convertDateToTimeStamp(artcle.scheduled) >=
+      convertDateToTimeStamp(artcle.scheduled || '') >=
         convertDateToTimeStamp(startDate) &&
-      convertDateToTimeStamp(artcle.scheduled) <=
+      convertDateToTimeStamp(artcle.scheduled || '') <=
         convertDateToTimeStamp(endDate)
   );
 
@@ -40,7 +40,7 @@ export default function ArticlesStatistcs() {
   const viewsMap: Record<string, number> = {};
   filterdArticles.forEach((a) => {
     const day = getDayName(
-      new Date(a.scheduled),
+      new Date(a.scheduled || ''),
       locale == "ar" ? "ar-SA" : "en-US"
     );
     viewsMap[day] = (viewsMap[day] || 0) + Number(a.views);
@@ -50,17 +50,15 @@ export default function ArticlesStatistcs() {
     <div className="p-6 space-y-8">
       {/* Date Range Filter */}
       <div>
-        <h3>{t("pick-range-date-filter")}</h3>
+        <h3 className="mb-1">{t("pick-range-date-filter")}</h3>
         <div className="flex gap-4 items-center">
           <div>
-            <span className="mr-2 font-semibold">Start:</span>
             <DatePicker
               selectedDate={startDate}
               setSelectedDate={setStartDate}
             />
           </div>
           <div>
-            <span className="mr-2 font-semibold">End:</span>
             <DatePicker selectedDate={endDate} setSelectedDate={setEndDate} />
           </div>
         </div>
