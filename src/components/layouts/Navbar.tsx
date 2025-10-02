@@ -9,10 +9,11 @@ import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 
 import LanguageToggleButton from "../ui/LanguageToggleButton";
 import IconToggleTheme from "../ui/IconToggleTheme";
+import Link from "next/link";
 
 export default function Navbar() {
   const user = useAuth((state) => state.user);
-  const { toggleSidebarView ,lang } = useNavSetting((state) => state);
+  const { toggleSidebarView, lang } = useNavSetting((state) => state);
 
   return (
     <nav className="w-full bg-secondary dark:bg-primary-dark shadow-md">
@@ -30,18 +31,24 @@ export default function Navbar() {
         {/* Right side controls */}
         <div className="flex items-center gap-3">
           <IconToggleTheme />
-          <LanguageToggleButton className={`bg-transparent text-white font-normal ${lang == 'ar' ? 'border-l' : 'border-r' }  rounded-none border-white uppercase`}/>
+          <LanguageToggleButton
+            className={`bg-transparent text-white font-normal ${
+              lang == "ar" ? "border-l" : "border-r"
+            }  rounded-none border-white uppercase`}
+          />
 
-          {user?.image ? (
-            <Avatar>
-              <AvatarImage src={user.image} alt="user-avatar" />
-              <AvatarFallback>{user?.userName ?? "U"}</AvatarFallback>
-            </Avatar>
-          ) : (
-            <Avatar>
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
-          )}
+          <Link href={"/settings"}>
+            {user?.image ? (
+              <Avatar>
+                <AvatarImage src={user.image} alt="user-avatar" />
+                <AvatarFallback>{user?.userName ?? "U"}</AvatarFallback>
+              </Avatar>
+            ) : (
+              <Avatar>
+                <AvatarFallback>U</AvatarFallback>
+              </Avatar>
+            )}
+          </Link>
         </div>
       </div>
     </nav>
