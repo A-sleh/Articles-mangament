@@ -92,8 +92,11 @@ export const useAuth = create<AuthStore>()(
         const currentUser = get().user;
 
         if (!currentUser) return;
-
-        dbUsersStore.updateUserCreadential(body, currentUser.id);
+        try {
+          dbUsersStore.updateUserCreadential(body, currentUser.id);
+        }catch(err) {
+          throw new Error((err as Error).message)
+        }
         set({ user: { ...currentUser, ...body } });
       },
 

@@ -71,10 +71,19 @@ export const useDbUsers = create<DbUserStore>()(
       userIsExisit: (gemail, password) =>
         checkExisitingUser(gemail, password, get().dbUsers),
 
-      updateUserCreadential: (body, userId) =>
+      updateUserCreadential: (body, userId) => {
+        const currentUsers = get().dbUsers;
+        const existingUser = findUserByEmail(body.gemail, currentUsers);
+
+        if(existingUser && existingUser.id != userId) {
+            throw new Error("Email is already used with a different password.")
+        }
+
         set((state) => ({
           dbUsers: updateUserCreadential(body, userId, state.dbUsers),
-        })),
+        }))
+      }
+        ,
 
       addUser: (body: IUser) => {
         const currentUsers = get().dbUsers;

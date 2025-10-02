@@ -31,7 +31,7 @@ export default function UserInfo() {
       successToast(t("update-success"));
       setUpdate(false);
     } catch (err) {
-      errorToast((err as Error).message);
+      errorToast(t('error-gmail-already-used'));
     }
   };
 
@@ -55,7 +55,7 @@ export default function UserInfo() {
       ) : (
         <IoMdSettings
           size={22}
-          className={`text-primary dark:text-white cursor-pointer absolute ${
+          className={`text-primary dark:text-white cursor-pointer absolute z-30 ${
             lang === "ar" ? "left-3" : "right-3"
           } top-3 hover:rotate-90 transition`}
           onClick={() => {
@@ -75,6 +75,7 @@ export default function UserInfo() {
         type="email"
         placeHolder="you@example.com"
         className="dark:bg-primary-dark"
+        labelStyle="dark:text-white"
         ref={inputRef}
       />
 
@@ -86,13 +87,14 @@ export default function UserInfo() {
         label={t("password-label")}
         type="password"
         placeHolder="••••••••"
+        labelStyle="dark:text-white"
         className="dark:bg-primary-dark"
       />
 
       {update && (
         <Button
           variant="secondary"
-          className="mt-2 bg-primary text-white dark:text-primary-dark px-4 py-2 hover:text-white rounded-lg shadow hover:shadow-md hover:scale-[1.02] transition-all"
+          className="mt-2 bg-primary dark:bg-secondary-dark text-white  px-4 py-2 hover:text-white rounded-lg shadow hover:shadow-md hover:scale-[1.02] transition-all cursor-pointer"
         >
           {t("apply")}
         </Button>

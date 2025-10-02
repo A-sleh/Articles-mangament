@@ -12,6 +12,7 @@ export type inputType = {
   register?: any;
   readOnly?: boolean;
   className?: string;
+  labelStyle?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -25,6 +26,7 @@ export const Input = React.forwardRef<HTMLInputElement, inputType>(
       required = false,
       readOnly = false,
       className = "",
+      labelStyle = '',
       ...props
     },
     ref
@@ -34,7 +36,7 @@ export const Input = React.forwardRef<HTMLInputElement, inputType>(
 
     return (
       <div className="flex flex-col gap-1 w-full relative">
-        <label className="text-sm font-medium text-gray-700  dark:text-secondary-dark">
+        <label className={`text-sm font-medium text-gray-700  dark:text-secondary-dark ${labelStyle}`}>
           {label}
         </label>
         <div className="relative">

@@ -107,7 +107,7 @@ export default function SignupForm() {
         value={imageUrl}
       />
 
-      <button className="bg-primary dark:bg-secondary-dark rounded-md text-white px-2 py-1 cursor-pointer w-full transition-all hover:text-black hover:bg-white hover:outline-primary  hover:outline-1">
+      <button className="bg-primary dark:bg-secondary-dark rounded-md my-2 text-white px-2 py-1 cursor-pointer w-full transition-all hover:text-black hover:bg-white hover:outline-primary  hover:outline-1">
         {t("login-button")}
       </button>
       <ChangeLink

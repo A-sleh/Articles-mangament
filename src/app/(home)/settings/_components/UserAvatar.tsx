@@ -51,7 +51,10 @@ export default function UserAvatar() {
 
   const handleSaveName = (e?: FormEvent) => {
     if (e) e.preventDefault();
-    if (!userName.trim()) return;
+    if (!userName.trim()) {
+      errorToast(t('error-user-name-empty'))
+      return
+    }
 
     updateUserName(userName.trim());
     successToast(t("success-update-userName"));
@@ -78,7 +81,7 @@ export default function UserAvatar() {
   };
 
   return (
-    <div className="flex flex-col gap-3 items-center text-center dark:text-white relative">
+    <div className="flex flex-col gap-3 items-center text-center dark:text-white relative transition-all">
       {/* Avatar with hover controls */}
       <div className="relative w-32 h-32 rounded-full overflow-hidden group">
         <Image
@@ -97,18 +100,18 @@ export default function UserAvatar() {
             accept="image/*"
           />
           <button onClick={() => imageRef.current?.click()} title={t("upload-image")}>
-            <FaFileUpload size={22} className="text-white hover:text-primary transition" />
+            <FaFileUpload size={22} className="text-white hover:text-primary transition cursor-pointer" />
           </button>
           <button onClick={handleRemoveImage} title={t("remove-image")}>
-            <MdOutlineDeleteOutline size={22} className="text-red-500 hover:text-red-600 transition" />
+            <MdOutlineDeleteOutline size={22} className="text-white hover:text-red-600 transition cursor-pointer" />
           </button>
         </div>
       </div>
 
       {/* Editable Username */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 transition-all">
         {isEditing ? (
-          <form onSubmit={handleSaveName} className="flex items-center gap-2">
+          <form onSubmit={handleSaveName} className="flex items-center gap-2 dark:bg-">
             <input
               ref={nameRef}
               value={userName}
@@ -117,17 +120,17 @@ export default function UserAvatar() {
               className="rounded-sm p-1 bg-white dark:bg-primary-dark text-sm outline-none focus:ring-2 focus:ring-primary"
             />
             <button type="submit" title={t("save-name")}>
-              <FaCheck size={16} className="text-green-600 hover:text-green-700" />
+              <FaCheck size={16} className="dark:text-white text-green-500 hover:text-green-700 cursor-pointer" />
             </button>
             <button type="button" onClick={handleCancelEdit} title={t("cancel-edit")}>
-              <IoIosClose size={25} className="text-red-600 hover:text-red-700" />
+              <IoIosClose size={25} className="dark:text-white text-red-500 hover:text-red-700 cursor-pointer" />
             </button>
           </form>
         ) : (
           <>
             <span className="font-medium text-lg">{userName}</span>
             <button onClick={() => setIsEditing(true)} >
-              <FaPenToSquare size={16} className="text-primary hover:text-primary/80" />
+              <FaPenToSquare size={16} className="text-primary hover:text-primary/80 cursor-pointer" />
             </button>
           </>
         )}

@@ -46,7 +46,8 @@
       "upload-image": "Upload image",
       "remove-image": "Remove image",
       "user-image-label": "User image",
-      "success-update-userName": "Username updated successfully"
+      "success-update-userName": "Username updated successfully",
+      "error-user-name-empty": "Username can't be emapty"
     },
     "userInfo": {
       "email-label": "Email",
@@ -54,7 +55,8 @@
       "edit": "Edit",
       "cancel": "Cancel",
       "apply": "Apply",
-      "update-success": "User information was updated successfully"
+      "update-success": "User information was updated successfully",
+      "error-gmail-already-used": "Email is already used with a different password."
     },
     "systemSettings": {
       "language": "Language",

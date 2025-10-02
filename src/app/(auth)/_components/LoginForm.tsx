@@ -57,7 +57,7 @@ export default function LoginForm() {
         onChange={(e) => setUser({ ...user, password: e.target.value })}
       />
 
-      <button className="bg-primary dark:bg-secondary-dark rounded-md text-white px-2 py-1 cursor-pointer w-full transition-all hover:text-black hover:bg-white hover:outline-primary  hover:outline-1">
+      <button className="bg-primary dark:bg-secondary-dark rounded-md text-white px-2 py-1 my-2  cursor-pointer w-full transition-all hover:text-black hover:bg-white hover:outline-primary  hover:outline-1">
         {t("login-button")}
       </button>
       <ChangeLink

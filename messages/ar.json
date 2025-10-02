@@ -44,7 +44,8 @@
       "upload-image": "رفع الصورة",
       "remove-image": "حذف الصورة",
       "user-image-label": "صورة المستخدم",
-      "success-update-userName": "تم تحديث اسم المستخدم بنجاح."
+      "success-update-userName": "تم تحديث اسم المستخدم بنجاح.",
+      "error-user-name-empty": "أسم المسخدم لايمكن ان يكون فارغ"
     },
     "userInfo": {
       "email-label": "البريد الإلكتروني",
@@ -52,7 +53,8 @@
       "edit": "تعديل",
       "cancel": "إلغاء",
       "apply": "تطبيق",
-      "update-success": "تم تحديث معلومات المستخدم بنجاح"
+      "update-success": "تم تحديث معلومات المستخدم بنجاح",
+      "error-gmail-already-used": "هذا الإيميل مستخدم بالفعل"
     },
     "systemSettings": {
       "language": "اللغة",

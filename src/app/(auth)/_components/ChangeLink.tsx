@@ -10,7 +10,7 @@ export default function ChangeLink({
   desctiption: string;
 }) {
   return (
-    <div className="flex gap-1 items-center text-center justify-center my-2">
+    <div className="flex gap-1 items-center text-center justify-center">
       <p>{desctiption}</p>
       <Link href={link} className="text-primary dark:text-secondary-dark">{btn}</Link>
     </div>

@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 import { useTranslations } from "next-intl";
 
 import Header from "@/components/layouts/Header";
@@ -6,6 +8,12 @@ import SubHeader from "@/components/layouts/SubHeader";
 import SystemSettings from "./_components/SystemSettings";
 import UserAvatar from "./_components/UserAvatar";
 import UserInfo from "./_components/UserInfo";
+
+
+export const metadata: Metadata = {
+  title: "Setting",
+  description: "Personal setting page",
+};
 
 export default function Settings() {
   const t = useTranslations("settings");
