@@ -85,6 +85,7 @@
     "pick-range-date-filter": "Pick a Date Range"
   },
   "login": {
+    "title": "Login",
     "email-label": "Email",
     "email-placeholder": "Enter your email",
     "password-label": "Password",
@@ -98,6 +99,7 @@
     "dont-have-account": "Don't have an account?"
   },
   "signup": {
+    "title": "Signup",
     "signup-success": "You have successfully logged in!",
     "first-name-label": "First Name",
     "first-name-placeholder": "Enter your first name",

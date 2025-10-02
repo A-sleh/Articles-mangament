@@ -82,6 +82,7 @@
     "pick-range-date-filter": "اختر نطاق التاريخ"
   },
   "login": {
+    "title": "تسجيل الدخول",
     "email-label": "البريد الإلكتروني",
     "email-placeholder": "أدخل بريدك الإلكتروني",
     "password-label": "كلمة المرور",
@@ -95,6 +96,7 @@
     "dont-have-account": "ليس لديك حساب؟"
   },
   "signup": {
+    "title": "تسجيل",
     "signup-success": "تم تسجيل الدخول بنجاح!",
     "first-name-label": "الاسم الأول",
     "first-name-placeholder": "أدخل اسمك الأول",

@@ -24,7 +24,7 @@ const UpplayChangesModel: FC<IConfirmeModel> = ({
   return (
     <>
       {showModal && (
-        <div className={cn("fixed bottom-4  z-50 animate-slide-up",locale === "en" ? "left-4 animate-slide-left" : "right-4 animate-slide-right")}>
+        <div className={cn("fixed bottom-4  z-50 animate-slide-up transition-all",locale === "en" ? "left-4 animate-slide-left" : "right-4 animate-slide-right")}>
           <div className="bg-white dark:bg-primary-dark border border-gray-200 dark:border-white shadow-xl rounded-lg px-4 py-3 flex items-center gap-3">
             <span className="text-sm text-gray-700 dark:text-gray-200">
               {message}
@@ -38,7 +38,7 @@ const UpplayChangesModel: FC<IConfirmeModel> = ({
               </button>
               <button
                 onClick={handleApply}
-                className="cursor-pointer px-3 py-1 text-sm rounded-md bg-primary   hover:bg-primary/80 transition-all text-black"
+                className="cursor-pointer px-3 py-1 text-sm rounded-md bg-primary   hover:bg-primary/80 transition-all text-white dark:text-black"
               >
                 {t('apply')}
               </button>

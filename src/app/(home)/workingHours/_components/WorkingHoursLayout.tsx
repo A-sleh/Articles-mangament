@@ -8,7 +8,7 @@ import WorkinHoursList from "./WorkinHoursList";
 
 export default function WorkingHoursLayout() {
   const t = useTranslations("working-hours");
-  console.log("here");
+  
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* Header */}
