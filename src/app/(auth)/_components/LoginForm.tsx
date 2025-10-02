@@ -30,7 +30,7 @@ export default function LoginForm() {
       router.replace("/articles");
       successToast(t("login-success"));
     } catch (err) {
-      console.log(err)
+      
       errorToast(t("error-invalid-credentials"));
     }
   };

@@ -40,7 +40,6 @@ export default function ArticleForm({
   children: React.ReactElement;
 }) {
   const t = useTranslations("articles.article-form");
-  console.log(initialForm);
 
   const [form, setForm] = useState<IArticle>(initialForm ?? localInitialForm);
   const { createArticle, updateArticle } = useArticles((state) => state);

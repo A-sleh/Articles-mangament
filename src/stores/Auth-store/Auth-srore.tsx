@@ -55,8 +55,7 @@ function updateUserImage(
 function intializeUserDB(userId: number) {
   const dbWorkingHoursStore = useWorkingHours.getState();
   const dbArticles = useArticles.getState();
-  alert(userId)
-
+  
   // Intialize user working hours and article
   dbWorkingHoursStore.intialUserWorkingHours(userId);
   dbArticles.setCurrentUser(userId);

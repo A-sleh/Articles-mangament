@@ -21,8 +21,8 @@ export default function ArticlesStatistcs() {
   const minDate = new Date(Math.min(...dates.map((d) => d.getTime())));
   const maxDate = new Date(Math.max(...dates.map((d) => d.getTime())));
 
-  const [startDate, setStartDate] = useState(minDate);
-  const [endDate, setEndDate] = useState(maxDate);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const filterdArticles = articles.filter(
     (artcle) =>
@@ -48,17 +48,21 @@ export default function ArticlesStatistcs() {
 
   return (
     <div className="p-6 space-y-8">
-      <h1 className="text-2xl font-bold">{t("title")}</h1>
-
       {/* Date Range Filter */}
-      <div className="flex gap-4 items-center">
-        <div>
-          <span className="mr-2 font-semibold">Start:</span>
-          <DatePicker selectedDate={startDate} setSelectedDate={setStartDate} />
-        </div>
-        <div>
-          <span className="mr-2 font-semibold">End:</span>
-          <DatePicker selectedDate={endDate} setSelectedDate={setEndDate} />
+      <div>
+        <h3>{t("pick-range-date-filter")}</h3>
+        <div className="flex gap-4 items-center">
+          <div>
+            <span className="mr-2 font-semibold">Start:</span>
+            <DatePicker
+              selectedDate={startDate}
+              setSelectedDate={setStartDate}
+            />
+          </div>
+          <div>
+            <span className="mr-2 font-semibold">End:</span>
+            <DatePicker selectedDate={endDate} setSelectedDate={setEndDate} />
+          </div>
         </div>
       </div>
 

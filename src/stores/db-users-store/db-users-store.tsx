@@ -36,7 +36,7 @@ function checkExisitingUser(
   password: string,
   dbUsers: IUser[]
 ) {
-  console.log(gemail,password,dbUsers)
+  
   return (
     dbUsers.find(
       (user) => user.gemail === gemail && user.password === password

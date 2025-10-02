@@ -79,8 +79,12 @@ export function validTimeOrder(startTime: Times, endTimes: Times) {
 
 export function convertDateToTimeStamp(date: string | Date ): number {
 
-  if(!date) return 0
-  return new Date(date).getTime()
+  if(!date ) return 0
+  try {
+    return new Date(date).getTime()
+  }catch (err) {
+    return 0
+  }
 }
 
 export function getDayName(date: Date, locale: string = "en-US"): string {
