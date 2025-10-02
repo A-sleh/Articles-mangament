@@ -100,7 +100,7 @@
     "last-name-placeholder": "أدخل اسم العائلة",
     "email-label": "البريد الإلكتروني",
     "email-placeholder": "أدخل بريدك الإلكتروني",
-    "image-label": "الصورة",
+    "image-label": "صورة شخصية",
     "image-placeholder": "اختر صورة شخصية",
     "password-label": "كلمة المرور",
     "password-placeholder": "أدخل كلمة المرور",
@@ -111,7 +111,7 @@
 
   "components": {
     "FileInput": {
-      "upload-file": "تحميل صورة"
+      "upload-file": "تحميل"
     }
   },
   "working-hours": {

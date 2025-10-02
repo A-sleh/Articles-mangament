@@ -1,10 +1,3 @@
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Login",
-  description: "Login page",
-};
-
 export default function RootLayout({
   children,
 }: {
@@ -12,7 +5,7 @@ export default function RootLayout({
 }) {
   return (
     <div className="h-screen w-full flex justify-center items-center bg-primary dark:bg-primary-dark">
-      {children}
+      <div className="w-[90%] md:w-[40%]">{children}</div>
     </div>
   );
 }

@@ -1,14 +1,5 @@
 "use client";
 
-import { successToast } from "@/components/custom/toast";
-import UpplayChangesModel from "@/components/Model/UpplayChangesModel";
-import { useAuth } from "@/stores/Auth-store/Auth-srore";
-import {
-  DayKey,
-  IUserWorkingHours,
-  newRangePayload,
-  useWorkingHours,
-} from "@/stores/Working-hours-store/WorkingHoursStore";
 import { useTranslations } from "next-intl";
 import {
   createContext,
@@ -18,6 +9,15 @@ import {
   useState,
   useEffect,
 } from "react";
+import { successToast } from "@/components/custom/toast";
+import UpplayChangesModel from "@/components/Model/UpplayChangesModel";
+import { useAuth } from "@/stores/Auth-store/Auth-srore";
+import {
+  DayKey,
+  IUserWorkingHours,
+  newRangePayload,
+  useWorkingHours,
+} from "@/stores/Working-hours-store/WorkingHoursStore";
 
 type IWorkingTimesContext = {
   workingTimes: IUserWorkingHours;
@@ -39,17 +39,18 @@ export default function WorkingTimesProvider({
   children: React.ReactNode;
 }) {
   const t = useTranslations("model");
-  const [showModal, setShowModal] = useState(false);
+
   const userId = useAuth((state) => state.user)?.id || 0;
   const { getUserWorkingHours, addNewRange, replaceUserWorkingHours } =
     useWorkingHours((state) => state);
+
+  const [showModal, setShowModal] = useState(false);
   const workingTimes = getUserWorkingHours(userId);
   const [tempWorkingTime, setTempWorkingTime] =
     useState<IUserWorkingHours>(workingTimes);
 
   const handleApply = () => {
-    // Save changes back to store
-    // example: call store update function
+
     replaceUserWorkingHours(userId, tempWorkingTime);
     successToast(t("success-update-working-times"));
     setShowModal(false);
@@ -93,15 +94,15 @@ export default function WorkingTimesProvider({
     await Object.keys(workingTimes.days).map((key) => {
       const dayKey: DayKey = key as DayKey;
       // Skip adds to the parent of selected range
-      if(dayKey != range.day) {
+      if (dayKey != range.day) {
         try {
-          addNewRange(userId,{...range, day: dayKey})
-        }catch(err) {
-          console.log('handle error',err)
+          addNewRange(userId, { ...range, day: dayKey });
+        } catch (err) {
+          console.log("handle error", err);
         }
       }
     });
-    successToast(t('success-copy-ranges'))
+    successToast(t("success-copy-ranges"));
   };
 
   // Update the context when the store was changed

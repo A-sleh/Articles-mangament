@@ -78,8 +78,8 @@ export function validTimeOrder(startTime: Times, endTimes: Times) {
 }
 
 export function convertDateToTimeStamp(date: string | Date ): number {
-  if(!date) return 0
 
+  if(!date) return 0
   return new Date(date).getTime()
 }
 

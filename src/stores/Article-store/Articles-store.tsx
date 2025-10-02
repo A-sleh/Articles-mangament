@@ -73,7 +73,8 @@ export const useArticles = create<ArticlesStore>()(
         if (!userId) return [];
         return get().articlesByUser[userId] || []
       },
-      setCurrentUser: (userId) => set({ currentUserId: userId }),
+      
+      setCurrentUser: (userId) => set({ currentUserId: userId?.toString() }),
 
       updateArticles: (articles) => {
         const userId = get().currentUserId;
