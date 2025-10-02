@@ -76,3 +76,13 @@ export function validTimeOrder(startTime: Times, endTimes: Times) {
   const end = timeToMinutes(endTimes);
   return end < start;
 }
+
+export function convertDateToTimeStamp(date: string | Date ): number {
+  if(!date) return 0
+
+  return new Date(date).getTime()
+}
+
+export function getDayName(date: Date, locale: string = "en-US"): string {
+  return date.toLocaleDateString(locale, { weekday: "long" });
+}

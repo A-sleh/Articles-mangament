@@ -76,6 +76,12 @@
     "logout-success-not": "Logout successfuly",
     "logout-error-not": "Error occurer while logout ..."
   },
+  "stats": {
+    "title": "Statistics",
+    "views-per-day-chart-title": "Views per Day",
+    "articles-per-category-chart-title": "Articles per Category",
+    "pick-range-date-filter": "Pick a Date Range"
+  },
   "login": {
     "email-label": "Email",
     "email-placeholder": "Enter your email",

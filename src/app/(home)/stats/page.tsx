@@ -1,5 +1,9 @@
-import BarChart from "@/components/charts/BarChart"
-import LineChart from "@/components/charts/LineChart"
+import ArticlesStatistcs from "./_components/ArticlesStatistcs";
+
 export default function Stats() {
-    return <div><BarChart /> <LineChart /></div>
+  return (
+    <div>
+      <ArticlesStatistcs />{" "}
+    </div>
+  );
 }

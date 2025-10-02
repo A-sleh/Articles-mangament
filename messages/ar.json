@@ -73,6 +73,12 @@
     "logout-success-not": "تم تسجيل الخروج بنجاح",
     "logout-error-not": "حدث خطأ اثناء عملية تسجيل الخروج"
   },
+  "stats": {
+    "title": "الإحصائيات",
+    "views-per-day-chart-title": "المشاهدات حسب اليوم",
+    "articles-per-category-chart-title": "المقالات حسب التصنيف",
+    "pick-range-date-filter": "اختر نطاق التاريخ"
+  },
   "login": {
     "email-label": "البريد الإلكتروني",
     "email-placeholder": "أدخل بريدك الإلكتروني",

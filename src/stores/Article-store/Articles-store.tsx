@@ -13,6 +13,7 @@ export interface IArticle {
   scheduled: string;
   richText: any;
   localUrl: string;
+  views: number;
 }
 
 type ArticlesState = {
@@ -53,8 +54,11 @@ const handleCreateArticle = (
   articles: IArticle[],
   newArticle: Omit<IArticle, "id">
 ): IArticle[] => {
+
   const newId = (articles[articles.length - 1]?.id || 0) + 1;
-  return [...articles, { ...newArticle, id: newId }];
+  const views = Math.floor(Math.random() * 2000 ); // Generate random number of views
+
+  return [...articles, { ...newArticle, id: newId , views }];
 };
 
 // ========== Zustand Store ==========
