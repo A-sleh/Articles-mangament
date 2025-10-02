@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SortableItem, SortableKnob } from "react-easy-sort";
 
+import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { IArticle, useArticles } from "@/stores/Article-store/Articles-store";
 
-import { MdOutlineReadMore } from "react-icons/md";
 import { RiDraggable } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FaPencilAlt } from "react-icons/fa";
@@ -18,6 +18,7 @@ import { useTranslations } from "next-intl";
 
 export default function Article({ article }: { article: IArticle }) {
   const t = useTranslations("articles.article");
+  const locale = useNavSetting((state) => state.lang);
   const { deleteArticle } = useArticles((state) => state);
   const { id, published, title, scheduled, category } = article;
 
@@ -45,7 +46,10 @@ export default function Article({ article }: { article: IArticle }) {
 
   return (
     <SortableItem key={id}>
-      <div className="flex gap-2 dark:text-white items-start bg-white dark:bg-primary-dark rounded-md p-2 border-dashed border-2 border-primary dark:border-white">
+      <div
+        className="flex gap-2 dark:text-white items-start bg-white dark:bg-primary-dark rounded-md p-2 border-dashed border-2 border-primary dark:border-white"
+        dir={locale == "ar" ? "rtl" : "ltr"}
+      >
         <Link
           href={`/articles/${id}`}
           title={t("back-to-articles")}
@@ -53,9 +57,11 @@ export default function Article({ article }: { article: IArticle }) {
         >
           <div>
             <h3 className="font-bold">{title}</h3>
-            <span className="px-2 py-1 rounded-md text-sm bg-primary text-white">
-              {category}
-            </span>
+            {category && (
+              <span className="px-2 py-1 rounded-md text-sm bg-primary dark:bg-secondary-dark text-white">
+                {category}
+              </span>
+            )}
           </div>
           <div>
             <p className="text-sm my-1">{new Date(scheduled).toDateString()}</p>
@@ -85,7 +91,7 @@ export default function Article({ article }: { article: IArticle }) {
         </div>
         <SortableKnob>
           <div
-            className={`text-gray-400 self-center ${
+            className={`text-gray-400 dark:text-white self-center ${
               cursorStyle ? "cursor-grabbing" : "cursor-grab"
             }`}
             onMouseDown={() => setCursorStyle(true)}

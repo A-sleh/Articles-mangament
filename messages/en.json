@@ -29,6 +29,7 @@
       "date-placeholder": "Select the publish date",
       "tags": "Tags",
       "published": "Published",
+      "un-published": "Un Published",
       "confirm": "Confirm",
       "loading": "Loading...",
       "success-add": "Article added successfully!",

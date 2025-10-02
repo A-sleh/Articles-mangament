@@ -8,6 +8,7 @@ export default function FileInput({
   required = false,
   register,
   value,
+  className = '',
   ...props
 }: Omit<inputType, "type">) {
   const t = useTranslations("components.FileInput")

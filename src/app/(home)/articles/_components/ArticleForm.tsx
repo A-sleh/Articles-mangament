@@ -3,7 +3,8 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
 
-import CKEdite  from "@/components/ui/CKEdite";
+import DatePicker from "react-datepicker";
+import CKEdite from "@/components/ui/CKEdite";
 import MainInput from "@/components/ui/MainInput";
 import FileInput from "@/components/ui/FileInput";
 import ToggleButton from "@/components/ui/ToggleButton";
@@ -18,7 +19,7 @@ import { MdClose } from "react-icons/md";
 const Categories = ["Article", "Post", "Short post"];
 const tags = ["News", "Personal", "Release"];
 
-const localInitialForm: Omit<IArticle,'views'> = {
+const localInitialForm: Omit<IArticle, "views"> = {
   id: 0,
   title: "",
   category: "",
@@ -41,7 +42,9 @@ export default function ArticleForm({
 }) {
   const t = useTranslations("articles.article-form");
 
-  const [form, setForm] = useState<Omit<IArticle,'views'>>(initialForm ?? localInitialForm);
+  const [form, setForm] = useState<Omit<IArticle, "views">>(
+    initialForm ?? localInitialForm
+  );
   const { createArticle, updateArticle } = useArticles((state) => state);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -61,16 +64,15 @@ export default function ArticleForm({
     }
   };
 
-  function handleMultiChoiceSelect(selectedTag: string) {
-    const newTags: string[] =
-      form?.tags?.filter((tag) => tag !== selectedTag) || [];
-
-    if (newTags.length === form.tags.length) {
-      setForm({ ...form, tags: [...newTags, selectedTag] });
-    } else {
-      setForm({ ...form, tags: newTags });
+  const handleAdd = (val: string) => {
+    if (!form.tags.includes(val)) {
+      setForm({...form, tags: [...form.tags, val]});
     }
-  }
+  };
+
+  const handleRemove = (val: string) => {
+    setForm({ ...form, tags: form.tags.filter((v) => v !== val) });
+  };
 
   const handleFileSelected = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -90,16 +92,17 @@ export default function ArticleForm({
       <Model.Open opens="new-article">{children}</Model.Open>
       <Model.Window name="new-article">
         <form
-          className="p-3 bg-white dark:bg-gray-900 shadow-xl rounded-lg max-h-[90vh] w-[90vw] md:w-full overflow-y-auto no-scrollbar transition-all duration-300"
+          className="p-3 px-5 bg-white dark:bg-primary-dark shadow-xl rounded-lg max-h-[90vh] w-[90vw] md:w-full overflow-y-auto no-scrollbar transition-all duration-300"
           onSubmit={onSubmit}
+          style={{}}
         >
           <Model.Close>
-            <button className="flex justify-end w-full p-1 cursor-pointer ">
+            <button className="flex justify-end w-full p-1 cursor-pointer dark:text-white ">
               <MdClose size={24} />
             </button>
           </Model.Close>
           {/* Title and Image */}
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className="flex flex-col md:flex-row gap-2 mb-2">
             <MainInput
               label={t("title")}
               type="text"
@@ -107,6 +110,27 @@ export default function ArticleForm({
               required
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
+            />
+            <div className="mb-1 flex flex-col w-full">
+              <label className="text-primary dark:text-white mb-1">
+                {t("date")}
+              </label>
+              <DatePicker
+                className="px-4 py-2 bg-white w-full text-secondary-dark dark:text-white dark:bg-transparent placeholder:text-sm dark:placeholder:text-white dark:border dark:border-white outline-hidden shadow-sm rounded-sm"
+                selected={form.scheduled}
+                placeholderText={t("date-placeholder")}
+                onChange={(date) => setForm({ ...form, scheduled: date })}
+              />
+            </div>
+          </div>
+
+          {/* Category & Date */}
+          <div className="flex flex-col md:flex-row gap-2 mb-2">
+            <SelectInput
+              label={t("category")}
+              values={Categories}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
+              value={form?.category || Categories[0]}
             />
 
             <FileInput
@@ -117,44 +141,29 @@ export default function ArticleForm({
             />
           </div>
 
-          {/* Category & Date */}
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
-            <SelectInput
-              label={t("category")}
-              values={Categories}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-              value={form.category}
-            />
-
-            <MainInput
-              label={t("date")}
-              type="date"
-              placeHolder={t("date-placeholder")}
-              required
-              value={form?.scheduled || ""}
-              onChange={(e) => setForm({ ...form, scheduled: e.target.value })}
-            />
-          </div>
-
           {/* Tags and Published */}
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className="flex flex-col md:flex-row gap-1 mb-2">
             <SelectInput
               label={t("tags")}
-              onChange={(e) => handleMultiChoiceSelect(e.target.value)}
+              onChange={(e) =>
+                handleAdd(e.target.value)
+              }
               values={tags}
               multiSelect={form.tags}
+              onRemoveElement={handleRemove}
             />
 
-            <div className="flex flex-col gap-2 justify-end">
-              <label className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                {t("published")}
-              </label>
+            <div className="flex items-center gap-2 justify-end">
               <ToggleButton
                 value={form.published}
+                buttonStyle="w-[20px] h-[20px]"
                 onChangeFn={() =>
                   setForm({ ...form, published: !form.published })
                 }
               />
+              <label className="text-sm font-medium text-gray-800 dark:text-gray-200 text-nowrap">
+                {t(form.published ? "published" : 'un-published')}
+              </label>
             </div>
           </div>
 

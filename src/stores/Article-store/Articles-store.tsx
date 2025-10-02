@@ -10,7 +10,7 @@ export interface IArticle {
   tags: string[];
   cover: string;
   published: boolean;
-  scheduled: string;
+  scheduled: Date | null;
   richText: any;
   localUrl: string;
   views: number;

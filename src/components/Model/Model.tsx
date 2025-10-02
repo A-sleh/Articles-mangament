@@ -1,9 +1,8 @@
 "use client";
 
-import { cloneElement, createContext, useContext, useEffect, useState, ReactNode, ReactElement } from "react";
 import { createPortal } from "react-dom";
-import { MdClose } from "react-icons/md";
 import AnimateScale from "@/lib/Animation/AnimateScale";
+import { cloneElement, createContext, useContext, useEffect, useState, ReactNode, ReactElement } from "react";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 
 type OpenProps = {
@@ -64,10 +63,8 @@ function Window({ children, name, className = "" }: WindowProps) {
       className={`bg-[#0000004d] fixed inset-0 h-screen z-40 overflow-hidden ${isDarkMode ? "dark" : ""}`}
     >
       <AnimateScale
-        className={`fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-2  overflow-auto w-[90%] md:w-fit ${className}`} 
-        style={{scrollbarWidth: 'none'}}
+        className={`fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-2 hide-scrollbar  overflow-auto w-[90%] md:w-fit ${className}`} 
       >
-        
         {children}
       </AnimateScale>
     </div>,

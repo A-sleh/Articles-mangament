@@ -27,6 +27,7 @@
       "date-placeholder": "اختر تاريخ النشر",
       "tags": "العلامات",
       "published": "منشور",
+      "un-published": "غير منشور",
       "confirm": "تأكيد",
       "loading": "جارٍ التحميل...",
       "success-add": "تم إضافة المقال بنجاح!",

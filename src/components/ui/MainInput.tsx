@@ -11,10 +11,10 @@ export default function MainInput({
 }: inputType) {
 
   return (
-    <div className="mb-2 flex flex-col rounded-md w-full">
-      <label className="text-white ">{label}</label>
+    <div className="mb-1 flex flex-col w-full">
+      <label className="text-primary dark:text-white mb-1 ">{label}</label>
       <input
-        className="px-4 py-2 bg-white outline-hidden roudned-md focus:shadow-md rounded-md"
+        className="px-4 py-2 bg-white text-secondary-dark dark:text-white dark:bg-transparent placeholder:text-sm dark:placeholder:text-white dark:border dark:border-white outline-hidden shadow-sm rounded-sm"
         readOnly={readOnly}
         type={type}
         placeholder={placeHolder}

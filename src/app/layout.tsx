@@ -1,4 +1,5 @@
 import "./globals.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 import { NextIntlClientProvider } from "next-intl";
 import { Toaster } from "react-hot-toast";
