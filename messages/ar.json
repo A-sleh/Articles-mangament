@@ -80,7 +80,8 @@
     "title": "الإحصائيات",
     "views-per-day-chart-title": "المشاهدات حسب اليوم",
     "articles-per-category-chart-title": "المقالات حسب التصنيف",
-    "pick-range-date-filter": "اختر نطاق التاريخ"
+    "pick-range-date-filter": "اختر نطاق التاريخ",
+    "no-data": "لا يوجد بيانات لعرضها"
   },
   "login": {
     "title": "تسجيل الدخول",

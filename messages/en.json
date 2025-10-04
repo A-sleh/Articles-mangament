@@ -83,7 +83,8 @@
     "title": "Statistics",
     "views-per-day-chart-title": "Views per Day",
     "articles-per-category-chart-title": "Articles per Category",
-    "pick-range-date-filter": "Pick a Date Range"
+    "pick-range-date-filter": "Pick a Date Range",
+    "no-data": "No data available"
   },
   "login": {
     "title": "Login",

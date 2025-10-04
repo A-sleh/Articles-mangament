@@ -71,6 +71,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       htmlparser2:
         specifier: ^10.0.0
         version: 10.0.0
@@ -2616,8 +2619,6 @@ snapshots:
     dependencies:
       '@ckeditor/ckeditor5-utils': 46.1.1
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-enter@44.3.0':
     dependencies:
@@ -2630,8 +2631,6 @@ snapshots:
       '@ckeditor/ckeditor5-core': 46.1.1
       '@ckeditor/ckeditor5-engine': 46.1.1
       '@ckeditor/ckeditor5-utils': 46.1.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-essentials@44.3.0':
     dependencies:
@@ -3111,8 +3110,6 @@ snapshots:
       '@ckeditor/ckeditor5-ui': 46.1.1
       '@ckeditor/ckeditor5-utils': 46.1.1
       ckeditor5: 46.1.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-restricted-editing@44.3.0':
     dependencies:
@@ -3311,8 +3308,6 @@ snapshots:
       '@ckeditor/ckeditor5-icons': 46.1.1
       '@ckeditor/ckeditor5-ui': 46.1.1
       '@ckeditor/ckeditor5-utils': 46.1.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-upload@44.3.0':
     dependencies:
@@ -3334,8 +3329,6 @@ snapshots:
     dependencies:
       '@ckeditor/ckeditor5-ui': 46.1.1
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-watchdog@44.3.0':
     dependencies:

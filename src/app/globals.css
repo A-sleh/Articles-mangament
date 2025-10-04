@@ -43,6 +43,10 @@
   .ck-editor__editable_inline {
     padding-left: 30px !important;
   }
+  .apexcharts-toolbar {
+    z-index: 0 !important;
+  }
+
 }
 
 :root {
