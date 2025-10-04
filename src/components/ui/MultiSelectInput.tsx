@@ -4,7 +4,7 @@ import { MdClose, MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 type CustomMultiSelectProps = {
   label: string;
   options: string[];
-  selectedValues: (string | number)[];
+  selectedValues: string[];
   onChange: (selected: (string)[]) => void;
   placeholder?: string;
 };
@@ -34,7 +34,7 @@ export default function MultiSelectInput({
   }, []);
 
   // Toggle select/deselect option
-  const toggleOption = (value: string | number) => {
+  const toggleOption = (value: string ) => {
     if (selectedValues.includes(value)) {
       onChange(selectedValues.filter((v) => v !== value));
     } else {
