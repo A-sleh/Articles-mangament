@@ -1,8 +1,16 @@
 // @ts-nocheck
 "use client"
 
+import dynamic from 'next/dynamic';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { CKEditor, useCKEditorCloud } from '@ckeditor/ckeditor5-react';
+
+const CKEditor = dynamic(() => import('@ckeditor/ckeditor5-react').then(mod => mod.CKEditor), {
+  ssr: false,
+});
+
+const useCKEditorCloud = dynamic(() => import('@ckeditor/ckeditor5-react').then(mod => mod.useCKEditorCloud), {
+  ssr: false,
+});
 
 
 
