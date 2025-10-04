@@ -16,7 +16,7 @@ export default function ToggleButton({
       } transition-all cursor-pointer ${className}`}
       onClick={onChangeFn}
     >
-      <span className={`rounded-full bg-white  h-[25px] w-[25px] ${buttonStyle}`}></span>
+      <span className={`rounded-full bg-white h-[25px] w-[25px] ${buttonStyle}`}></span>
     </div>
   );
 }

@@ -10,9 +10,10 @@ const LICENSE_KEY =
 	'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODk1MTY3OTksImp0aSI6IjcyOTI3YjY0LTg1ZTgtNDQzNC05YmY5LTUyNWQ4NzEzOTUxYyIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIiwiRTJQIiwiRTJXIl0sInZjIjoiMzBiNWJmYjcifQ.BPLqCDqUU0KwyC82FiPeOCspK1vcbRFW2VAkocCriVfZZF7eCv4rgkIMtj8DdJxWVLWTny7AygreE_kji0Rn-Q';
 
 // @ts-nocheck
-export default function CKEdite({setRichText,initalValue}: {
+export default function CKEdite({setRichText,initalValue,placeholder}: {
 	setRichText: (data: string) => void
 	initalValue: string;
+	placeholder?: string;
 }) {
 	const editorContainerRef = useRef(null);
 	const editorRef = useRef(null);
@@ -87,7 +88,7 @@ export default function CKEdite({setRichText,initalValue}: {
 				},
 				initialData: initalValue,
 				licenseKey: LICENSE_KEY,
-				placeholder: 'Type or paste your content here!'
+				placeholder: placeholder
 			}
 		};
 	}, [cloud, isLayoutReady]);
@@ -95,8 +96,8 @@ export default function CKEdite({setRichText,initalValue}: {
 	return (
 		<div className="main-container">
 			<div className="editor-container editor-container_inline-editor" ref={editorContainerRef}>
-				<div className="editor-container__editor">
-					<div ref={editorRef}>{InlineEditor && editorConfig && <CKEditor editor={InlineEditor} onChange={(_,edirtor) => setRichText(edirtor.data)} config={editorConfig} />}</div>
+				<div className="editor-container__editor dark:text-white">
+					<div ref={editorRef}>{InlineEditor && editorConfig && <CKEditor editor={InlineEditor} onChange={(_,edirtor) => setRichText(edirtor.getData())} config={editorConfig} />}</div>
 				</div>
 			</div>
 		</div>

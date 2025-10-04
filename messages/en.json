@@ -14,7 +14,8 @@
       "not-published": "Not published",
       "delete-article": "Delete article",
       "edit-article": "Edit article",
-      "download-pdf": "Download article as PDF"
+      "download-pdf": "Download article as PDF",
+      "confirm-delete-message": "Are you sure you want to delete this article, if not click on cancel below"
     },
 
     "article-form": {
@@ -28,12 +29,14 @@
       "date": "Publish Date",
       "date-placeholder": "Select the publish date",
       "tags": "Tags",
+      "tags-placeholder": "No tags selected",
       "published": "Published",
       "un-published": "Un Published",
       "confirm": "Confirm",
       "loading": "Loading...",
       "success-add": "Article added successfully!",
-      "success-update": "Article updated successfully!"
+      "success-update": "Article updated successfully!",
+        "ckeditor-placeholder": "Write the article description"
     }
   },
   "settings": {

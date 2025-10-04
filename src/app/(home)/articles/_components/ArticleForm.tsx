@@ -6,14 +6,17 @@ import { useTranslations } from "next-intl";
 import DatePicker from "react-datepicker";
 import CKEdite from "@/components/ui/CKEdite";
 import MainInput from "@/components/ui/MainInput";
-import FileInput from "@/components/ui/FileInput";
 import ToggleButton from "@/components/ui/ToggleButton";
 import Model from "@/components/Model/Model";
+import MultiSelectInput from "@/components/ui/MultiSelectInput";
 import SelectInput from "@/components/ui/SelectInput";
+import FileInputSecondary from "@/components/ui/FileInputSecondary";
 
+import { arSA, enUS } from "date-fns/locale";
 import { IArticle, useArticles } from "@/stores/Article-store/Articles-store";
+import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { errorToast, successToast } from "@/components/custom/toast";
-import { getFileUrl } from "@/utils/helper";
+import { delayChangeState, getFileUrl } from "@/utils/helper";
 import { MdClose } from "react-icons/md";
 
 const Categories = ["Article", "Post", "Short post"];
@@ -29,7 +32,7 @@ const localInitialForm: IArticle = {
   scheduled: null,
   richText: "",
   localUrl: "",
-  views: 0
+  views: 0,
 };
 
 export default function ArticleForm({
@@ -42,10 +45,10 @@ export default function ArticleForm({
   children: React.ReactElement;
 }) {
   const t = useTranslations("articles.article-form");
+  const locale = useNavSetting((state) => state.lang);
 
-  const [form, setForm] = useState<IArticle>(
-    initialForm ?? localInitialForm
-  );
+  const [form, setForm] = useState<IArticle>(initialForm ?? localInitialForm);
+  const [closeModel, setCloseModel] = useState(false);
   const { createArticle, updateArticle } = useArticles((state) => state);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -56,24 +59,17 @@ export default function ArticleForm({
         await createArticle(form);
         successToast(t("success-add"));
         setForm(localInitialForm);
+        delayChangeState(setCloseModel)
         return;
       }
       await updateArticle(form.id, form);
       successToast(t("success-update"));
+      delayChangeState(setCloseModel);
     } catch (err) {
       errorToast((err as Error).message);
     }
   };
 
-  const handleAdd = (val: string) => {
-    if (!form.tags.includes(val)) {
-      setForm({...form, tags: [...form.tags, val]});
-    }
-  };
-
-  const handleRemove = (val: string) => {
-    setForm({ ...form, tags: form.tags.filter((v) => v !== val) });
-  };
 
   const handleFileSelected = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -89,7 +85,7 @@ export default function ArticleForm({
   };
 
   return (
-    <Model>
+    <Model outCloseAction={closeModel}>
       <Model.Open opens="new-article">{children}</Model.Open>
       <Model.Window name="new-article">
         <form
@@ -103,7 +99,7 @@ export default function ArticleForm({
             </button>
           </Model.Close>
           {/* Title and Image */}
-          <div className="flex flex-col md:flex-row gap-2 mb-2">
+          <div className="flex flex-col md:flex-row gap-3 mb-2">
             <MainInput
               label={t("title")}
               type="text"
@@ -117,8 +113,10 @@ export default function ArticleForm({
                 {t("date")}
               </label>
               <DatePicker
+                required
                 className="px-4 py-2 bg-white w-full text-secondary-dark dark:text-white dark:bg-transparent placeholder:text-sm dark:placeholder:text-white dark:border dark:border-white outline-hidden shadow-sm rounded-sm"
                 selected={form.scheduled}
+                locale={locale == "ar" ? arSA : enUS}
                 placeholderText={t("date-placeholder")}
                 onChange={(date) => setForm({ ...form, scheduled: date })}
               />
@@ -126,15 +124,15 @@ export default function ArticleForm({
           </div>
 
           {/* Category & Date */}
-          <div className="flex flex-col md:flex-row gap-2 mb-2">
+          <div className="flex flex-col md:flex-row gap-3 mb-4">
             <SelectInput
               label={t("category")}
               values={Categories}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
-              value={form?.category || Categories[0]}
+              value={form?.category }
             />
 
-            <FileInput
+            <FileInputSecondary
               label={t("cover-image")}
               placeHolder={t("cover-image-placeholder")}
               onChange={handleFileSelected}
@@ -143,37 +141,35 @@ export default function ArticleForm({
           </div>
 
           {/* Tags and Published */}
-          <div className="flex flex-col md:flex-row gap-1 mb-2">
-            <SelectInput
+          <div className="flex flex-col md:flex-row items-end gap-3 mb-2">
+            <MultiSelectInput
               label={t("tags")}
-              onChange={(e) =>
-                handleAdd(e.target.value)
-              }
-              values={tags}
-              multiSelect={form.tags}
-              onRemoveElement={handleRemove}
+              options={tags}
+              selectedValues={form.tags}
+              onChange={(values) => setForm({ ...form, tags: values })}
+              placeholder={t("tags-placeholder")}
             />
 
-            <div className="flex items-center gap-2 justify-end">
+            <div className="flex items-center gap-2 justify-between w-full flex-1">
+              <label className="text-sm font-medium text-gray-800 dark:text-gray-200 text-nowrap">
+                {t(form.published ? "published" : "un-published")}
+              </label>
               <ToggleButton
                 value={form.published}
-                buttonStyle="w-[20px] h-[20px]"
                 onChangeFn={() =>
                   setForm({ ...form, published: !form.published })
                 }
               />
-              <label className="text-sm font-medium text-gray-800 dark:text-gray-200 text-nowrap">
-                {t(form.published ? "published" : 'un-published')}
-              </label>
             </div>
           </div>
 
           {/* Rich Text Editor */}
-          <div className="mb-6 border border-gray-300 dark:border-gray-600 rounded-lg p-2 bg-gray-50 dark:bg-gray-800">
-            <div className="overflow-auto" style={{ scrollbarWidth: "none" }}>
+          <div className="my-4 border border-gray-300 dark:border-white rounded-lg  bg-gray-50 dark:bg-secondary-dark">
+            <div className="overflow-auto " style={{ scrollbarWidth: "none" }}>
               <CKEdite
                 setRichText={(data) => setForm({ ...form, richText: data })}
                 initalValue={form.richText}
+                placeholder={t('ckeditor-placeholder')}
               />
             </div>
           </div>

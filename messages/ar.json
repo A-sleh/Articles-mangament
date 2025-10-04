@@ -13,7 +13,8 @@
       "not-published": "غير منشور",
       "delete-article": "حذف المقال",
       "edit-article": "تعديل المقال",
-      "download-pdf": "تحميل المقال كملف PDF"
+      "download-pdf": "تحميل المقال كملف PDF",
+      "confirm-delete-message": "هل أنت متأكد من خذف هذه المقالة, يمكنك التراجع عن عملية الحذف بالنقر على زر الإلغاء"
     },
     "article-form": {
       "article-form": "نموذج المقال",
@@ -26,12 +27,14 @@
       "date": "تاريخ النشر",
       "date-placeholder": "اختر تاريخ النشر",
       "tags": "العلامات",
+      "tags-placeholder": "لم يتم اختيار أي علامات",
       "published": "منشور",
       "un-published": "غير منشور",
       "confirm": "تأكيد",
       "loading": "جارٍ التحميل...",
       "success-add": "تم إضافة المقال بنجاح!",
-      "success-update": "تم تحديث المقال بنجاح!"
+      "success-update": "تم تحديث المقال بنجاح!",
+      "ckeditor-placeholder": "اكتب وصفا للمقال"
     }
   },
   "settings": {

@@ -48,7 +48,7 @@ const handleUpdateArticle = (
 const handleGetArticle = (
   id: number,
   articles: IArticle[]
-): IArticle | null => articles.find((article) => article.id === id) ?? null;
+): IArticle | null => articles.find((article) => article.id == id) ?? null;
 
 const handleCreateArticle = (
   articles: IArticle[],
@@ -88,9 +88,12 @@ export const useArticles = create<ArticlesStore>()(
       },
 
       getArticleBy: (id) => {
+        
         const userId = get().currentUserId;
+        console.log(userId)
         if (!userId) return null;
         const articles = get().articlesByUser[userId] || [];
+        console.log(articles)
         return handleGetArticle(id, articles);
       },
 

@@ -1,11 +1,25 @@
 import React from "react";
-import { Text, View, StyleSheet, Link } from "@react-pdf/renderer";
+import { Text, View, StyleSheet, Link,Font } from "@react-pdf/renderer";
 import { parseDocument } from "htmlparser2";
 
 type IListContext = {
   type: string;
   count?: number;
 };
+
+Font.register({
+  family: "Amiri",
+  fonts: [
+    {
+      src: "/fonts/arabic/Amiri-Regular.ttf",
+      fontWeight: "normal",
+    },
+    {
+      src: "/fonts/arabic/Amiri-Bold.ttf",
+      fontWeight: "bold",
+    },
+  ],
+});
 
 const styles = StyleSheet.create({
   ol: {
@@ -43,6 +57,8 @@ const styles = StyleSheet.create({
   todoText: { flex: 1 },
 });
 
+const withFont = (style: any = {}) => [style, { fontFamily: "Amiri" }];
+
 function renderNode(
   node: any,
   index: number,
@@ -51,11 +67,11 @@ function renderNode(
   // listContext to keep track of ordered list count & type, for numbering
 
   if (typeof node === "string") {
-    return <Text key={index}>{node}</Text>;
+    return <Text key={index} style={{fontFamily: 'Amiri'}} >{node}</Text>;
   }
 
   if (node.type === "text") {
-    return <Text key={index}>{node.data}</Text>;
+    return <Text key={index} style={{fontFamily: 'Amiri'}}>{node.data}</Text>;
   }
 
   if (node.type === "tag") {
@@ -68,7 +84,7 @@ function renderNode(
     switch (node.name) {
       case "p":
         return (
-          <Text key={index} style={styles.text}>
+          <Text key={index} style={withFont(styles.text)}>
             {children}
           </Text>
         );
@@ -76,7 +92,7 @@ function renderNode(
       case "strong":
       case "b":
         return (
-          <Text key={index} style={styles.strong}>
+          <Text key={index} style={withFont(styles.strong)}>
             {children}
           </Text>
         );
@@ -84,21 +100,21 @@ function renderNode(
       case "i":
       case "em":
         return (
-          <Text key={index} style={styles.italic}>
+          <Text key={index} style={withFont(styles.italic)}>
             {children}
           </Text>
         );
 
       case "u":
         return (
-          <Text key={index} style={styles.underline}>
+          <Text key={index} style={withFont(styles.underline)}>
             {children}
           </Text>
         );
 
       case "a":
         return (
-          <Link key={index} src={node.attribs.href} style={styles.link}>
+          <Link key={index} src={node.attribs.href} style={withFont(styles.link)}>
             {children}
           </Link>
         );
@@ -108,7 +124,7 @@ function renderNode(
         let count = 1;
         const newContext = { ...listContext, type: "ol" };
         return (
-          <View key={index} style={styles.ol}>
+          <View key={index} style={withFont(styles.ol)}>
             {node.children.map((child: any, i: number) => {
               if (child.name === "li") {
                 return renderNode(child, i, { ...newContext, count: count++ });
@@ -122,7 +138,7 @@ function renderNode(
       case "ul": {
         // Support special todo list class (checkbox)
         return (
-          <View key={index} style={styles.ul}>
+          <View key={index} style={withFont(styles.ul)}>
             {node.children.map((child: any, i: number) => {
               if (child.name === "li") {
                 return renderNode(child, i, { type: "ul" });
@@ -138,35 +154,35 @@ function renderNode(
           return (
             <View
               key={index}
-              style={{
+              style={withFont({
                 flexDirection: "row",
                 marginBottom: 4,
                 display: "flex",
                 alignItems: "center",
-              }}
+              })}
             >
-              <Text style={styles.listItemMarker}>{listContext?.count}.</Text>
-              <Text style={styles.text}>{children}</Text>
+              <Text style={withFont(styles.listItemMarker)}>{listContext?.count}.</Text>
+              <Text style={withFont(styles.text)}>{children}</Text>
             </View>
           );
         } else if (listContext.type === "ul") {
           return (
             <View
               key={index}
-              style={{
+              style={withFont({
                 flexDirection: "row",
                 marginBottom: 4,
                 display: "flex",
                 alignItems: "center",
-              }}
+              })}
             >
-              <Text style={styles.listItemMarker}>{"\u2022"}</Text>
-              <Text style={styles.text}>{children}</Text>
+              <Text style={withFont(styles.listItemMarker)}>{"\u2022"}</Text>
+              <Text style={withFont(styles.text)}>{children}</Text>
             </View>
           );
         } else {
           return (
-            <Text key={index} style={styles.text}>
+            <Text key={index} style={withFont(styles.text)}>
               {children}
             </Text>
           );
@@ -177,7 +193,7 @@ function renderNode(
         // For todo-list label (checkbox container)
         // Usually contains input and possibly text
         return (
-          <View key={index} style={styles.todoContainer}>
+          <View key={index} style={withFont(styles.todoContainer)}>
             {children}
           </View>
         );
@@ -198,7 +214,7 @@ function renderNode(
       default:
         // Default fallback - render children
         return (
-          <Text key={index} style={styles.text}>
+          <Text key={index} style={withFont(styles.text)}>
             {children}
           </Text>
         );
@@ -214,5 +230,5 @@ function renderNode(
 export default function HtmlToPdf({ html }: { html: string }) {
   const dom = parseDocument(html);
 
-  return <View>{dom.children.map((node, i) => renderNode(node, i))}</View>;
+  return <View style={{ fontFamily: "Amiri",width: '100%'}}>{dom.children.map((node, i) => renderNode(node, i))}</View>;
 }

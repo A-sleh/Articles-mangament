@@ -90,3 +90,15 @@ export function convertDateToTimeStamp(date: string | Date ): number {
 export function getDayName(date: Date, locale: string = "en-US"): string {
   return date.toLocaleDateString(locale, { weekday: "long" });
 }
+
+export function formatDate(date: Date | string, locale: 'en' | 'ar') {
+  const d = typeof date === 'string' ? new Date(date) : date;
+
+  return new Intl.DateTimeFormat(locale === 'ar' ? 'ar-EG' : 'en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+  }).format(d);
+}
+

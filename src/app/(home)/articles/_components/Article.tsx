@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { SortableItem, SortableKnob } from "react-easy-sort";
 
+import { formatDate } from "@/utils/helper";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { IArticle, useArticles } from "@/stores/Article-store/Articles-store";
 
@@ -12,9 +14,8 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { FaPencilAlt } from "react-icons/fa";
 
 import ArticleForm from "./ArticleForm";
+import ConfirmModal from "@/components/Model/ConfirmModel";
 import { errorToast, successToast } from "@/components/custom/toast";
-
-import { useTranslations } from "next-intl";
 
 export default function Article({ article }: { article: IArticle }) {
   const t = useTranslations("articles.article");
@@ -64,7 +65,9 @@ export default function Article({ article }: { article: IArticle }) {
             )}
           </div>
           <div>
-            <p className="text-sm my-1">{new Date(scheduled || '').toDateString()}</p>
+            <p className="text-sm my-1">
+              {formatDate(new Date(scheduled || ""), locale)}
+            </p>
             <span
               className={`${
                 published ? "bg-green-400" : "bg-red-400"
@@ -75,12 +78,18 @@ export default function Article({ article }: { article: IArticle }) {
           </div>
         </Link>
         <div className="flex gap-2 flex-col">
-          <AiOutlineDelete
-            size={20}
-            className="text-red-400 cursor-pointer"
-            title={t("delete-article")}
-            onClick={() => handleDelete(id)}
-          />
+          <ConfirmModal
+            ModalKey="delete-article"
+            handleApply={() => handleDelete(id)}
+            message={t("confirm-delete-message")}
+          >
+            <AiOutlineDelete
+              size={20}
+              className="text-red-400 cursor-pointer"
+              title={t("delete-article")}
+            />
+          </ConfirmModal>
+
           <ArticleForm method="PUT" initialForm={article}>
             <FaPencilAlt
               size={20}

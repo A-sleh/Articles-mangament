@@ -7,15 +7,18 @@ import { useRouter } from "next/navigation";
 
 import { IoChevronBackCircleOutline } from "react-icons/io5";
 import { useArticles } from "@/stores/Article-store/Articles-store";
+import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FaDownload, FaPencilAlt } from "react-icons/fa";
 
 import { useTranslations } from "next-intl";
 
+import { formatDate } from "@/utils/helper";
 import { successToast } from "@/components/custom/toast";
 import DownLoadArticlePdf from "@/components/pdf/Article/DownLoadArticlePdf";
 import ArticleForm from "../_components/ArticleForm";
 import NotFoundMessage from "@/components/ui/NotFoundMessage";
+import ConfirmModal from "@/components/Model/ConfirmModel";
 
 const ICON_SIZE = 20;
 
@@ -24,12 +27,13 @@ export default function Article({ params }: { params: { id: number } }) {
   const t = useTranslations("articles.article");
 
   const { getArticleBy, deleteArticle } = useArticles((state) => state);
+  const locale = useNavSetting((state) => state.lang);
   const article = getArticleBy(params.id);
 
-  if (!article)
-    return <NotFoundMessage message={t("not-found-message")} />;
+  if (!article) return <NotFoundMessage message={t("not-found-message")} />;
 
-  const { cover, title, published, scheduled, category, tags, richText } = article;
+  const { cover, title, published, scheduled, category, tags, richText } =
+    article;
 
   async function handleDelete(id: number) {
     try {
@@ -44,7 +48,7 @@ export default function Article({ params }: { params: { id: number } }) {
   return (
     <section className="p-4">
       <header className="flex justify-between p-2 bg-primary dark:bg-primary-dark rounded-md mb-2 text-white">
-        <span>{new Date(scheduled || '').toDateString()}</span>
+        <span>{formatDate(new Date(scheduled || ""), locale)}</span>
         <Link href="/articles" aria-label={t("back-to-articles")}>
           <IoChevronBackCircleOutline size={25} />
         </Link>
@@ -64,18 +68,23 @@ export default function Article({ params }: { params: { id: number } }) {
               <span
                 className={`${
                   published ? "bg-green-400" : "bg-red-400"
-                } text-white p-1 rounded-md font-normal text-sm`}
+                } text-white p-1 px-2 rounded-md font-normal text-sm`}
               >
                 {published ? t("published") : t("not-published")}
               </span>
             </h1>
             <div className="actions flex gap-2">
-              <AiOutlineDelete
-                size={ICON_SIZE}
-                className="text-red-400 cursor-pointer"
-                onClick={() => handleDelete(params.id)}
-                title={t("delete-article")}
-              />
+              <ConfirmModal
+                ModalKey="delete-range"
+                handleApply={() => handleDelete(params.id)}
+                message={t("confirm-delete-message")}
+              >
+                <AiOutlineDelete
+                  size={ICON_SIZE}
+                  className="text-red-400 cursor-pointer"
+                  title={t("delete-article")}
+                />
+              </ConfirmModal>
               <ArticleForm method="PUT" initialForm={article}>
                 <FaPencilAlt
                   size={ICON_SIZE}
@@ -92,8 +101,8 @@ export default function Article({ params }: { params: { id: number } }) {
               </DownLoadArticlePdf>
             </div>
           </div>
-          <div className="mb-3">
-            <span className="text-white bg-primary rounded-md px-2 py-1">
+          <div className="my-3">
+            <span className="text-white bg-primary dark:bg-primary-dark rounded-md px-2 py-1">
               {category}
             </span>
           </div>
@@ -103,7 +112,10 @@ export default function Article({ params }: { params: { id: number } }) {
 
       <div className="flex gap-2 flex-wrap my-2">
         {tags?.map((tag, idx) => (
-          <span key={idx} className="px-2 py-1 rounded-md bg-primary text-white">
+          <span
+            key={idx}
+            className="px-2 py-1 rounded-md bg-primary dark:bg-primary-dark text-white"
+          >
             {tag}
           </span>
         ))}
