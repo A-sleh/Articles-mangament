@@ -31,7 +31,7 @@ export default function Time({
   const { deleteRangeTime } = useWorkingHours((state) => state);
 
   // Prevent actions when disabled
-  const handleDoublicat = () => !isDiabled && handleDoublicatRange(range);
+  const handleDoublicat = () => !isDisabled && handleDoublicatRange(range);
   const handleDelelteRange = () => {
     deleteRangeTime(user?.id || 0, range);
     successToast(t("delelte-range-success-not"));
