@@ -16,7 +16,7 @@ import { useAuth } from "@/stores/Auth-store/Auth-srore";
 const intialValue: IUser = {
   id: 0,
   gemail: "",
-  password: "string",
+  password: "",
   image: "",
   firstName: "",
   lastName: "",

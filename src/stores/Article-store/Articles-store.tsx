@@ -23,10 +23,10 @@ type ArticlesState = {
 
 type ArticlesActions = {
   setCurrentUser: (userId: string | number) => void;
-  getAllArticles: () => IArticle[] ;
+  getAllArticles: () => IArticle[];
   deleteArticle: (articleId: number) => void;
-  createArticle: (body: Omit<IArticle, "id" >) => void;
-  updateArticle: (articleId: number, body:  IArticle) => void;
+  createArticle: (body: Omit<IArticle, "id">) => void;
+  updateArticle: (articleId: number, body: IArticle) => void;
   updateArticles: (articles: IArticle[]) => void;
   getArticleBy: (articleId: number) => IArticle | null;
 };
@@ -36,7 +36,7 @@ type ArticlesStore = ArticlesState & ArticlesActions;
 // ========== Helper Functions ==========
 
 const handleDeleteArticle = (articles: IArticle[], id: number): IArticle[] =>
-  articles.filter((article) => article.id !== id);
+  articles.filter((article) => article.id != id);
 
 const handleUpdateArticle = (
   articles: IArticle[],
@@ -45,20 +45,17 @@ const handleUpdateArticle = (
 ): IArticle[] =>
   articles.map((article) => (article.id === id ? updated : article));
 
-const handleGetArticle = (
-  id: number,
-  articles: IArticle[]
-): IArticle | null => articles.find((article) => article.id == id) ?? null;
+const handleGetArticle = (id: number, articles: IArticle[]): IArticle | null =>
+  articles.find((article) => article.id == id) ?? null;
 
 const handleCreateArticle = (
   articles: IArticle[],
   newArticle: Omit<IArticle, "id">
 ): IArticle[] => {
-
   const newId = (articles[articles.length - 1]?.id || 0) + 1;
-  const views = Math.floor(Math.random() * 2000 ); // Generate random number of views
+  const views = Math.floor(Math.random() * 2000); // Generate random number of views
 
-  return [...articles, { ...newArticle, id: newId , views }];
+  return [...articles, { ...newArticle, id: newId, views }];
 };
 
 // ========== Zustand Store ==========
@@ -71,10 +68,17 @@ export const useArticles = create<ArticlesStore>()(
       getAllArticles: () => {
         const userId = get().currentUserId;
         if (!userId) return [];
-        return get().articlesByUser[userId] || []
+        return get().articlesByUser[userId] || [];
       },
-      
-      setCurrentUser: (userId) => set({ currentUserId: userId?.toString() }),
+
+      setCurrentUser: (userId) =>
+        set((state) => ({
+          currentUserId: userId?.toString(),
+          articlesByUser: {
+            ...state.articlesByUser,
+            [userId]: [], // Intilize user articles with empty array
+          },
+        })),
 
       updateArticles: (articles) => {
         const userId = get().currentUserId;
@@ -88,12 +92,11 @@ export const useArticles = create<ArticlesStore>()(
       },
 
       getArticleBy: (id) => {
-        
         const userId = get().currentUserId;
-        console.log(userId)
+        console.log(userId);
         if (!userId) return null;
         const articles = get().articlesByUser[userId] || [];
-        console.log(articles)
+        console.log(articles);
         return handleGetArticle(id, articles);
       },
 

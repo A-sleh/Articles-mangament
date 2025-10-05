@@ -19,7 +19,7 @@ export const convertImageToBase64 = (file: File): Promise<string> => {
   });
 };
 
-export async function getFileUrl(file: File): Promise<string | null> {
+export async function getFileUrl(file: File,allowImages: string[] = []): Promise<string | null> {
   const maxFileSize = 1048576; //   < == > 1MB
 
   if (!file) return null;
@@ -29,6 +29,11 @@ export async function getFileUrl(file: File): Promise<string | null> {
       throw new Error("Image size must be less than 1 Mb");
     }
     const type = file.type.split("/")[1];
+    console.log(type)
+
+    if(allowImages.length != 0 && !allowImages.includes(type)) {
+      throw new Error("The type of image is not allowed")
+    }
 
     const imageBase64 = await convertImageToBase64(file);
     return `data:image/${type};base64,${imageBase64}`;

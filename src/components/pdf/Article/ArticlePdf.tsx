@@ -12,6 +12,7 @@ import {
   Font,
 } from "@react-pdf/renderer";
 import HtmlToPdf from "../ConvertHtmlToPdf";
+import { formatDate } from "@/utils/helper";
 
 Font.register({
   family: "Amiri",
@@ -46,9 +47,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    width: "100%",
-    height: 350,
+    width: "80%",
+    height: 400,
     backgroundColor: "#1C6EA4",
+    alignSelf: "center",
   },
   tages: {
     display: "flex",
@@ -60,14 +62,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     backgroundColor: "#1C6EA4",
-    fontSize: 10,
+    fontSize: 12,
     color: "#FFFFFF",
     borderRadius: 10,
   },
   title: {
     fontSize: 18,
     marginBottom: 5,
-    textAlign: "right",
   },
   dateContainer: {
     fontSize: 15,
@@ -76,51 +77,60 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     display: "flex",
-    flexDirection: "row-reverse",
   },
   category: {
     paddingVertical: 2,
     paddingHorizontal: 8,
     borderRadius: 5,
     fontSize: 12,
-    textAlign: "center",
     color: "#ffffff",
     backgroundColor: "#1C6EA4",
   },
   spaceBetweenContainer: {
     display: "flex",
     justifyContent: "space-between",
-    flexDirection: "row-reverse",
     alignItems: "flex-start",
     marginBottom: 10,
   },
 });
 
 // Main PDF Component
-export const ArticlePdf = ({ article }: { article: IArticle }) => {
+export const ArticlePdf = ({
+  article,
+  locale,
+}: {
+  article: IArticle;
+  locale: "ar" | "en";
+}) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-
-        <View style={styles.spaceBetweenContainer}>
-          <View>
+        <View
+          style={[
+            styles.spaceBetweenContainer,
+            { flexDirection: locale == "ar" ? "row-reverse" : "row" },
+          ]}
+        >
+          <View style={{ textAlign: locale == "ar" ? "right" : "left" }}>
             <Text style={styles.title}>{article.title}</Text>
-            <View style={styles.categoryContainer}>
+            <View
+              style={[
+                styles.categoryContainer,
+                { flexDirection: locale == "ar" ? "row-reverse" : "row" },
+              ]}
+            >
               <Text style={styles.category}>{article.category}</Text>
             </View>
           </View>
           <Text style={styles.dateContainer}>
-            {new Date(article.scheduled || "").toLocaleDateString("ar-EG", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            {formatDate(article.scheduled || "", locale)}
           </Text>
         </View>
 
-        <View style={[styles.container, { width: "100%" }]}>
-          <Image src={article.cover.trim()} style={styles.image} />
+        <View style={[styles.container]}>
+          {article.cover && (
+            <Image src={article.cover.trim()} style={styles.image} />
+          )}
           <View style={styles.tages}>
             {article?.tags?.map((tag, i) => (
               <Text key={i} style={styles.tage}>
@@ -128,9 +138,16 @@ export const ArticlePdf = ({ article }: { article: IArticle }) => {
               </Text>
             ))}
           </View>
-        <View style={{ fontFamily: "Amiri" , width: '100%'}}>{HtmlToPdf({ html: article.richText })}</View>
+          <View
+            style={{
+              fontFamily: "Amiri",
+              width: "100%",
+              textAlign: locale == "ar" ? "right" : "left",
+            }}
+          >
+            {HtmlToPdf({ html: article.richText })}
+          </View>
         </View>
-
       </Page>
     </Document>
   );

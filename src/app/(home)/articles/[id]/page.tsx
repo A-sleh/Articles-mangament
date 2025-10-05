@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
+import parse from "html-react-parser";
 import { useRouter } from "next/navigation";
 
 import { IoChevronBackCircleOutline } from "react-icons/io5";
@@ -19,6 +20,8 @@ import DownLoadArticlePdf from "@/components/pdf/Article/DownLoadArticlePdf";
 import ArticleForm from "../_components/ArticleForm";
 import NotFoundMessage from "@/components/ui/NotFoundMessage";
 import ConfirmModal from "@/components/Model/ConfirmModel";
+import PDFViwer from "@/components/pdf/PDFViwer";
+import { ArticlePdf } from "@/components/pdf/Article/ArticlePdf";
 
 const ICON_SIZE = 20;
 
@@ -53,72 +56,88 @@ export default function Article({ params }: { params: { id: number } }) {
           <IoChevronBackCircleOutline size={25} />
         </Link>
       </header>
-      <div className="flex gap-2 dark:text-white">
-        <Image
-          src={cover || ""}
-          width={400}
-          height={400}
-          alt={t("cover-image-alt")}
-          className="w-[12rem] md:w-[22rem] rounded-md"
-        />
-        <div className="w-full">
-          <div className="flex justify-between w-full">
-            <h1 className="text-xl font-bold uppercase flex items-center gap-2">
-              {title}
-              <span
-                className={`${
-                  published ? "bg-green-400" : "bg-red-400"
-                } text-white p-1 px-2 rounded-md font-normal text-sm`}
-              >
-                {published ? t("published") : t("not-published")}
-              </span>
-            </h1>
-            <div className="actions flex gap-2">
-              <ConfirmModal
-                ModalKey="delete-range"
-                handleApply={() => handleDelete(params.id)}
-                message={t("confirm-delete-message")}
-              >
-                <AiOutlineDelete
-                  size={ICON_SIZE}
-                  className="text-red-400 cursor-pointer"
-                  title={t("delete-article")}
-                />
-              </ConfirmModal>
-              <ArticleForm method="PUT" initialForm={article}>
-                <FaPencilAlt
-                  size={ICON_SIZE}
-                  className="text-blue-400 cursor-pointer"
-                  title={t("edit-article")}
-                />
-              </ArticleForm>
-              <DownLoadArticlePdf article={article}>
-                <FaDownload
-                  size={ICON_SIZE}
-                  className="cursor-pointer"
-                  title={t("download-pdf")}
-                />
-              </DownLoadArticlePdf>
-            </div>
-          </div>
-          <div className="my-3">
-            <span className="text-white bg-primary dark:bg-primary-dark rounded-md px-2 py-1">
-              {category}
+      <div className="w-full">
+        <div className="flex justify-between w-full">
+          <h1 className="text-xl font-bold uppercase flex items-center gap-2">
+            {title}
+            <span
+              className={`${
+                published ? "bg-green-400" : "bg-red-400"
+              } text-white p-1 px-2 rounded-md font-normal text-sm`}
+            >
+              {published ? t("published") : t("not-published")}
             </span>
+          </h1>
+          <div className="actions flex gap-2">
+            <ConfirmModal
+              ModalKey="delete-range"
+              handleApply={() => handleDelete(params.id)}
+              message={t("confirm-delete-message")}
+            >
+              <AiOutlineDelete
+                size={ICON_SIZE}
+                className="text-red-400 cursor-pointer"
+                title={t("delete-article")}
+              />
+            </ConfirmModal>
+            <ArticleForm method="PUT" initialForm={article}>
+              <FaPencilAlt
+                size={ICON_SIZE}
+                className="text-blue-400 cursor-pointer"
+                title={t("edit-article")}
+              />
+            </ArticleForm>
+            <DownLoadArticlePdf article={article}>
+              <FaDownload
+                size={ICON_SIZE}
+                className="cursor-pointer"
+                title={t("download-pdf")}
+              />
+            </DownLoadArticlePdf>
           </div>
-          <div dangerouslySetInnerHTML={{ __html: richText }} />
+        </div>
+        <PDFViwer >
+              <ArticlePdf article={article} locale={locale} />
+        </PDFViwer>
+        <div className="my-3">
+          <span className="text-white bg-primary dark:bg-primary-dark rounded-md px-2 py-1">
+            {category}
+          </span>
         </div>
       </div>
 
-      <div className="flex gap-2 flex-wrap my-2">
-        {tags?.map((tag, idx) => (
-          <span
-            key={idx}
-            className="px-2 py-1 rounded-md bg-primary dark:bg-primary-dark text-white"
-          >
-            {tag}
-          </span>
-        ))}
+      <div className="flex flex-col md:flex-row gap-3 md:gap-8 items-center md:items-start dark:text-white">
+        {/* Left column (Image + Tags) */}
+        <div className="w-full md:w-1/2 flex flex-col items-center md:items-start">
+          {cover && (
+            <Image
+              src={cover}
+              width={400}
+              height={300}
+              alt={t("cover-image-alt")}
+              className="w-full  rounded-md object-cover"
+            />
+          )}
+
+          {/* Tags */}
+          {tags?.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
+              {tags.map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="px-3 py-1 rounded-md bg-primary dark:bg-primary-dark text-white text-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Right column (Rich text content) */}
+        <div className="w-full md:w-1/2 converted-richtext dark:prose-invert max-w-none">
+          {parse(richText)}
+        </div>
       </div>
     </section>
   );

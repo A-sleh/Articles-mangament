@@ -28,10 +28,10 @@ export default function FileInput({
           </p>
         )}
         <span
-          onClick={() => inputRef.current?.click()}
+          onClick={(e) =>{e.stopPropagation();inputRef.current?.click()}}
           title={t('upload-file')}
           className="px-2 py-1 text-sm cursor-pointer bg-primary  dark:bg-secondary-dark text-white text-nowrap "
-          style={{ lineHeight: "-10px" }}
+          style={{ lineHeight: "-20px" }}
         >
           {t('upload-file')}
         </span>

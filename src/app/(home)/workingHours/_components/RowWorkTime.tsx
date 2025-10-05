@@ -45,13 +45,13 @@ export default function RowWorkTime({
       </label>
 
       {/* Times & Add Button */}
-      <div className="flex-1 flex justify-between items-center">
+      <div className="flex-1 flex justify-between items-center" >
         <div className="flex gap-2 items-center flex-wrap">
           {workTime.ranges.map((range) => (
             <Time
               key={range.id}
               range={{ ...range, day: dayKey }}
-              isDiabled={!workTime.isActive}
+              isDisabled={!workTime.isActive}
             />
           ))}
         </div>

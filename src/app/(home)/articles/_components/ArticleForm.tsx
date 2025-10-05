@@ -77,7 +77,7 @@ export default function ArticleForm({
     const localUrl = e.target.value.toString();
 
     try {
-      const url = (await getFileUrl(e.target.files[0])) ?? "";
+      const url = (await getFileUrl(e.target.files[0],['jpeg','png'])) ?? "";
       setForm((prev) => ({ ...prev, cover: url, localUrl }));
     } catch (err) {
       errorToast((err as Error).message);

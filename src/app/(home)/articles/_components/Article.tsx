@@ -48,16 +48,25 @@ export default function Article({ article }: { article: IArticle }) {
   return (
     <SortableItem key={id}>
       <div
-        className="flex gap-2 dark:text-white items-start bg-white dark:bg-primary-dark rounded-md p-2 border-dashed border-2 border-primary dark:border-white"
+        className="flex gap-2 items-center dark:text-white md:items-start bg-white dark:bg-primary-dark rounded-md p-2 border-dashed border-2 border-primary dark:border-white"
         dir={locale == "ar" ? "rtl" : "ltr"}
       >
         <Link
           href={`/articles/${id}`}
           title={t("back-to-articles")}
-          className="flex justify-between flex-1"
+          className="flex flex-col md:flex-row justify-between flex-1"
         >
           <div>
-            <h3 className="font-bold">{title}</h3>
+            <div className="flex gap-2 ">
+              <h3 className="font-bold">{title}</h3>
+              <span
+                className={`${
+                  published ? "bg-green-400" : "bg-red-400"
+                } text-white px-1 py-0.5 rounded-sm text-[12px]`}
+              >
+                {published ? t("published") : t("not-published")}
+              </span>
+            </div>
             {category && (
               <span className="px-2 py-1 rounded-md text-sm bg-primary dark:bg-secondary-dark text-white">
                 {category}
@@ -68,13 +77,6 @@ export default function Article({ article }: { article: IArticle }) {
             <p className="text-sm my-1">
               {formatDate(new Date(scheduled || ""), locale)}
             </p>
-            <span
-              className={`${
-                published ? "bg-green-400" : "bg-red-400"
-              } text-white p-1 rounded-xs text-sm`}
-            >
-              {published ? t("published") : t("not-published")}
-            </span>
           </div>
         </Link>
         <div className="flex gap-2 flex-col">

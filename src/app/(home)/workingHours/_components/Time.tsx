@@ -18,10 +18,10 @@ import { successToast } from "@/components/custom/toast";
 
 export default function Time({
   range,
-  isDiabled,
+  isDisabled,
 }: {
   range: newRangePayload;
-  isDiabled: boolean;
+  isDisabled: boolean;
 }) {
   const t = useTranslations("working-hours");
   const user = useAuth((state) => state.user);
@@ -46,6 +46,7 @@ export default function Time({
         <MiniTimeInput
           range={range}
           timeType="start"
+          isDisabled={isDisabled}
           className="p-[5px] text-sm border "
         />
         <MdOutlineArrowForwardIos
@@ -54,6 +55,7 @@ export default function Time({
         />
         <MiniTimeInput
           range={range}
+          isDisabled={isDisabled}
           timeType="end"
           className="p-[5px] text-sm border"
         />
@@ -71,7 +73,7 @@ export default function Time({
         handleApply={handleDelelteRange}
         message={t("confirm-delete-message")}
       >
-        <button disabled={isDiabled}>
+        <button disabled={isDisabled}>
           <AiOutlineDelete
             size={16}
             className="text-red-500 cursor-pointer hover:scale-110 transition"

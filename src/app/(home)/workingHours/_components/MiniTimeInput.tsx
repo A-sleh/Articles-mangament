@@ -14,11 +14,13 @@ export default function MiniTimeInput({
   timeType,
   className = "",
   range,
+  isDisabled = false
 }: {
   range: newRangePayload;
   label?: string;
   timeType: "start" | "end";
   className?: string;
+  isDisabled?: boolean;
 }) {
   const t = useTranslations("working-hours");
   const [openList, setOpenList] = useState<"hours" | "minutes" | null>(null);
@@ -73,7 +75,13 @@ export default function MiniTimeInput({
           values={hours}
           selected={range[timeType].hours}
           isOpen={openList === "hours"}
-          onToggle={() => setOpenList(openList === "hours" ? null : "hours")}
+          onToggle={() => {
+          if(isDisabled) 
+          return 
+          
+           setOpenList(openList === "hours" ? null : "hours")
+
+           }}
           onSelect={(value) => {
             if (validSelectedTimes(value, "hours")) {
               errorToast(t("start-before-end-error"));
@@ -91,9 +99,10 @@ export default function MiniTimeInput({
           values={minutes}
           selected={range[timeType].minutes}
           isOpen={openList === "minutes"}
-          onToggle={() =>
+          onToggle={() =>{
+          if(isDisabled) return 
             setOpenList(openList === "minutes" ? null : "minutes")
-          }
+          }}
           onSelect={(value) => {
             if (validSelectedTimes(value, "minutes")) {
               errorToast(t("start-before-end-error"));
