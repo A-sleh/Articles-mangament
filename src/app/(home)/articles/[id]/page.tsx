@@ -20,8 +20,7 @@ import DownLoadArticlePdf from "@/components/pdf/Article/DownLoadArticlePdf";
 import ArticleForm from "../_components/ArticleForm";
 import NotFoundMessage from "@/components/ui/NotFoundMessage";
 import ConfirmModal from "@/components/Model/ConfirmModel";
-import PDFViwer from "@/components/pdf/PDFViwer";
-import { ArticlePdf } from "@/components/pdf/Article/ArticlePdf";
+
 
 const ICON_SIZE = 20;
 
@@ -96,9 +95,7 @@ export default function Article({ params }: { params: { id: number } }) {
             </DownLoadArticlePdf>
           </div>
         </div>
-        <PDFViwer >
-              <ArticlePdf article={article} locale={locale} />
-        </PDFViwer>
+        
         <div className="my-3">
           <span className="text-white bg-primary dark:bg-primary-dark rounded-md px-2 py-1">
             {category}
