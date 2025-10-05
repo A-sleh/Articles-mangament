@@ -39,13 +39,13 @@ function checkExisitingUser(
   
   return (
     dbUsers.find(
-      (user) => user.gemail === gemail && user.password === password
+      (user) => user.gemail == gemail && user.password == password
     ) || null
   );
 }
 
 function findUserByEmail(gemail: string, dbUsers: IUser[]) {
-  return dbUsers.find((user) => user.gemail === gemail);
+  return dbUsers.find((user) => user.gemail == gemail);
 }
 
 function updateUserCreadential(
@@ -90,7 +90,7 @@ export const useDbUsers = create<DbUserStore>()(
         const existingUser = findUserByEmail(body.gemail, currentUsers);
 
         if (existingUser) {
-          if (existingUser.password === body.password) {
+          if (existingUser.password == body.password) {
             // User exists with same credentials
             throw new Error("This user already exists.");
           } else {

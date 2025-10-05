@@ -43,7 +43,7 @@ const handleUpdateArticle = (
   id: number,
   updated: IArticle
 ): IArticle[] =>
-  articles.map((article) => (article.id === id ? updated : article));
+  articles.map((article) => (article.id == id ? updated : article));
 
 const handleGetArticle = (id: number, articles: IArticle[]): IArticle | null =>
   articles.find((article) => article.id == id) ?? null;

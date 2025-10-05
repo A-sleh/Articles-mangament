@@ -76,11 +76,11 @@ export function handleIntialUserWorkingHours(
   userId: number,
   usersWorkingHours: IUserWorkingHours[]
 ): IUserWorkingHours[] {
-  const exists = usersWorkingHours.some((u) => u.userId === userId);
+  const exists = usersWorkingHours.some((u) => u.userId == userId);
 
   if (exists) {
     return usersWorkingHours.map((u) =>
-      u.userId === userId ? { ...intialState, userId } : u
+      u.userId == userId ? { ...intialState, userId } : u
     );
   } else {
     return [...usersWorkingHours, { ...intialState, userId }];
@@ -120,7 +120,7 @@ export function handleUpdateRange(
       [body.day]: {
         ...user.days[body.day],
         ranges: user.days[body.day].ranges.map((r) =>
-          r.id === body.id ? { ...r, ...body } : r
+          r.id == body.id ? { ...r, ...body } : r
         ),
       },
     },
@@ -175,7 +175,7 @@ export const useWorkingHours = create<workingHoursStore>()(
         })),
 
       addNewRange: (userId, body) => {
-        const user = get().usersWorkingHours.find((u) => u.userId === userId);
+        const user = get().usersWorkingHours.find((u) => u.userId == userId);
         if (!user) throw new Error("User not found");
 
         const existingRanges = user.days[body.day].ranges;
@@ -187,7 +187,7 @@ export const useWorkingHours = create<workingHoursStore>()(
         // Add the new range
         set((state) => ({
           usersWorkingHours: state.usersWorkingHours.map((user) =>
-            user.userId === userId ? handleAddNewRange(user, body) : user
+            user.userId == userId ? handleAddNewRange(user, body) : user
           ),
         }));
       },
@@ -221,7 +221,7 @@ export const useWorkingHours = create<workingHoursStore>()(
         })),
 
       getUserWorkingHours: (userId): IUserWorkingHours =>
-        get().usersWorkingHours.find((u) => u.userId === userId) || {
+        get().usersWorkingHours.find((u) => u.userId == userId) || {
           ...intialState,
           userId,
         },
