@@ -53,12 +53,13 @@ function Close({ children }: { children: ReactNode }) {
 
 function Window({ children, name, className = "" }: WindowProps) {
   const { isDarkMode, lang } = useNavSetting((state) => state);
-  const { openName } = useContext(ModalContext);
+  const { openName, close } = useContext(ModalContext);
 
   if (name !== openName) return null;
 
   return createPortal(
     <div
+      onClick={() => close()}
       dir={lang === "ar" ? "rtl" : "ltr"}
       className={`bg-[#0000004d] fixed inset-0 h-screen z-40 overflow-hidden ${isDarkMode ? "dark" : ""}`}
     >
