@@ -2,12 +2,14 @@ export default function ToggleButton({
   value,
   onChangeFn,
   className,
-  buttonStyle = ''
+  buttonStyle = '',
+  id = ''
 }: {
   value: boolean;
   onChangeFn: () => void;
   className?: string;
   buttonStyle?: string;
+  id?: string;
 }) {
   return (
     <div
@@ -15,6 +17,7 @@ export default function ToggleButton({
         value ? "justify-end" : "justify-start"
       } transition-all cursor-pointer ${className}`}
       onClick={onChangeFn}
+      id={id}
     >
       <span className={`rounded-full bg-white h-[25px] w-[25px] ${buttonStyle}`}></span>
     </div>

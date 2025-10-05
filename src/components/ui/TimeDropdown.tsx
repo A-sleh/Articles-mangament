@@ -39,6 +39,7 @@ export default function TimeDropdown({
   return (
     <div className="relative">
       <div
+      role="button"
         onClick={(e) => {
           e.stopPropagation();
           onToggle();
@@ -65,7 +66,6 @@ export default function TimeDropdown({
               onClick={(e) => {
                 e.stopPropagation();
                 onSelect(value);
-                onToggle();
               }}
             >
               {value}

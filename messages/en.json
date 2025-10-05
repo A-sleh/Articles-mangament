@@ -15,7 +15,8 @@
       "delete-article": "Delete article",
       "edit-article": "Edit article",
       "download-pdf": "Download article as PDF",
-      "confirm-delete-message": "Are you sure you want to delete this article, if not click on cancel below"
+      "confirm-delete-message": "Are you sure you want to delete this article, if not click on cancel below",
+      "drag-to-reorder": "Drag to reorder"
     },
 
     "article-form": {
@@ -149,7 +150,8 @@
       "thu": "Thursday",
       "fri": "Friday",
       "sat": "Saturday"
-    }
+    },
+    "add-range": "Add range"
   },
   "model": {
     "cancel": "Cancel",

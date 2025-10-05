@@ -9,7 +9,7 @@ export default function TimesInput({
   times,
   setTimes,
   label = "",
-  className = ''
+  className = "",
 }: {
   times: Times;
   label?: string;
@@ -46,15 +46,18 @@ export default function TimesInput({
   }, [openList]);
 
   return (
-    <div >
+    <div>
       {label && <h3 className="text-primary">{label}</h3>}
-      <div className="flex gap-2 items-center" >
+      <div className="flex gap-2 items-center">
         <TimeDropdown
           values={hours}
           selected={times.hours}
           isOpen={openList === "hours"}
           onToggle={() => setOpenList(openList === "hours" ? null : "hours")}
-          onSelect={(value) => setTimes((prev) => ({ ...prev, hours: value }))}
+          onSelect={(value) => {
+            setTimes((prev) => ({ ...prev, hours: value }));
+            setOpenList("minutes");
+          }}
           selectedRef={selectedHoursRef}
           className={className}
         />
@@ -68,9 +71,10 @@ export default function TimesInput({
           onToggle={() =>
             setOpenList(openList === "minutes" ? null : "minutes")
           }
-          onSelect={(value) =>
-            setTimes((prev) => ({ ...prev, minutes: value }))
-          }
+          onSelect={(value) => {
+            setTimes((prev) => ({ ...prev, minutes: value }));
+            setOpenList(openList === "minutes" ? null : "minutes");
+          }}
           selectedRef={selectedMinutesRef}
           className={className}
         />

@@ -57,7 +57,7 @@ export default function Article({ article }: { article: IArticle }) {
           className="flex flex-col md:flex-row justify-between flex-1"
         >
           <div>
-            <div className="flex gap-2 ">
+            <div className="flex gap-2 mb-2">
               <h3 className="font-bold">{title}</h3>
               <span
                 className={`${

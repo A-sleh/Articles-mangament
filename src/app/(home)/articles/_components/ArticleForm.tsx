@@ -151,10 +151,11 @@ export default function ArticleForm({
             />
 
             <div className="flex items-center gap-2 justify-between w-full flex-1">
-              <label className="text-sm font-medium text-gray-800 dark:text-gray-200 text-nowrap">
+              <label htmlFor="toggle" className="text-sm font-medium text-gray-800 dark:text-gray-200 text-nowrap">
                 {t(form.published ? "published" : "un-published")}
               </label>
               <ToggleButton
+                id="toggle"
                 value={form.published}
                 onChangeFn={() =>
                   setForm({ ...form, published: !form.published })

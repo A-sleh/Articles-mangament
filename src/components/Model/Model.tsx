@@ -59,12 +59,13 @@ function Window({ children, name, className = "" }: WindowProps) {
 
   return createPortal(
     <div
-      onClick={() => close()}
+      onClick={close}
       dir={lang === "ar" ? "rtl" : "ltr"}
       className={`bg-[#0000004d] fixed inset-0 h-screen z-40 overflow-hidden ${isDarkMode ? "dark" : ""}`}
     >
       <AnimateScale
-        className={`fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-2 hide-scrollbar  overflow-auto w-[90%] md:w-fit ${className}`} 
+        onClick={(e) => {e.stopPropagation()}}
+        className={`fixed top-1/2 left-1/2 z-50 translate-x-[-50%] translate-y-[-50%] p-2 hide-scrollbar  overflow-auto w-[90%] md:w-fit ${className}`} 
       >
         {children}
       </AnimateScale>

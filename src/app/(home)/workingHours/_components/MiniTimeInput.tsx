@@ -14,7 +14,7 @@ export default function MiniTimeInput({
   timeType,
   className = "",
   range,
-  isDisabled = false
+  isDisabled = false,
 }: {
   range: newRangePayload;
   label?: string;
@@ -33,7 +33,6 @@ export default function MiniTimeInput({
   const minutes = genterateTimes(60);
 
   function validSelectedTimes(value: string, key: "hours" | "minutes") {
-    
     // To prevent user to enter end time before start time
     const startTime =
       timeType == "start"
@@ -41,7 +40,7 @@ export default function MiniTimeInput({
         : range["start"];
 
     const endTime =
-      timeType == "end" ? { ...range[timeType], [key]: value } : range["end"]; 
+      timeType == "end" ? { ...range[timeType], [key]: value } : range["end"];
 
     return validTimeOrder(startTime, endTime);
   }
@@ -76,21 +75,19 @@ export default function MiniTimeInput({
           selected={range[timeType].hours}
           isOpen={openList === "hours"}
           onToggle={() => {
-          if(isDisabled) 
-          return 
-          
-           setOpenList(openList === "hours" ? null : "hours")
+            if (isDisabled) return;
 
-           }}
+            setOpenList(openList === "hours" ? null : "hours");
+          }}
           onSelect={(value) => {
             if (validSelectedTimes(value, "hours")) {
               errorToast(t("start-before-end-error"));
               return;
             }
-
             updateRangeTimeOfDay(range.day, range.id, timeType, {
               hours: value,
             });
+            setOpenList('minutes'); // Open the next list when the user select hours
           }}
           selectedRef={selectedHoursRef}
           className={className}
@@ -99,9 +96,9 @@ export default function MiniTimeInput({
           values={minutes}
           selected={range[timeType].minutes}
           isOpen={openList === "minutes"}
-          onToggle={() =>{
-          if(isDisabled) return 
-            setOpenList(openList === "minutes" ? null : "minutes")
+          onToggle={() => {
+            if (isDisabled) return;
+            setOpenList(openList === "minutes" ? null : "minutes");
           }}
           onSelect={(value) => {
             if (validSelectedTimes(value, "minutes")) {
@@ -111,6 +108,7 @@ export default function MiniTimeInput({
             updateRangeTimeOfDay(range.day, range.id, timeType, {
               minutes: value,
             });
+            setOpenList(openList === "minutes" ? null : "minutes"); // Close the list after select minute
           }}
           selectedRef={selectedMinutesRef}
           className={className}
