@@ -30,15 +30,11 @@ export default function ArticlesList() {
           {t("new-article")}
         </button>
       </ArticleForm>
-      <SortableList
-        onSortEnd={onSortEnd}
-        className="list space-y-2"
-        draggedItemClassName="dragged"
-      >
+      <SortableList onSortEnd={onSortEnd} draggedItemClassName="dragged">
         {articles?.length === 0 ? (
           <NotFoundMessage message={t("no-articles-message")} />
         ) : (
-          <AnimateParentLeftEffect>
+          <AnimateParentLeftEffect className="list space-y-2">
             {articles?.map((article, Idx: number) => (
               <AnimateChildLeftEffect duration={Idx / 3}>
                 <Article article={article} key={article.id} />

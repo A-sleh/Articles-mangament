@@ -29,66 +29,77 @@
 
   .main-container {
     font-family: var(--ck-content-font-family);
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
+
+    width: 100%;
+    margin: 0;
+  }
+
+  .ck-editor__editable_inline,
+  .ck-editor__editable_inline:focus {
+    background-color: transparent !important;
+  }
+
+  .ck-toolbar_grouping {
+    border-radius: 10px 10px 0 0 !important;
   }
 
   .editor-container_inline-editor .editor-container__editor {
     min-width: 795px;
     max-width: 795px;
   }
-  .ck-editor__editable_inline {
-    padding-left: 30px !important;
-  }
+
   .apexcharts-toolbar {
     z-index: 0 !important;
+    border-radius: 10px;
   }
   /* Make sure styles apply only inside the editor */
 
-  .ck-content , .converted-richtext {
+  .ck-content,
+  .converted-richtext {
     h1 {
       font-size: 1.8em;
       font-weight: bold;
       margin: 0.75em 0;
     }
     h3 {
+      font-size: 1.7em;
+      font-weight: bold;
+      margin: 0.8em 0;
+    }
+    h3 {
       font-size: 1.6em;
       font-weight: bold;
       margin: 0.8em 0;
     }
-  
-  h4 {
-    font-size: 1.4em;
-    font-weight: 600;
-    margin: 0.9em 0;
-  }
 
-  h5 {
-    font-size: 1.2em;
-    font-weight: 600;
-    margin: 1em 0;
-  }
+    h4 {
+      font-size: 1.4em;
+      font-weight: 600;
+      margin: 0.9em 0;
+    }
 
-  h6 {
-    font-size: 1em;
-    font-weight: 600;
-    margin: 1.1em 0;
-  }
-  ol {
-    list-style: decimal;
-  }
-  ul {
-    list-style: circle;
-  }
+    h5 {
+      font-size: 1.2em;
+      font-weight: 600;
+      margin: 1em 0;
+    }
 
-}
-
-
+    h6 {
+      font-size: 1em;
+      font-weight: 600;
+      margin: 1.1em 0;
+    }
+    ol {
+      list-style: decimal;
+    }
+    ul {
+      list-style: circle;
+    }
+  }
 
   .ck-content[dir="rtl"] {
     text-align: right;
-    direction: rtl;    
+    direction: rtl;
   }
 
   .ck-content[dir="ltr"] {

@@ -177,22 +177,21 @@ export default function ArticleForm({
           {/* Rich Text Editor */}
           <AnimateFromToRight
             delay={0.6}
-            className="my-4 border border-gray-300 dark:border-white rounded-lg  bg-gray-50 dark:bg-secondary-dark"
+
+            className="my-4 border border-gray-300 dark:border-white rounded-lg  bg-gray-50 dark:bg-secondary-dark w-full md:w-[50vw]" 
           >
-            <div className="overflow-auto " style={{ scrollbarWidth: "none" }}>
-              <CKEdite
-                setRichText={(data) => setForm({ ...form, richText: data })}
-                initalValue={form.richText}
-                placeholder={t("ckeditor-placeholder")}
-              />
-            </div>
+            <CKEdite
+              setRichText={(data) => setForm({ ...form, richText: data })}
+              initalValue={form.richText}
+              placeholder={t("ckeditor-placeholder")}
+            />
           </AnimateFromToRight>
 
           {/* Submit Button */}
           <AnimateScale>
             <button
               type="submit"
-              className="w-full md:w-auto px-6 py-2 rounded-md bg-primary text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
+              className="w-full md:w-auto px-6 py-2 rounded-md bg-primary dark:bg-secondary-dark text-white hover:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
             >
               {t("confirm")}
             </button>
