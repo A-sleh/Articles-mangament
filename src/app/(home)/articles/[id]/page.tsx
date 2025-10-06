@@ -109,12 +109,12 @@ export default function Article({ params }: { params: { id: number } }) {
 
       <div className="flex flex-col md:flex-row gap-3 md:gap-8 items-center md:items-start dark:text-white">
         {/* Left column (Image + Tags) */}
-        <AnimateFromToRight className="w-full md:w-1/2 flex flex-col items-center md:items-start">
+        <AnimateFromToRight className="w-full md:w-1/2 lg:w-[45%] flex flex-col items-center md:items-start">
           {cover && (
             <Image
               src={cover}
               width={400}
-              height={300}
+              height={200}
               alt={t("cover-image-alt")}
               className="w-full  rounded-md object-cover"
             />
@@ -139,7 +139,7 @@ export default function Article({ params }: { params: { id: number } }) {
         {/* Right column (Rich text content) */}
         <AnimateFromToRight
           offsetValue={100}
-          className="w-full md:w-1/2 converted-richtext dark:prose-invert max-w-none"
+          className="w-full converted-richtext dark:prose-invert max-w-none"
         >
           {parse(richText)}
         </AnimateFromToRight>

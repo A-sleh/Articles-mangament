@@ -15,6 +15,7 @@ import { useTimesHours } from "@/context/workingHours/WorkingTimesProvider";
 import ConfirmModal from "@/components/Model/ConfirmModel";
 import { useTranslations } from "next-intl";
 import { successToast } from "@/components/custom/toast";
+import AnimateScale from "@/lib/Animation/AnimateScale";
 
 export default function Time({
   range,
@@ -38,7 +39,7 @@ export default function Time({
   };
 
   return (
-    <div
+    <AnimateScale
       className={`flex items-center gap-0.5 rounded-sm bg-white dark:bg-primary-dark p-1 transition-all `}
     >
       {/* Time Display / Inputs */}
@@ -81,6 +82,6 @@ export default function Time({
           />
         </button>
       </ConfirmModal>
-    </div>
+    </AnimateScale>
   );
 }

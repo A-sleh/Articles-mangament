@@ -18,6 +18,8 @@ import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { errorToast, successToast } from "@/components/custom/toast";
 import { delayChangeState, getFileUrl } from "@/utils/helper";
 import { MdClose } from "react-icons/md";
+import AnimateFromToRight from "@/lib/Animation/AnimateFromLeftToRight";
+import AnimateScale from "@/lib/Animation/AnimateScale";
 
 const Categories = ["Article", "Post", "Short post"];
 const tags = ["News", "Personal", "Release"];
@@ -59,7 +61,7 @@ export default function ArticleForm({
         await createArticle(form);
         successToast(t("success-add"));
         setForm(localInitialForm);
-        delayChangeState(setCloseModel)
+        delayChangeState(setCloseModel);
         return;
       }
       await updateArticle(form.id, form);
@@ -70,14 +72,13 @@ export default function ArticleForm({
     }
   };
 
-
   const handleFileSelected = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
     const localUrl = e.target.value.toString();
 
     try {
-      const url = (await getFileUrl(e.target.files[0],['jpeg','png'])) ?? "";
+      const url = (await getFileUrl(e.target.files[0], ["jpeg", "png"])) ?? "";
       setForm((prev) => ({ ...prev, cover: url, localUrl }));
     } catch (err) {
       errorToast((err as Error).message);
@@ -99,7 +100,7 @@ export default function ArticleForm({
             </button>
           </Model.Close>
           {/* Title and Image */}
-          <div className="flex flex-col md:flex-row gap-3 mb-2">
+          <AnimateFromToRight className="flex flex-col md:flex-row gap-3 mb-2">
             <MainInput
               label={t("title")}
               type="text"
@@ -121,15 +122,18 @@ export default function ArticleForm({
                 onChange={(date) => setForm({ ...form, scheduled: date })}
               />
             </div>
-          </div>
+          </AnimateFromToRight>
 
           {/* Category & Date */}
-          <div className="flex flex-col md:flex-row gap-3 mb-4">
+          <AnimateFromToRight
+            delay={0.2}
+            className="flex flex-col md:flex-row gap-3 mb-4"
+          >
             <SelectInput
               label={t("category")}
               values={Categories}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
-              value={form?.category }
+              value={form?.category}
             />
 
             <FileInputSecondary
@@ -138,10 +142,13 @@ export default function ArticleForm({
               onChange={handleFileSelected}
               value={form.localUrl}
             />
-          </div>
+          </AnimateFromToRight>
 
           {/* Tags and Published */}
-          <div className="flex flex-col md:flex-row items-end gap-3 mb-2">
+          <AnimateFromToRight
+            delay={0.4}
+            className="flex flex-col md:flex-row items-end gap-3 mb-2"
+          >
             <MultiSelectInput
               label={t("tags")}
               options={tags}
@@ -151,7 +158,10 @@ export default function ArticleForm({
             />
 
             <div className="flex items-center gap-2 justify-between w-full flex-1">
-              <label htmlFor="toggle" className="text-sm font-medium text-gray-800 dark:text-gray-200 text-nowrap">
+              <label
+                htmlFor="toggle"
+                className="text-sm font-medium text-gray-800 dark:text-gray-200 text-nowrap"
+              >
                 {t(form.published ? "published" : "un-published")}
               </label>
               <ToggleButton
@@ -162,26 +172,31 @@ export default function ArticleForm({
                 }
               />
             </div>
-          </div>
+          </AnimateFromToRight>
 
           {/* Rich Text Editor */}
-          <div className="my-4 border border-gray-300 dark:border-white rounded-lg  bg-gray-50 dark:bg-secondary-dark">
+          <AnimateFromToRight
+            delay={0.6}
+            className="my-4 border border-gray-300 dark:border-white rounded-lg  bg-gray-50 dark:bg-secondary-dark"
+          >
             <div className="overflow-auto " style={{ scrollbarWidth: "none" }}>
               <CKEdite
                 setRichText={(data) => setForm({ ...form, richText: data })}
                 initalValue={form.richText}
-                placeholder={t('ckeditor-placeholder')}
+                placeholder={t("ckeditor-placeholder")}
               />
             </div>
-          </div>
+          </AnimateFromToRight>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full md:w-auto px-6 py-2 rounded-md bg-primary text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
-          >
-            {t("confirm")}
-          </button>
+          <AnimateScale>
+            <button
+              type="submit"
+              className="w-full md:w-auto px-6 py-2 rounded-md bg-primary text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
+            >
+              {t("confirm")}
+            </button>
+          </AnimateScale>
         </form>
       </Model.Window>
     </Model>
