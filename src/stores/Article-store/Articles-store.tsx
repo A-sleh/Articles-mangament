@@ -76,7 +76,7 @@ export const useArticles = create<ArticlesStore>()(
           currentUserId: userId?.toString(),
           articlesByUser: {
             ...state.articlesByUser,
-            [userId]: [], // Intilize user articles with empty array
+            [userId]: state.articlesByUser[userId] ? state.articlesByUser[userId] : [], // Intilize user articles with empty array
           },
         })),
 

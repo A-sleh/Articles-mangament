@@ -80,7 +80,7 @@ export function handleIntialUserWorkingHours(
 
   if (exists) {
     return usersWorkingHours.map((u) =>
-      u.userId == userId ? { ...intialState, userId } : u
+      u.userId == userId ? { days: u.days, userId } : u
     );
   } else {
     return [...usersWorkingHours, { ...intialState, userId }];
