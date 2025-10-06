@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import useFilteredArticlesOnDate from "../_hooks/useFilteredArticlesOnDate";
 import Chart from "@/components/charts/Chart";
 import DatePicker from "@/components/ui/DatePicker";
+import AnimateFromToRight from '@/lib/Animation/AnimateFromLeftToRight'
 
 export default function ArticlesStatsPerCate() {
   const t = useTranslations("stats");
@@ -17,7 +18,7 @@ export default function ArticlesStatsPerCate() {
   });
 
   return (
-    <div className="flex-1 w-full h-full">
+    <AnimateFromToRight className="flex-1 w-full h-full">
       <div className="bg-white dark:bg-secondary-dark shadow p-4 dark:shadow-white rounded-2xl flex-1 w-full h-full">
         <h2 className="text-sm mb-2 font-semibold dark:text-white">
             {t("articles-per-category-chart-title")}
@@ -54,6 +55,6 @@ export default function ArticlesStatsPerCate() {
           }}
         />
       </div>
-    </div>
+    </AnimateFromToRight>
   );
 }

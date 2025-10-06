@@ -8,6 +8,7 @@ import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import Chart from "@/components/charts/Chart";
 import DatePicker from "@/components/ui/DatePicker";
 import { getDayName } from "@/utils/helper";
+import AnimateFromToRight from "@/lib/Animation/AnimateFromLeftToRight";
 
 export default function ViewsStatsPerDay() {
   const t = useTranslations("stats");
@@ -25,7 +26,7 @@ export default function ViewsStatsPerDay() {
   });
 
   return (
-    <div className="flex-1 w-full h-full">
+    <AnimateFromToRight offsetValue={100} className="flex-1 w-full h-full">
       <div className="bg-white dark:bg-secondary-dark shadow p-4 rounded-2xl dark:shadow-white flex-1 w-full h-full">
         <h2 className="text-sm mb-2 font-semibold dark:text-white">
           {t("views-per-day-chart-title")}
@@ -74,6 +75,6 @@ export default function ViewsStatsPerDay() {
           }}
         />
       </div>
-    </div>
+    </AnimateFromToRight>
   );
 }
