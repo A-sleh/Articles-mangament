@@ -1,19 +1,21 @@
 // @ts-nocheck
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
-import { useCKEditorCloud } from "@ckeditor/ckeditor5-react";
-import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import dynamic from "next/dynamic";
+import { useState, useEffect } from "react";
+import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 
+// Dynamically import CKEditor to avoid SSR issues
 const CKEditor = dynamic(
   () => import("@ckeditor/ckeditor5-react").then((mod) => mod.CKEditor),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
 
-// @ts-nocheck
+// Import open-source build (no license key required)
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+// If you want inline editing, use this instead:
+// import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+
 export default function CKEdite({
   setRichText,
   initalValue,
@@ -23,141 +25,54 @@ export default function CKEdite({
   initalValue: string;
   placeholder?: string;
 }) {
-  const LICENSE_KEY = process.env.NEXT_PUBLIC_CKEDITOR_LICENSE_KEY
   const locale = useNavSetting((state) => state.lang);
-  const editorRef = useRef(null);
-  const editorContainerRef = useRef(null);
-  const [isLayoutReady, setIsLayoutReady] = useState(false);
-  const cloud = useCKEditorCloud({ version: "47.0.0" });
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    setIsLayoutReady(true);
-
-    return () => setIsLayoutReady(false);
+    setIsReady(true);
   }, []);
 
-  const { InlineEditor, editorConfig } = useMemo(() => {
-    if (cloud.status !== "success" || !isLayoutReady) {
-      return {};
-    }
-
-    const {
-      InlineEditor,
-      Autosave,
-      Essentials,
-      Paragraph,
-      Bold,
-      Italic,
-      List,
-      Underline,
-      Heading,
-    } = cloud.CKEditor;
-
-    return {
-      InlineEditor,
-      editorConfig: {
-        language: {
-          ui: locale,
-          content: locale,
-        },
-        toolbar: {
-          items: [
-            "undo",
-            "redo",
-            "|",
-            "heading",
-            "|",
-            "bold",
-            "italic",
-            "underline",
-            "|",
-            "bulletedList",
-            "numberedList",
-          ],
-          shouldNotGroupWhenFull: false,
-        },
-        plugins: [
-          Autosave,
-          Bold,
-          Essentials,
-          Heading,
-          Italic,
-          List,
-          Paragraph,
-          Underline,
-        ],
-        direction: {
-          options: ["ltr", "rtl"],
-        },
-        heading: {
-          options: [
-            {
-              model: "paragraph",
-              title: "Paragraph",
-              class: "ck-heading_paragraph",
-            },
-            {
-              model: "heading1",
-              view: "h1",
-              title: "Heading 1",
-              class: "ck-heading_heading1",
-            },
-            {
-              model: "heading2",
-              view: "h2",
-              title: "Heading 2",
-              class: "ck-heading_heading2",
-            },
-            {
-              model: "heading3",
-              view: "h3",
-              title: "Heading 3",
-              class: "ck-heading_heading3",
-            },
-            {
-              model: "heading4",
-              view: "h4",
-              title: "Heading 4",
-              class: "ck-heading_heading4",
-            },
-            {
-              model: "heading5",
-              view: "h5",
-              title: "Heading 5",
-              class: "ck-heading_heading5",
-            },
-            {
-              model: "heading6",
-              view: "h6",
-              title: "Heading 6",
-              class: "ck-heading_heading6",
-            },
-          ],
-        },
-        initialData: initalValue,
-        licenseKey: LICENSE_KEY,
-        placeholder: placeholder,
-      },
-    };
-  }, [cloud, isLayoutReady]);
+  if (!isReady) return null;
 
   return (
     <div className="main-container">
-      <div
-        className="editor-container editor-container_inline-editor"
-        ref={editorContainerRef}
-      >
-        <div className="editor-container__editor dark:text-white">
-          <div ref={editorRef}>
-            {InlineEditor && editorConfig && (
-              <CKEditor
-                editor={InlineEditor}
-                onChange={(_, edirtor) => setRichText(edirtor.getData())}
-                config={editorConfig}
-              />
-            )}
-          </div>
-        </div>
+      <div className="editor-container dark:text-white">
+        <CKEditor
+          editor={ClassicEditor}
+          data={initalValue}
+          config={{
+            placeholder: placeholder,
+            language: locale,
+            toolbar: [
+              "undo",
+              "redo",
+              "|",
+              "heading",
+              "|",
+              "bold",
+              "italic",
+              "underline",
+              "|",
+              "bulletedList",
+              "numberedList",
+            ],
+            heading: {
+              options: [
+                { model: "paragraph", title: "Paragraph", class: "ck-heading_paragraph" },
+                { model: "heading1", view: "h1", title: "Heading 1", class: "ck-heading_heading1" },
+                { model: "heading2", view: "h2", title: "Heading 2", class: "ck-heading_heading2" },
+                { model: "heading3", view: "h3", title: "Heading 3", class: "ck-heading_heading3" },
+                { model: "heading4", view: "h4", title: "Heading 4", class: "ck-heading_heading4" },
+                { model: "heading5", view: "h5", title: "Heading 5", class: "ck-heading_heading5" },
+                { model: "heading6", view: "h6", title: "Heading 6", class: "ck-heading_heading6" },
+              ],
+            },
+          }}
+          onChange={(_, editor) => {
+            const data = editor.getData();
+            setRichText(data);
+          }}
+        />
       </div>
     </div>
   );
