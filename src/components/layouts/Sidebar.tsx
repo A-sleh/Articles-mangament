@@ -16,10 +16,15 @@ import {
 import { Button } from "../ui/Button"; // shadcn button
 import NavLink from "../ui/NavLink";
 
+import AnimateParentLeftEffect, {
+  AnimateChildLeftEffect,
+} from "@/lib/Animation/AnimateParentLeftEffect";
+import AnimateScale from "@/lib/Animation/AnimateScale";
 import { useNavSetting } from "@/stores/Nav-setting-store/Nav-setting-store";
 import { useAuth } from "@/stores/Auth-store/Auth-srore";
 import { successToast } from "../custom/toast";
 import { cn } from "@/lib/utils";
+
 
 const navItems = [
   { href: "/articles", labelKey: "articles-linke", Icon: FileText },
@@ -117,16 +122,23 @@ export default function Sidebar() {
         </div>
 
         {/* Nav Links */}
-        <nav className="flex flex-col gap-2 flex-1 px-2">
-          {navItems.map(({ href, labelKey, Icon }) => (
-            <NavLink key={href} href={href} title={t(labelKey)} Icon={<Icon size={22} />}>
-              {t(labelKey)}
-            </NavLink>
+        <AnimateParentLeftEffect className="flex flex-col gap-2 flex-1 px-2">
+          {navItems.map(({ href, labelKey, Icon },index: number) => (
+            <AnimateChildLeftEffect duration={index / 3}>
+              <NavLink
+                key={href}
+                href={href}
+                title={t(labelKey)}
+                Icon={<Icon size={22} />}
+              >
+                {t(labelKey)}
+              </NavLink>
+            </AnimateChildLeftEffect>
           ))}
-        </nav>
+        </AnimateParentLeftEffect>
 
         {/* Logout */}
-        <div className="p-4">
+        <AnimateScale className="p-4">
           <Button
             onClick={handleLogoutClicked}
             variant="secondary"
@@ -138,7 +150,7 @@ export default function Sidebar() {
             <LogOut size={22} />
             {openSidebar && <span>{t("logout-btn")}</span>}
           </Button>
-        </div>
+        </AnimateScale>
       </motion.aside>
     </>
   );
