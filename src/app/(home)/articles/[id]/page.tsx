@@ -61,7 +61,7 @@ export default function Article({ params }: { params: { id: number } }) {
       </AnimateDownEffect>
       <AnimateFromToRight className="w-full">
         <div className="flex justify-between w-full">
-          <h1 className="text-xl font-bold uppercase flex items-center gap-2">
+          <h1 className="text-xl font-bold uppercase dark:text-white flex items-center gap-2">
             {title}
             <span
               className={`${
@@ -93,7 +93,7 @@ export default function Article({ params }: { params: { id: number } }) {
             <DownLoadArticlePdf article={article}>
               <FaDownload
                 size={ICON_SIZE}
-                className="cursor-pointer"
+                className="cursor-pointer dark:text-white"
                 title={t("download-pdf")}
               />
             </DownLoadArticlePdf>

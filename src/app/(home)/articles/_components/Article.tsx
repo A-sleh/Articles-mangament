@@ -19,7 +19,7 @@ import { errorToast, successToast } from "@/components/custom/toast";
 
 export default function Article({ article }: { article: IArticle }) {
   const t = useTranslations("articles.article");
-  const locale = useNavSetting((state) => state.lang);
+  const {lang,isDarkMode} = useNavSetting((state) => state);
   const { deleteArticle } = useArticles((state) => state);
   const { id, published, title, scheduled, category } = article;
 
@@ -46,10 +46,10 @@ export default function Article({ article }: { article: IArticle }) {
   }, []);
 
   return (
-    <SortableItem key={id}>
+    <SortableItem key={id} >
       <div
-        className="flex gap-2 items-center dark:text-white md:items-start bg-white dark:bg-primary-dark rounded-md p-2 border-dashed border-2 border-primary dark:border-white"
-        dir={locale == "ar" ? "rtl" : "ltr"}
+        className={`${isDarkMode ? 'dark' : ''} flex gap-2 items-center dark:text-white  md:items-start bg-white dark:bg-primary-dark rounded-md p-2 border-dashed border-2 border-primary dark:border-white `}
+        dir={lang == "ar" ? "rtl" : "ltr"}
       >
         <Link
           href={`/articles/${id}`}
@@ -75,7 +75,7 @@ export default function Article({ article }: { article: IArticle }) {
           </div>
           <div>
             <p className="text-sm my-1">
-              {formatDate(new Date(scheduled || ""), locale)}
+              {formatDate(new Date(scheduled || ""), lang)}
             </p>
           </div>
         </Link>
