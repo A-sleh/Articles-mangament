@@ -11,6 +11,7 @@ import { FaPenToSquare } from "react-icons/fa6";
 import { IoIosClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
 
+import AnimateScale from "@/lib/Animation/AnimateScale";
 import { errorToast, successToast } from "@/components/custom/toast";
 import { getFileUrl } from "@/utils/helper";
 import { useTranslations } from "next-intl";
@@ -81,7 +82,7 @@ export default function UserAvatar() {
   };
 
   return (
-    <div className="flex flex-col gap-3 items-center text-center dark:text-white relative transition-all">
+    <AnimateScale className="flex flex-col gap-3 flex-[0.5] items-center text-center dark:text-white relative transition-all">
       {/* Avatar with hover controls */}
       <div className="relative w-32 h-32 rounded-full overflow-hidden group">
         <Image
@@ -135,6 +136,6 @@ export default function UserAvatar() {
           </>
         )}
       </div>
-    </div>
+    </AnimateScale>
   );
 }
