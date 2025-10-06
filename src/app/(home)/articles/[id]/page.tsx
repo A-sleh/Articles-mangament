@@ -20,7 +20,11 @@ import DownLoadArticlePdf from "@/components/pdf/Article/DownLoadArticlePdf";
 import ArticleForm from "../_components/ArticleForm";
 import NotFoundMessage from "@/components/ui/NotFoundMessage";
 import ConfirmModal from "@/components/Model/ConfirmModel";
-
+import AnimateDownEffect from "@/lib/Animation/AnimateDownEffect";
+import AnimateParentScaleUp, {
+  AnimateChildScaleUpChild,
+} from "@/lib/Animation/AnimateParentScaleUpChild";
+import AnimateFromToRight from "@/lib/Animation/AnimateFromLeftToRight";
 
 const ICON_SIZE = 20;
 
@@ -49,13 +53,13 @@ export default function Article({ params }: { params: { id: number } }) {
 
   return (
     <section className="p-4">
-      <header className="flex justify-between p-2 bg-primary dark:bg-primary-dark rounded-md mb-2 text-white">
+      <AnimateDownEffect className="flex justify-between p-2 bg-primary dark:bg-primary-dark rounded-md mb-2 text-white">
         <span>{formatDate(new Date(scheduled || ""), locale)}</span>
         <Link href="/articles" aria-label={t("back-to-articles")}>
           <IoChevronBackCircleOutline size={25} />
         </Link>
-      </header>
-      <div className="w-full">
+      </AnimateDownEffect>
+      <AnimateFromToRight className="w-full">
         <div className="flex justify-between w-full">
           <h1 className="text-xl font-bold uppercase flex items-center gap-2">
             {title}
@@ -95,17 +99,17 @@ export default function Article({ params }: { params: { id: number } }) {
             </DownLoadArticlePdf>
           </div>
         </div>
-        
+
         <div className="my-3">
           <span className="text-white bg-primary dark:bg-primary-dark rounded-md px-2 py-1">
             {category}
           </span>
         </div>
-      </div>
+      </AnimateFromToRight>
 
       <div className="flex flex-col md:flex-row gap-3 md:gap-8 items-center md:items-start dark:text-white">
         {/* Left column (Image + Tags) */}
-        <div className="w-full md:w-1/2 flex flex-col items-center md:items-start">
+        <AnimateFromToRight className="w-full md:w-1/2 flex flex-col items-center md:items-start">
           {cover && (
             <Image
               src={cover}
@@ -118,23 +122,27 @@ export default function Article({ params }: { params: { id: number } }) {
 
           {/* Tags */}
           {tags?.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
-              {tags.map((tag, idx) => (
-                <span
-                  key={idx}
+            <AnimateParentScaleUp className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
+              {tags.map((tag, Idx) => (
+                <AnimateChildScaleUpChild
+                  duration={Idx / 3}
+                  key={Idx}
                   className="px-3 py-1 rounded-md bg-primary dark:bg-primary-dark text-white text-sm"
                 >
                   {tag}
-                </span>
+                </AnimateChildScaleUpChild>
               ))}
-            </div>
+            </AnimateParentScaleUp>
           )}
-        </div>
+        </AnimateFromToRight>
 
         {/* Right column (Rich text content) */}
-        <div className="w-full md:w-1/2 converted-richtext dark:prose-invert max-w-none">
+        <AnimateFromToRight
+          offsetValue={100}
+          className="w-full md:w-1/2 converted-richtext dark:prose-invert max-w-none"
+        >
           {parse(richText)}
-        </div>
+        </AnimateFromToRight>
       </div>
     </section>
   );

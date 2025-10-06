@@ -9,11 +9,14 @@ import NotFoundMessage from "@/components/ui/NotFoundMessage";
 import ArticleForm from "./ArticleForm";
 
 import { useTranslations } from "next-intl";
+import AnimateParentLeftEffect, {
+  AnimateChildLeftEffect,
+} from "@/lib/Animation/AnimateParentLeftEffect";
 
 export default function ArticlesList() {
-  const t = useTranslations('articles');
+  const t = useTranslations("articles");
   const { getAllArticles, updateArticles } = useArticles((state) => state);
-  const articles = getAllArticles()
+  const articles = getAllArticles();
   // For sortable items
   const onSortEnd = (oldIndex: number, newIndex: number) => {
     const newSortedArticles = arrayMoveImmutable(articles, oldIndex, newIndex);
@@ -35,9 +38,13 @@ export default function ArticlesList() {
         {articles?.length === 0 ? (
           <NotFoundMessage message={t("no-articles-message")} />
         ) : (
-          articles?.map((article) => (
-            <Article article={article} key={article.id} />
-          ))
+          <AnimateParentLeftEffect>
+            {articles?.map((article, Idx: number) => (
+              <AnimateChildLeftEffect duration={Idx / 3}>
+                <Article article={article} key={article.id} />
+              </AnimateChildLeftEffect>
+            ))}
+          </AnimateParentLeftEffect>
         )}
       </SortableList>
     </section>
