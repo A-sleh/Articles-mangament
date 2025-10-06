@@ -8,7 +8,7 @@ import localFont from "next/font/local";
 import SettingProvider from "@/components/providers/SettingProvider";
 
 const myCustomFont = localFont({
-  src: "../font/static/ReadexPro-VariableFont_HEXP,wght.ttf", // Path to your font file
+  src: "../fonts/static/ReadexPro-VariableFont_HEXP,wght.ttf", // Path to your font file
   variable: "--font-NumitioSanas",
 });
 
