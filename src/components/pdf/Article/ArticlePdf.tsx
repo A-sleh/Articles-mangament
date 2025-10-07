@@ -25,6 +25,10 @@ Font.register({
       src: "/fonts/arabic/Amiri-Bold.ttf",
       fontWeight: "bold",
     },
+    {
+      src: "/fonts/arabic/Amiri-Italic.ttf",
+      fontStyle: "italic",
+    },
   ],
 });
 
