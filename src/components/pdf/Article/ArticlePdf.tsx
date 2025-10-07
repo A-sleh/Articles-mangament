@@ -145,7 +145,7 @@ export const ArticlePdf = ({
               textAlign: locale == "ar" ? "right" : "left",
             }}
           >
-            {HtmlToPdf({ html: article.richText })}
+            {HtmlToPdf({ html: article.richText, locale: locale })}
           </View>
         </View>
       </Page>
