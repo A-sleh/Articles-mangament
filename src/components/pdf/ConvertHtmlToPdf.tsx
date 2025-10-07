@@ -9,16 +9,6 @@ type IListContext = {
   count?: number;
 };
 
-// Register both Arabic and English fonts
-Font.register({
-  family: "Amiri",
-  fonts: [
-    { src: "/fonts/arabic/Amiri-Regular.ttf", fontWeight: "normal" },
-    { src: "/fonts/arabic/Amiri-Bold.ttf", fontWeight: "bold" },
-  ],
-});
-
-
 const baseStyles = StyleSheet.create({
   ol: { marginBottom: 8, paddingLeft: 14, display: "flex", flexDirection: "column", width: "100%" },
   ul: { marginBottom: 8, paddingLeft: 14, display: "flex", flexDirection: "column", width: "100%" },
