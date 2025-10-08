@@ -21,8 +21,14 @@ import { MdClose } from "react-icons/md";
 import AnimateFromToRight from "@/lib/Animation/AnimateFromLeftToRight";
 import AnimateScale from "@/lib/Animation/AnimateScale";
 
-const Categories = ["Article", "Post", "Short post"];
-const tags = ["News", "Personal", "Release"];
+const Categories = {
+  en: ["Article", "Post", "Short post"],
+  ar: ["مقالة", "منشور", "منشور قصير"],
+};
+const tags = {
+  ar: ["اخبار", "شخصي", "رياضة"],
+  en: ["News", "Personal", "Sport"],
+};
 
 const localInitialForm: IArticle = {
   id: 0,
@@ -131,7 +137,7 @@ export default function ArticleForm({
           >
             <SelectInput
               label={t("category")}
-              values={Categories}
+              values={Categories[locale]}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
               value={form?.category}
             />
@@ -151,7 +157,7 @@ export default function ArticleForm({
           >
             <MultiSelectInput
               label={t("tags")}
-              options={tags}
+              options={tags[locale]}
               selectedValues={form.tags}
               onChange={(values) => setForm({ ...form, tags: values })}
               placeholder={t("tags-placeholder")}
@@ -177,8 +183,7 @@ export default function ArticleForm({
           {/* Rich Text Editor */}
           <AnimateFromToRight
             delay={0.6}
-
-            className="my-4 border border-gray-300 dark:border-white rounded-lg  bg-gray-50 dark:bg-secondary-dark w-full md:w-[50vw]" 
+            className="my-4 border border-gray-300 dark:border-white rounded-lg  bg-gray-50 dark:bg-secondary-dark w-full md:w-[50vw]"
           >
             <CKEdite
               setRichText={(data) => setForm({ ...form, richText: data })}

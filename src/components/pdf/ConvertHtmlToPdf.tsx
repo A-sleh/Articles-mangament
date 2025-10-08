@@ -23,12 +23,12 @@ const baseStyles = StyleSheet.create({
   checkbox: { width: 10, height: 10, borderWidth: 1, borderColor: "#000", marginRight: 6 },
   checkboxChecked: { backgroundColor: "#000" },
   todoText: { flex: 1 },
-  h1: { fontSize: 24, fontWeight: "bold", marginBottom: 8 },
-  h2: { fontSize: 22, fontWeight: "bold", marginBottom: 8 },
-  h3: { fontSize: 20, fontWeight: "bold", marginBottom: 6 },
-  h4: { fontSize: 18, fontWeight: "bold", marginBottom: 6 },
-  h5: { fontSize: 16, fontWeight: "bold", marginBottom: 4 },
-  h6: { fontSize: 14, fontWeight: "bold", marginBottom: 4 },
+  h1: { fontSize: 24, fontWeight: "bold", marginBottom: 1 },
+  h2: { fontSize: 22, fontWeight: "bold", marginBottom: 1 },
+  h3: { fontSize: 20, fontWeight: "bold", marginBottom: 1 },
+  h4: { fontSize: 18, fontWeight: "bold", marginBottom: 1 },
+  h5: { fontSize: 16, fontWeight: "bold", marginBottom: 1 },
+  h6: { fontSize: 14, fontWeight: "bold", marginBottom: 1 },
 });
 
 const getLocaleStyles = (locale: string) => {
