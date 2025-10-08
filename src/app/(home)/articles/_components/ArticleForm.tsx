@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import DatePicker from "react-datepicker";
@@ -25,6 +25,7 @@ const Categories = {
   en: ["Article", "Post", "Short post"],
   ar: ["مقالة", "منشور", "منشور قصير"],
 };
+
 const tags = {
   ar: ["اخبار", "شخصي", "رياضة"],
   en: ["News", "Personal", "Sport"],
@@ -55,12 +56,17 @@ export default function ArticleForm({
   const t = useTranslations("articles.article-form");
   const locale = useNavSetting((state) => state.lang);
 
-  const [form, setForm] = useState<IArticle>(initialForm ?? localInitialForm);
   const [closeModel, setCloseModel] = useState(false);
+  const [form, setForm] = useState<IArticle>(initialForm ?? localInitialForm);
   const { createArticle, updateArticle } = useArticles((state) => state);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if(!form.cover) {
+      errorToast(t('empty-cover-image'))
+      return 
+    }
 
     try {
       if (method === "POST") {
@@ -165,13 +171,13 @@ export default function ArticleForm({
 
             <div className="flex items-center gap-2 justify-between w-full flex-1">
               <label
+                onClick={() => setForm({ ...form, published: !form.published })}
                 htmlFor="toggle"
                 className="text-sm font-medium text-gray-800 dark:text-gray-200 text-nowrap"
               >
                 {t(form.published ? "published" : "un-published")}
               </label>
               <ToggleButton
-                id="toggle"
                 value={form.published}
                 onChangeFn={() =>
                   setForm({ ...form, published: !form.published })

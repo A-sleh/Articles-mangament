@@ -35,7 +35,8 @@
       "loading": "جارٍ التحميل...",
       "success-add": "تم إضافة المقال بنجاح!",
       "success-update": "تم تحديث المقال بنجاح!",
-      "ckeditor-placeholder": "اكتب وصفا للمقال"
+      "ckeditor-placeholder": "اكتب وصفا للمقال",
+      "empty-cover-image": "يجب تحديد صورة للمنشور"
     }
   },
   "settings": {

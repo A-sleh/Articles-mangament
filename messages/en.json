@@ -37,7 +37,8 @@
       "loading": "Loading...",
       "success-add": "Article added successfully!",
       "success-update": "Article updated successfully!",
-        "ckeditor-placeholder": "Write the article description"
+      "ckeditor-placeholder": "Write the article description",
+      "empty-cover-image": "You should select the post's image"
     }
   },
   "settings": {
