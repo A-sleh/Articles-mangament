@@ -29,7 +29,7 @@ const ConfirmModal: FC<IConfirmeModal> = ({
   return (
     <Modal>
       <Modal.Open opens={ModalKey}>{children}</Modal.Open>
-      <Modal.Window name={ModalKey} className="w-fit bg-white dark:bg-secondary-dark dark:text-white rounded-sm p-5">
+      <Modal.Window name={ModalKey} className="w-[90%] bg-white dark:bg-secondary-dark dark:text-white rounded-sm p-5">
         <AnimateScale className=" text-gray-600 w-full">
           <AiOutlineInfoCircle size={100} className="mx-auto dark:text-white" />
         </AnimateScale>
