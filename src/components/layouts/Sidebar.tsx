@@ -129,6 +129,7 @@ export default function Sidebar() {
                 key={href}
                 href={href}
                 title={t(labelKey)}
+                isMdScreen={isMd}
                 Icon={<Icon size={22} />}
               >
                 {t(labelKey)}
