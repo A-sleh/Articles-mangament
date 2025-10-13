@@ -38,16 +38,10 @@ export default function Navbar() {
           />
 
           <Link href={"/settings"}>
-            {user?.image ? (
-              <Avatar>
-                <AvatarImage src={user.image} alt="user-avatar" />
-                <AvatarFallback>{user?.userName ?? "U"}</AvatarFallback>
-              </Avatar>
-            ) : (
-              <Avatar>
-                <AvatarFallback>U</AvatarFallback>
-              </Avatar>
-            )}
+            <Avatar>
+              <AvatarImage src={user?.image || ""} alt="user-avatar" />
+              <AvatarFallback>{user?.userName ?? "U"}</AvatarFallback>
+            </Avatar>
           </Link>
         </div>
       </div>
